@@ -2,7 +2,7 @@
 
 ## Your Complete Journey to AI Development Excellence
 
-> **"From your first AI-assisted 'Hello World' to orchestrating enterprise multi-agent systems, this workshop is your comprehensive path to mastering every aspect of AI-powered development." - Paula Silva**
+> **"From your first AI-assisted 'Hello World' to orchestrating enterprise multi-agent systems, this workshop is your comprehensive path to mastering every aspect of AI-powered development."** - @paulanunes85
 
 Welcome to the most complete AI development program available. Through 30 progressive modules and 90 hands-on exercises, you'll transform from AI-curious developer to AI development master.
 

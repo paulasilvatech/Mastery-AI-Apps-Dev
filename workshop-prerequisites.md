@@ -569,5 +569,3 @@ python check_prerequisites.py
 ---
 
 **Ready to start?** Once all prerequisites are met, proceed to Module 1!
-
-*Last updated: [Current Date]*

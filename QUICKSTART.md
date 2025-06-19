@@ -13,7 +13,7 @@ Get started with AI-Assisted Development in 5 minutes!
 
 ## 3. Launch Your First Exercise
 ```bash
-cd modules/Module-01/exercises/exercise1-easy
+cd modules/Module-01/module-01-exercise1
 code .  # or cursor .
 ```
 
@@ -26,10 +26,7 @@ code .  # or cursor .
 
 ## 5. Next Steps
 - Complete all exercises in Module 01
-- Join our Discord community
-- Share your solutions
 
 ## Need Help?
 - Check [FAQ.md](./FAQ.md)
 - See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-- Ask in Discord #help channel 

@@ -53,6 +53,4 @@
 **A:** In order of preference:
 1. Check documentation
 2. Ask AI for help
-3. Search Discord
-4. Post in #help channel
-5. Create GitHub issue 
+3. Create GitHub issue 

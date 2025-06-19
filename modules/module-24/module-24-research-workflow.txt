@@ -1,0 +1,369 @@
+# Research Workflow Template
+# This template defines a multi-agent research workflow
+# that gathers, analyzes, and synthesizes information
+
+name: comprehensive-research
+version: "1.0"
+description: "Multi-source research with analysis and synthesis"
+
+# Workflow metadata
+metadata:
+  author: "AI Workshop Team"
+  tags:
+    - research
+    - analysis
+    - multi-agent
+  estimatedDuration: 900 # seconds (15 minutes)
+  priority: medium
+
+# Input parameters
+parameters:
+  topic:
+    type: string
+    required: true
+    description: "Research topic or query"
+  
+  sources:
+    type: array
+    default: ["web", "academic", "news"]
+    description: "Data sources to search"
+  
+  maxResults:
+    type: integer
+    default: 20
+    description: "Maximum results per source"
+  
+  depth:
+    type: string
+    enum: ["shallow", "medium", "deep"]
+    default: "medium"
+    description: "Research depth level"
+  
+  outputFormat:
+    type: string
+    enum: ["summary", "detailed", "report"]
+    default: "detailed"
+    description: "Output format preference"
+
+# Agent requirements
+agents:
+  - id: research-agent
+    type: research
+    capabilities:
+      - web-search
+      - academic-search
+      - news-search
+    minInstances: 1
+    maxInstances: 3
+  
+  - id: analysis-agent
+    type: analysis
+    capabilities:
+      - statistical-analysis
+      - sentiment-analysis
+      - trend-detection
+    minInstances: 1
+    maxInstances: 2
+  
+  - id: synthesis-agent
+    type: synthesis
+    capabilities:
+      - summarization
+      - insight-generation
+      - report-creation
+    minInstances: 1
+    maxInstances: 1
+
+# Workflow steps
+steps:
+  # Step 1: Initial Research
+  - id: gather-sources
+    name: "Gather Information Sources"
+    agent: research-agent
+    action: multi-source-search
+    input:
+      query: "{{ parameters.topic }}"
+      sources: "{{ parameters.sources }}"
+      maxResults: "{{ parameters.maxResults }}"
+    output:
+      name: raw_sources
+      schema:
+        type: array
+        items:
+          type: object
+          properties:
+            source: string
+            title: string
+            url: string
+            snippet: string
+            metadata: object
+    timeout: 300
+    retries: 2
+    parallel: true
+
+  # Step 2: Filter and Validate
+  - id: validate-sources
+    name: "Validate and Filter Sources"
+    agent: research-agent
+    action: validate-sources
+    dependencies:
+      - gather-sources
+    input:
+      sources: "{{ steps.gather-sources.output }}"
+      criteria:
+        relevance: 0.7
+        credibility: 0.6
+        recency: 30 # days
+    output:
+      name: validated_sources
+      schema:
+        type: array
+    timeout: 120
+
+  # Step 3: Deep Analysis
+  - id: analyze-content
+    name: "Analyze Content"
+    agent: analysis-agent
+    action: comprehensive-analysis
+    dependencies:
+      - validate-sources
+    input:
+      sources: "{{ steps.validate-sources.output }}"
+      analysisTypes:
+        - statistical
+        - sentiment
+        - trend
+      depth: "{{ parameters.depth }}"
+    output:
+      name: analysis_results
+      schema:
+        type: object
+        properties:
+          statistics: object
+          sentiments: object
+          trends: array
+          insights: array
+    timeout: 600
+    retries: 1
+
+  # Step 4: Extract Key Information
+  - id: extract-facts
+    name: "Extract Key Facts"
+    agent: analysis-agent
+    action: fact-extraction
+    dependencies:
+      - validate-sources
+    input:
+      sources: "{{ steps.validate-sources.output }}"
+      extractionRules:
+        - type: entities
+          categories: ["person", "organization", "location", "date"]
+        - type: claims
+          verifiable: true
+        - type: statistics
+          confidence: 0.8
+    output:
+      name: extracted_facts
+      schema:
+        type: object
+        properties:
+          entities: array
+          claims: array
+          statistics: array
+    parallel: true
+    timeout: 300
+
+  # Step 5: Synthesize Results
+  - id: synthesize
+    name: "Synthesize Information"
+    agent: synthesis-agent
+    action: create-synthesis
+    dependencies:
+      - analyze-content
+      - extract-facts
+    input:
+      analysis: "{{ steps.analyze-content.output }}"
+      facts: "{{ steps.extract-facts.output }}"
+      format: "{{ parameters.outputFormat }}"
+      requirements:
+        maxLength: 2000
+        style: "professional"
+        includeReferences: true
+    output:
+      name: synthesis
+      schema:
+        type: object
+        properties:
+          summary: string
+          detailedFindings: array
+          conclusions: array
+          recommendations: array
+          references: array
+    timeout: 300
+
+  # Step 6: Quality Check
+  - id: quality-check
+    name: "Quality Assurance"
+    agent: synthesis-agent
+    action: validate-output
+    dependencies:
+      - synthesize
+    input:
+      content: "{{ steps.synthesize.output }}"
+      criteria:
+        accuracy: true
+        completeness: true
+        clarity: true
+        citations: true
+    output:
+      name: quality_report
+      schema:
+        type: object
+        properties:
+          score: number
+          issues: array
+          suggestions: array
+    timeout: 120
+
+  # Step 7: Generate Final Output
+  - id: finalize
+    name: "Generate Final Report"
+    agent: synthesis-agent
+    action: create-final-output
+    dependencies:
+      - synthesize
+      - quality-check
+    condition: "{{ steps.quality-check.output.score > 0.8 }}"
+    input:
+      synthesis: "{{ steps.synthesize.output }}"
+      qualityReport: "{{ steps.quality-check.output }}"
+      format: "{{ parameters.outputFormat }}"
+      metadata:
+        topic: "{{ parameters.topic }}"
+        timestamp: "{{ workflow.startTime }}"
+        duration: "{{ workflow.duration }}"
+    output:
+      name: final_report
+      schema:
+        type: object
+        properties:
+          title: string
+          executive_summary: string
+          content: object
+          metadata: object
+    timeout: 180
+
+# Error handling
+errorHandling:
+  strategy: "compensate" # or "retry", "fail-fast"
+  maxRetries: 3
+  backoffMultiplier: 2
+  
+  handlers:
+    - error: "SourceUnavailable"
+      action: "use-alternative-source"
+      
+    - error: "AnalysisTimeout"
+      action: "reduce-depth"
+      
+    - error: "SynthesisFailure"
+      action: "fallback-to-summary"
+
+# Success criteria
+successCriteria:
+  - condition: "{{ steps.finalize.output != null }}"
+    description: "Final report generated"
+    
+  - condition: "{{ steps.quality-check.output.score > 0.7 }}"
+    description: "Quality threshold met"
+    
+  - condition: "{{ steps.validate-sources.output.length > 5 }}"
+    description: "Sufficient sources found"
+
+# Monitoring and metrics
+monitoring:
+  metrics:
+    - name: "research_workflow_duration"
+      type: histogram
+      labels:
+        - topic_category
+        - depth
+        - source_count
+        
+    - name: "research_quality_score"
+      type: gauge
+      labels:
+        - topic_category
+        
+    - name: "source_validation_rate"
+      type: counter
+      labels:
+        - source_type
+        - validation_result
+  
+  alerts:
+    - name: "high_failure_rate"
+      condition: "failure_rate > 0.2"
+      severity: "warning"
+      
+    - name: "slow_research"
+      condition: "duration > 1800"
+      severity: "info"
+
+# Output schema
+output:
+  schema:
+    type: object
+    required:
+      - report
+      - metadata
+      - quality_metrics
+    properties:
+      report:
+        type: object
+        properties:
+          title: string
+          summary: string
+          findings: array
+          conclusions: array
+          references: array
+      
+      metadata:
+        type: object
+        properties:
+          workflow_id: string
+          topic: string
+          timestamp: string
+          duration: number
+          sources_analyzed: number
+          
+      quality_metrics:
+        type: object
+        properties:
+          overall_score: number
+          accuracy: number
+          completeness: number
+          clarity: number
+
+# Usage examples
+examples:
+  - name: "Technology Research"
+    parameters:
+      topic: "Impact of AI on software development"
+      sources: ["web", "academic", "news"]
+      depth: "deep"
+      outputFormat: "report"
+      
+  - name: "Market Analysis"
+    parameters:
+      topic: "Electric vehicle market trends 2024"
+      sources: ["news", "web"]
+      depth: "medium"
+      outputFormat: "summary"
+      
+  - name: "Scientific Review"
+    parameters:
+      topic: "Recent advances in quantum computing"
+      sources: ["academic"]
+      depth: "deep"
+      outputFormat: "detailed"

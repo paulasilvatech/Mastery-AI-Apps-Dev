@@ -6,6 +6,8 @@
 
 Welcome to the most complete AI development program available. Through 30 progressive modules and 90 hands-on exercises, you'll transform from AI-curious developer to AI development master.
 
+---
+
 ## 🌟 Why "Mastery AI Code Development"?
 
 ### The Complete Learning Journey
@@ -24,6 +26,8 @@ This workshop provides unprecedented depth and breadth:
 - **MCP Integration**: Model Context Protocol from basics to advanced
 - **Enterprise Ready**: Including dedicated .NET enterprise track
 - **Continuous Evolution**: Regular updates with latest AI capabilities
+
+---
 
 ## 📚 Workshop Structure: 30 Modules to Mastery
 
@@ -49,6 +53,8 @@ Advanced enterprise scenarios with .NET focus
 
 #### 🏆 **Mastery Validation** (Modules 29-30)
 Complete review and ultimate challenge
+
+---
 
 ## 📋 Complete Module Overview
 
@@ -86,6 +92,8 @@ Complete review and ultimate challenge
 | 28 | Shift-Left Security & DevOps | GitHub Advanced Security, Defender | 3 hours | ⭐ Enterprise Mastery |
 | 29 | Complete Enterprise Review | Full-stack .NET enterprise system | 3 hours | 🏆 Mastery |
 | 30 | Ultimate Mastery Challenge | Comprehensive 3-hour assessment | 3 hours | 🏆 Mastery |
+
+---
 
 ## 🎯 Learning Objectives by Track
 
@@ -135,6 +143,8 @@ Complete review and ultimate challenge
 - Demonstrate all learned skills
 - Prove production readiness
 
+---
+
 ## 🛠️ Technology Stack
 
 ### Core Development
@@ -168,6 +178,8 @@ Complete review and ultimate challenge
 - **IaC**: Terraform, Bicep, ARM Templates
 - **Orchestration**: Kubernetes, Docker
 
+---
+
 ## 📝 Exercise Structure
 
 Each module contains 3 progressive exercises:
@@ -196,6 +208,8 @@ Each module contains 3 progressive exercises:
 - Validation tests
 - Troubleshooting guide
 - Extension challenges
+
+---
 
 ## 🔧 Prerequisites by Track
 
@@ -237,6 +251,8 @@ Each module contains 3 progressive exercises:
 - .NET experience (for module 26)
 - Enterprise architecture knowledge
 
+---
+
 ## 🚀 Getting Started
 
 ### Quick Start
@@ -264,6 +280,8 @@ code .
 4. Join workshop community
 5. Begin Module 1
 
+---
+
 ## 📚 Learning Paths
 
 ### For Beginners (12-16 weeks)
@@ -289,6 +307,8 @@ code .
 - Pair programming
 - Team challenges
 - Custom scheduling
+
+---
 
 ## 🎯 Expected Outcomes
 
@@ -328,12 +348,16 @@ code .
 - Team leadership skills
 - Innovation mindset
 
+---
+
 ## 📚 Resources
 
 - **Documentation Wiki**: Deep dives
 - **Code Repository**: All solutions
 - **Template Library**: Reusable code
 - **Best Practices Guide**: Industry standards
+
+---
 
 ## 📈 Why This Workshop?
 
@@ -359,9 +383,7 @@ This workshop evolves with:
 - Community feedback
 - Industry trends
 
-## 📞 Contact and Support
-
-- **General**: @paulanunes85
+---
 
 ## 📄 License
 

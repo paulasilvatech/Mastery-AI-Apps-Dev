@@ -59,8 +59,7 @@ chmod +x ./scripts/*.sh
 
 1. Check our [FAQ](./FAQ.md)
 2. Search existing GitHub issues
-3. Ask in Discord #help channel
-4. Create a new issue with:
+3. Create a new issue with:
    - Error message
    - Steps to reproduce
    - Environment details 

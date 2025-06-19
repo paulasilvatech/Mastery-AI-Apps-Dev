@@ -400,3 +400,30 @@ This isn't just another workshop—it's your transformation into an AI developme
 *The best investment you can make is in yourself. The best time to start is now.*
 
 **Welcome to Mastery AI Code Development! 🚀**
+
+---
+
+## 🔗 Related Repositories
+
+### [AI Code Development](https://github.com/paulasilvatech/Code-AI-Dev)
+Complete workshop for leveraging AI tools like GitHub Copilot to optimize and improve code quality in enterprise environments. Learn advanced AI-assisted workflows, refactoring techniques, and best practices for integrating AI tools into development processes.
+
+### [Secure Code AI Development](https://github.com/paulasilvatech/Secure-Code-AI-Dev)
+Comprehensive workshop for implementing secure coding practices using AI-powered tools, GitHub Advanced Security, and modern DevSecOps workflows. Learn to shift-left security, reduce vulnerabilities significantly, and achieve enterprise-grade security compliance with AI assistance.
+
+### [Agentic Operations & Observability](https://github.com/paulasilvatech/Agentic-Ops-Dev)
+Hands-on workshop for implementing comprehensive observability solutions using Azure Monitor, Application Insights, and AI-powered tools. Learn to build modern monitoring systems, implement AI-enhanced observability, and create intelligent DevOps practices for cloud applications.
+
+### [Design-to-Code Development](https://github.com/paulasilvatech/Design-to-Code-Dev) 
+Comprehensive workshop for implementing design-to-code workflows using AI-powered tools, Figma integration, and modern development practices. Learn to bridge the gap between design and development, creating consistent and maintainable user interfaces with intelligent automation.
+
+### [Figma-to-Code Development](https://github.com/paulasilvatech/Figma-to-Code-Dev)
+Hands-on workshop for transforming Figma designs into production-ready code using GitHub Copilot Agent Mode and AI-powered tools. Learn to convert sophisticated designs into fully functional applications, achieving significant time reduction in development cycles with enterprise-grade features.
+
+---
+
+## 👤 Credits
+
+This workshop was developed by [Paula Silva](https://github.com/paulanunes85), AI App and Software Developer [Global Black Belt at Microsoft Americas](https://www.linkedin.com/in/paulanunes/).
+
+---

@@ -330,36 +330,8 @@ code .
 - Team leadership skills
 - Innovation mindset
 
-## 🏆 Certification Path
+## 📚 Resources
 
-### Progressive Certifications
-
-1. **AI Developer Foundation** (Modules 1-5)
-2. **AI Application Developer** (Modules 6-10)
-3. **AI Solutions Architect** (Modules 11-15)
-4. **Enterprise AI Developer** (Modules 16-20)
-5. **AI Agent Specialist** (Modules 21-25)
-6. **Enterprise AI Master** (Modules 26-28)
-7. **AI Development Champion** (All 30 modules)
-
-### Certification Benefits
-- LinkedIn verified badges
-- GitHub profile achievements
-- Industry recognition
-- Career advancement
-- Alumni network access
-
-## 🌍 Community and Support
-
-### Learning Community
-- **Discord Server**: 24/7 support
-- **GitHub Discussions**: Technical Q&A
-- **Weekly Office Hours**: Live help
-- **Study Groups**: Peer learning
-- **Code Reviews**: Feedback exchange
-
-### Resources
-- **Video Tutorials**: Every module
 - **Documentation Wiki**: Deep dives
 - **Code Repository**: All solutions
 - **Template Library**: Reusable code
@@ -391,10 +363,7 @@ This workshop evolves with:
 
 ## 📞 Contact and Support
 
-- **General**: info@mastery-ai-workshop.com
-- **Technical**: support@mastery-ai-workshop.com
-- **Enterprise**: enterprise@mastery-ai-workshop.com
-- **Partnerships**: partners@mastery-ai-workshop.com
+- **General**: @paulanunes85
 
 ## 📄 License
 

@@ -1,0 +1,253 @@
+{
+  "alertRules": [
+    {
+      "name": "High Error Rate Alert",
+      "description": "Alert when error rate exceeds 5% for any service",
+      "severity": 2,
+      "enabled": true,
+      "query": "requests | where timestamp > ago(5m) | summarize ErrorRate = countif(success == false) * 100.0 / count() by cloud_RoleName | where ErrorRate > 5",
+      "frequencyInMinutes": 5,
+      "windowInMinutes": 5,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "createIncident": true
+      }
+    },
+    {
+      "name": "High Latency Alert",
+      "description": "Alert when P95 latency exceeds 1 second",
+      "severity": 3,
+      "enabled": true,
+      "query": "requests | where timestamp > ago(5m) | summarize P95 = percentile(duration, 95) by operation_Name, cloud_RoleName | where P95 > 1000",
+      "frequencyInMinutes": 5,
+      "windowInMinutes": 10,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": false,
+        "createIncident": false
+      }
+    },
+    {
+      "name": "SLO Violation Alert",
+      "description": "Alert when service availability drops below SLO target",
+      "severity": 1,
+      "enabled": true,
+      "query": "requests | where timestamp > ago(1h) | summarize SuccessRate = countif(success == true) * 100.0 / count() by cloud_RoleName | where SuccessRate < 99.9",
+      "frequencyInMinutes": 15,
+      "windowInMinutes": 60,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "createIncident": true,
+        "pageOncall": true
+      }
+    },
+    {
+      "name": "Error Budget Burn Rate Alert",
+      "description": "Alert when error budget is being consumed too quickly",
+      "severity": 2,
+      "enabled": true,
+      "query": "let errorBudgetPerHour = 0.00139; requests | where timestamp > ago(1h) | summarize ErrorRate = countif(success == false) * 100.0 / count() by operation_Name | extend BurnRate = ErrorRate / errorBudgetPerHour | where BurnRate > 10",
+      "frequencyInMinutes": 30,
+      "windowInMinutes": 60,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "createIncident": false
+      }
+    },
+    {
+      "name": "Dependency Failure Alert",
+      "description": "Alert when external dependency failures exceed threshold",
+      "severity": 2,
+      "enabled": true,
+      "query": "dependencies | where timestamp > ago(10m) | where success == false | summarize FailureCount = count() by target, type | where FailureCount > 10",
+      "frequencyInMinutes": 10,
+      "windowInMinutes": 10,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "createIncident": false
+      }
+    },
+    {
+      "name": "Anomaly Detection Alert",
+      "description": "Alert on detected anomalies in request patterns",
+      "severity": 3,
+      "enabled": true,
+      "query": "requests | where timestamp > ago(30m) | summarize Count = count() by bin(timestamp, 5m), operation_Name | make-series CountSeries = sum(Count) on timestamp step 5m by operation_Name | extend anomalies = series_decompose_anomalies(CountSeries, 2.5) | mv-expand anomalies | where anomalies != 0",
+      "frequencyInMinutes": 30,
+      "windowInMinutes": 30,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": false,
+        "createIncident": false
+      }
+    },
+    {
+      "name": "High Memory Usage Alert",
+      "description": "Alert when memory usage exceeds 80%",
+      "severity": 2,
+      "enabled": true,
+      "query": "performanceCounters | where timestamp > ago(5m) | where name == 'Private Bytes' | summarize AvgMemory = avg(value) by cloud_RoleInstance | where AvgMemory > 80",
+      "frequencyInMinutes": 5,
+      "windowInMinutes": 15,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": false,
+        "autoScale": true
+      }
+    },
+    {
+      "name": "Business Metric Alert - Order Drop",
+      "description": "Alert when order rate drops significantly",
+      "severity": 2,
+      "enabled": true,
+      "query": "customEvents | where timestamp > ago(1h) | where name == 'OrderCreated' | summarize CurrentHourOrders = count() | extend PreviousHourOrders = toscalar(customEvents | where timestamp between(ago(2h) .. ago(1h)) | where name == 'OrderCreated' | count()) | extend DropPercent = (PreviousHourOrders - CurrentHourOrders) * 100.0 / PreviousHourOrders | where DropPercent > 30",
+      "frequencyInMinutes": 60,
+      "windowInMinutes": 60,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "notifyBusiness": true
+      }
+    },
+    {
+      "name": "Cost Alert - High Data Ingestion",
+      "description": "Alert when data ingestion exceeds daily budget",
+      "severity": 3,
+      "enabled": true,
+      "query": "union * | where timestamp > ago(24h) | summarize TotalGB = sum(_BilledSize) / (1024*1024*1024) | where TotalGB > 10",
+      "frequencyInMinutes": 360,
+      "windowInMinutes": 1440,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "costOptimization": true
+      }
+    },
+    {
+      "name": "Security Alert - Suspicious Activity",
+      "description": "Alert on unusual access patterns",
+      "severity": 1,
+      "enabled": true,
+      "query": "requests | where timestamp > ago(10m) | where resultCode == 401 or resultCode == 403 | summarize FailedAuthCount = count() by client_IP | where FailedAuthCount > 10",
+      "frequencyInMinutes": 10,
+      "windowInMinutes": 10,
+      "threshold": {
+        "operator": "GreaterThan",
+        "value": 0
+      },
+      "actions": {
+        "email": true,
+        "slack": true,
+        "createIncident": true,
+        "notifySecurity": true
+      }
+    }
+  ],
+  "actionGroups": [
+    {
+      "name": "CriticalAlerts",
+      "shortName": "Critical",
+      "emailReceivers": [
+        {
+          "name": "OnCallEngineer",
+          "emailAddress": "oncall@company.com",
+          "useCommonAlertSchema": true
+        }
+      ],
+      "smsReceivers": [
+        {
+          "name": "OnCallPhone",
+          "phoneNumber": "+1234567890"
+        }
+      ],
+      "webhookReceivers": [
+        {
+          "name": "SlackWebhook",
+          "serviceUri": "https://hooks.slack.com/services/xxx/yyy/zzz",
+          "useCommonAlertSchema": true
+        },
+        {
+          "name": "PagerDuty",
+          "serviceUri": "https://events.pagerduty.com/integration/xxx/enqueue",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    {
+      "name": "WarningAlerts",
+      "shortName": "Warning",
+      "emailReceivers": [
+        {
+          "name": "TeamEmail",
+          "emailAddress": "team@company.com",
+          "useCommonAlertSchema": true
+        }
+      ],
+      "webhookReceivers": [
+        {
+          "name": "SlackWebhook",
+          "serviceUri": "https://hooks.slack.com/services/xxx/yyy/zzz",
+          "useCommonAlertSchema": true
+        }
+      ]
+    }
+  ],
+  "suppressionRules": [
+    {
+      "name": "MaintenanceWindow",
+      "description": "Suppress alerts during maintenance",
+      "schedule": {
+        "startTime": "2024-01-01T02:00:00Z",
+        "endTime": "2024-01-01T04:00:00Z",
+        "recurrence": "Weekly",
+        "daysOfWeek": ["Sunday"]
+      },
+      "alertRules": ["*"]
+    },
+    {
+      "name": "HealthCheckSuppression",
+      "description": "Suppress health check endpoint alerts",
+      "condition": "operation_Name == 'GET /health'",
+      "alertRules": ["High Latency Alert", "High Error Rate Alert"]
+    }
+  ]
+}

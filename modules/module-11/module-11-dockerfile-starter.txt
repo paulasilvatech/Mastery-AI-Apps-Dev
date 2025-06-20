@@ -1,0 +1,26 @@
+# Exercise 1: Foundation - Service Decomposition
+# Starter Dockerfile for Python Microservices
+
+# TODO: Choose appropriate base image
+FROM python:3.11-slim
+
+# TODO: Set working directory
+WORKDIR /app
+
+# TODO: Copy and install dependencies
+# Hint: Copy requirements.txt first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# TODO: Copy application code
+COPY ./app ./app
+
+# TODO: Create non-root user for security
+# Hint: Use useradd command
+
+# TODO: Switch to non-root user
+
+# TODO: Expose the service port
+
+# TODO: Define the command to run the application
+# Hint: Use uvicorn with appropriate settings for production

@@ -1,396 +1,360 @@
-# Module 01: Troubleshooting Guide 🔧
+# Module 01 Troubleshooting Guide
 
-## Common Issues and Solutions
+## 🔧 Common Issues and Solutions
 
-This guide addresses the most common problems encountered in Module 01. If you can't find your issue here, check the main [workshop troubleshooting guide](../../TROUBLESHOOTING.md) or ask in the Discord channel.
+### 🚫 Copilot Not Working
 
-## 🚫 GitHub Copilot Issues
+#### Issue: No Suggestions Appearing
 
-### Issue: "GitHub Copilot is not providing any suggestions"
+**Symptoms:**
+- No ghost text appears when typing
+- Tab key doesn't complete anything
+- No Copilot icon in status bar
 
-#### Symptoms
-- No code suggestions appear when typing
-- Copilot icon shows as inactive
-- Comments don't generate code
-
-#### Solutions
+**Solutions:**
 
 1. **Check Copilot Status**
    ```bash
-   # In VS Code, open Command Palette (Ctrl/Cmd + Shift + P)
-   > GitHub Copilot: Status
+   # In VS Code, check bottom status bar
+   # Should show "GitHub Copilot" icon
+   
+   # From terminal:
+   gh copilot status
    ```
 
-2. **Verify Subscription**
-   - Visit [github.com/settings/copilot](https://github.com/settings/copilot)
-   - Ensure subscription is active
-   - Check payment method if trial expired
+2. **Verify Extension Installation**
+   - Press `Ctrl+Shift+X` (Windows/Linux) or `Cmd+Shift+X` (macOS)
+   - Search "GitHub Copilot"
+   - Ensure it's installed and enabled
 
 3. **Re-authenticate**
    ```bash
-   # Command Palette
-   > GitHub Copilot: Sign Out
-   > GitHub Copilot: Sign In
+   # Sign out and sign in again
+   # Click accounts icon (bottom left VS Code)
+   # Sign out of GitHub
+   # Sign in again
    ```
 
-4. **Check File Type**
-   - Copilot works best with `.py`, `.js`, `.ts` files
-   - May not work in `.txt` or unsupported formats
+4. **Check Subscription**
+   - Visit: https://github.com/settings/copilot
+   - Verify active subscription
+   - Check payment method if trial expired
 
-5. **Network Issues**
-   - Check internet connection
-   - Try disabling VPN/proxy
-   - Check firewall settings
+5. **Restart VS Code**
+   - Close all VS Code windows
+   - Restart VS Code
+   - Open your project again
 
-### Issue: "Copilot suggestions are irrelevant or wrong"
+#### Issue: Copilot Suggestions Are Poor Quality
 
-#### Solutions
+**Symptoms:**
+- Irrelevant suggestions
+- Incorrect code patterns
+- Mixing languages/frameworks
+
+**Solutions:**
 
 1. **Improve Context**
    ```python
-   # Bad context
-   # function
+   # ❌ Poor context
+   def calc():
+       pass
    
-   # Good context
-   # Create a function that calculates the area of a circle given its radius
-   # The function should validate that radius is positive and return float
+   # ✅ Better context
+   def calculate_monthly_payment(principal: float, rate: float, years: int) -> float:
+       """Calculate monthly payment for a loan."""
+       pass
    ```
 
-2. **Clear File Context**
-   - Close and reopen the file
-   - Clear VS Code cache: `Ctrl/Cmd + Shift + P` > "Clear Editor History"
+2. **Clear File Focus**
+   - Keep related code in same file
+   - Remove unrelated code
+   - Use clear, consistent naming
 
-3. **Check Language Settings**
-   - Ensure file has correct extension
-   - Set language mode explicitly in VS Code
+3. **Check File Type**
+   - Ensure correct file extension (.py for Python)
+   - VS Code should show "Python" in bottom right
 
-## 🐍 Python Issues
+### 🐍 Python Environment Issues
 
-### Issue: "Python command not found"
+#### Issue: Module Import Errors
 
-#### Windows Solutions
+**Symptoms:**
+```
+ModuleNotFoundError: No module named 'click'
+```
+
+**Solutions:**
+
+1. **Activate Virtual Environment**
+   ```bash
+   # Windows
+   .\venv\Scripts\activate
+   
+   # macOS/Linux
+   source venv/bin/activate
+   ```
+
+2. **Install Missing Packages**
+   ```bash
+   pip install click pytest rich
+   ```
+
+3. **Check Python Version**
+   ```bash
+   python --version
+   # Should be 3.11 or higher
+   ```
+
+#### Issue: Wrong Python Interpreter
+
+**Symptoms:**
+- Import errors despite packages installed
+- Different Python version than expected
+
+**Solutions:**
+
+1. **Select Correct Interpreter in VS Code**
+   - Press `Ctrl+Shift+P` (Cmd+Shift+P on macOS)
+   - Type "Python: Select Interpreter"
+   - Choose the one in your `venv` folder
+
+2. **Verify Interpreter**
+   ```python
+   import sys
+   print(sys.executable)
+   # Should point to venv/bin/python
+   ```
+
+### 💻 VS Code Issues
+
+#### Issue: Extensions Not Loading
+
+**Symptoms:**
+- Python features not working
+- No syntax highlighting
+- Missing IntelliSense
+
+**Solutions:**
+
+1. **Reload Window**
+   - Press `Ctrl+Shift+P` (Cmd+Shift+P on macOS)
+   - Type "Developer: Reload Window"
+
+2. **Check Extension Host**
+   - View → Output
+   - Select "Extension Host" from dropdown
+   - Look for errors
+
+3. **Reset VS Code Settings**
+   ```bash
+   # Backup settings first
+   cp ~/.config/Code/User/settings.json ~/.config/Code/User/settings.backup.json
+   
+   # Reset to defaults
+   rm ~/.config/Code/User/settings.json
+   ```
+
+### 🧪 Testing Issues
+
+#### Issue: Pytest Not Found
+
+**Symptoms:**
+```
+pytest: command not found
+```
+
+**Solutions:**
+
+1. **Install pytest**
+   ```bash
+   pip install pytest
+   ```
+
+2. **Use Python Module**
+   ```bash
+   python -m pytest test_utils.py
+   ```
+
+3. **Add to PATH**
+   ```bash
+   # Find pytest location
+   which pytest
+   # Or
+   pip show pytest
+   ```
+
+#### Issue: Tests Failing
+
+**Symptoms:**
+- Import errors in tests
+- Assertion errors
+
+**Solutions:**
+
+1. **Check Import Paths**
+   ```python
+   # In test file, add:
+   import sys
+   sys.path.insert(0, '.')
+   
+   from utils import validate_email
+   ```
+
+2. **Run from Correct Directory**
+   ```bash
+   # Must be in exercise directory
+   cd exercises/exercise1-easy
+   pytest starter/test_utils.py
+   ```
+
+### 🔌 Network and Firewall Issues
+
+#### Issue: Copilot Can't Connect
+
+**Symptoms:**
+- "GitHub Copilot could not connect to server"
+- Timeout errors
+
+**Solutions:**
+
+1. **Check Internet Connection**
+   ```bash
+   ping github.com
+   ```
+
+2. **Corporate Firewall/Proxy**
+   - Check with IT about GitHub access
+   - May need proxy configuration:
+   ```bash
+   # In VS Code settings.json
+   {
+     "http.proxy": "http://proxy.company.com:8080",
+     "https.proxy": "http://proxy.company.com:8080"
+   }
+   ```
+
+3. **VPN Interference**
+   - Try disconnecting VPN
+   - Some VPNs block GitHub
+
+### 🎯 Exercise-Specific Issues
+
+#### Issue: CLI App Not Running
+
+**Symptoms:**
+```
+python: can't open file 'cli_app.py': [Errno 2] No such file or directory
+```
+
+**Solutions:**
+
+1. **Check Current Directory**
+   ```bash
+   pwd  # Should be in exercise directory
+   ls   # Should see cli_app.py
+   ```
+
+2. **File Permissions (Linux/macOS)**
+   ```bash
+   chmod +x cli_app.py
+   ```
+
+#### Issue: Validation Script Fails
+
+**Symptoms:**
+- "Functions missing" errors
+- Import errors
+
+**Solutions:**
+
+1. **Ensure All Functions Implemented**
+   - Check utils.py has all required functions
+   - Function names must match exactly
+
+2. **Run Individual Checks**
+   ```python
+   # Test just the imports
+   python -c "from utils import validate_email"
+   ```
+
+### 🆘 Getting Additional Help
+
+#### Diagnostic Commands
+
+Run these to gather information for support:
+
 ```bash
-# Try these commands in order:
+# System info
 python --version
-python3 --version
-py --version
-py -3 --version
+code --version
+gh --version
 
-# If none work, add Python to PATH:
-# 1. Find Python installation (usually C:\Users\{username}\AppData\Local\Programs\Python\Python3x)
-# 2. Add to System PATH in Environment Variables
+# Extension info
+code --list-extensions | grep -i copilot
+
+# Python environment
+pip list
+which python
+
+# Git status
+git status
+git remote -v
 ```
 
-#### macOS Solutions
-```bash
-# Install via Homebrew
-brew install python3
+#### Create Diagnostic Report
 
-# Or download from python.org
-# Then verify:
-python3 --version
-```
-
-#### Linux Solutions
-```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install python3 python3-pip
-
-# Fedora
-sudo dnf install python3 python3-pip
-
-# Verify
-python3 --version
-```
-
-### Issue: "pip install fails"
-
-#### Solutions
-```bash
-# Upgrade pip first
-python -m pip install --upgrade pip
-
-# If permission denied:
-# Windows (run as administrator)
-python -m pip install --user package_name
-
-# macOS/Linux
-pip3 install --user package_name
-
-# If SSL error:
-pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org package_name
-```
-
-## 💻 VS Code Issues
-
-### Issue: "Copilot extension not found"
-
-#### Solutions
-1. **Manual Install**
-   - Open VS Code
-   - Go to Extensions (Ctrl/Cmd + Shift + X)
-   - Search "GitHub Copilot"
-   - Click Install
-   - Reload VS Code
-
-2. **Command Line Install**
-   ```bash
-   code --install-extension GitHub.copilot
-   ```
-
-3. **Check VS Code Version**
-   - Copilot requires VS Code 1.60+
-   - Update VS Code: Help > Check for Updates
-
-### Issue: "IntelliSense not working with Python"
-
-#### Solutions
-1. **Install Python Extension**
-   ```bash
-   code --install-extension ms-python.python
-   ```
-
-2. **Select Python Interpreter**
-   - Ctrl/Cmd + Shift + P
-   - "Python: Select Interpreter"
-   - Choose your Python installation
-
-3. **Install Pylance**
-   ```bash
-   code --install-extension ms-python.vscode-pylance
-   ```
-
-## 📝 Exercise-Specific Issues
-
-### Exercise 1: Hello AI World
-
-#### Issue: "Copilot doesn't suggest greeting functions"
 ```python
-# Solution: Be more specific
-# Instead of:
-# greeting function
+# Save as diagnostic.py and run
+import sys
+import subprocess
+import platform
 
-# Use:
-# Create a function that generates a personalized greeting based on:
-# - User's name (string parameter)
-# - Current time of day (morning, afternoon, evening)
-# - Returns a formatted greeting message
+print("=== System Diagnostic Report ===")
+print(f"Platform: {platform.platform()}")
+print(f"Python: {sys.version}")
+print(f"Python Path: {sys.executable}")
 
-def generate_greeting(name: str) -> str:
-    # Now Copilot will provide better suggestions
+try:
+    vs_version = subprocess.check_output(['code', '--version'], text=True)
+    print(f"VS Code: {vs_version.split()[0]}")
+except:
+    print("VS Code: Not found in PATH")
+
+try:
+    gh_status = subprocess.check_output(['gh', 'copilot', 'status'], text=True)
+    print(f"Copilot Status: Active")
+except:
+    print("Copilot Status: Check required")
+
+print("\nInstalled packages:")
+subprocess.run([sys.executable, '-m', 'pip', 'list'])
 ```
 
-#### Issue: "Time detection not working correctly"
-```python
-# Common timezone issue
-import datetime
+#### Support Resources
 
-# Problem: Uses server time
-current_hour = datetime.datetime.now().hour
+1. **GitHub Copilot Community**
+   - https://github.com/community/community/discussions/categories/copilot
 
-# Solution: Use local time
-from datetime import datetime
-import pytz
+2. **VS Code Issues**
+   - https://github.com/microsoft/vscode/issues
 
-# Get user's timezone (or use a default)
-user_tz = pytz.timezone('US/Eastern')  # Example
-current_hour = datetime.now(user_tz).hour
-```
+3. **Workshop Support**
+   - Slack: #module-01-support
+   - GitHub Discussions: [Workshop Repo]/discussions
 
-### Exercise 2: Smart Calculator
+#### Emergency Checklist
 
-#### Issue: "Natural language parsing fails"
-```python
-# Solution: Build incrementally
-# Step 1: Handle numbers
-def parse_number(text: str) -> float:
-    # Handle "twenty-five" -> 25
-    pass
+If nothing works:
 
-# Step 2: Handle operations
-def parse_operation(text: str) -> str:
-    # Handle "plus" -> "+"
-    pass
-
-# Step 3: Combine
-def parse_expression(text: str) -> dict:
-    # Use previous functions
-    pass
-```
-
-#### Issue: "Word to number conversion complex"
-```python
-# Use a library instead of building from scratch
-# Install: pip install word2number
-from word2number import w2n
-
-# Example usage
-result = w2n.word_to_num("twenty-five")  # Returns: 25
-```
-
-### Exercise 3: Personal Assistant
-
-#### Issue: "File not saving data"
-```python
-# Common issue: Directory doesn't exist
-import os
-import json
-from pathlib import Path
-
-def save_data(data: dict, filename: str):
-    # Ensure directory exists
-    data_dir = Path("data")
-    data_dir.mkdir(exist_ok=True)
-    
-    # Save with error handling
-    filepath = data_dir / filename
-    try:
-        with open(filepath, 'w') as f:
-            json.dump(data, f, indent=2)
-    except Exception as e:
-        print(f"Error saving data: {e}")
-```
-
-#### Issue: "Natural language date parsing difficult"
-```python
-# Use a library
-# Install: pip install python-dateutil
-from dateutil import parser
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
-
-# Examples
-date1 = parser.parse("tomorrow at 5pm")
-date2 = parser.parse("next Monday")
-date3 = datetime.now() + relativedelta(weeks=1)
-```
-
-## 🔍 Debugging Tips
-
-### 1. Use Print Debugging
-```python
-def complex_function(data):
-    print(f"DEBUG: Input data: {data}")
-    
-    # Processing step 1
-    result1 = process_step1(data)
-    print(f"DEBUG: After step 1: {result1}")
-    
-    # Processing step 2
-    result2 = process_step2(result1)
-    print(f"DEBUG: After step 2: {result2}")
-    
-    return result2
-```
-
-### 2. Use Python Debugger
-```python
-import pdb
-
-def problematic_function(data):
-    # Set breakpoint
-    pdb.set_trace()
-    
-    # Code continues here
-    # In debugger: n (next), c (continue), l (list), p variable (print)
-```
-
-### 3. VS Code Debugging
-1. Set breakpoints by clicking left of line numbers
-2. Press F5 to start debugging
-3. Use Debug Console for interactive debugging
-
-## 🚨 Emergency Fixes
-
-### "Nothing is working!"
-1. **Restart Everything**
-   ```bash
-   # Close VS Code
-   # Restart computer
-   # Open VS Code
-   # Try again
-   ```
-
-2. **Clean Install**
-   ```bash
-   # Uninstall Copilot extension
-   # Clear VS Code cache
-   # Reinstall Copilot
-   # Re-authenticate
-   ```
-
-3. **Minimal Test**
-   ```python
-   # Create test.py with just:
-   # Function to add two numbers
-   
-   # If this doesn't trigger Copilot, the issue is with setup
-   ```
-
-### "I'm running out of time!"
-1. **Skip Complex Features**
-   - Get basic version working first
-   - Add features incrementally
-   - Comment what you'd add with more time
-
-2. **Use Simpler Solutions**
-   ```python
-   # Instead of complex parsing
-   # Use simple string splitting
-   
-   # Instead of database
-   # Use JSON file
-   
-   # Instead of CLI framework
-   # Use basic input()
-   ```
-
-## 📞 Getting Help
-
-### Self-Help Resources
-1. Check this troubleshooting guide
-2. Search in Discord channel
-3. Check GitHub Discussions
-4. Review exercise solutions
-
-### Asking for Help
-When asking for help, provide:
-1. **Error message** (complete text)
-2. **Code snippet** (relevant portion)
-3. **What you tried** (solutions attempted)
-4. **Environment** (OS, Python version, VS Code version)
-
-### Example Help Request
-```
-I'm getting "ModuleNotFoundError: No module named 'colorama'" in Exercise 3.
-
-Environment:
-- Windows 11
-- Python 3.11.0
-- VS Code 1.84.0
-- Copilot 1.126.0
-
-I tried:
-1. pip install colorama
-2. python -m pip install colorama
-3. Running as administrator
-
-Error occurs at:
-import colorama
-
-Full error:
-[paste complete error]
-```
-
-## ✅ Prevention Tips
-
-1. **Test Early**: Don't wait until the end
-2. **Save Often**: Use version control
-3. **Read Errors**: They usually tell you what's wrong
-4. **Stay Updated**: Keep tools current
-5. **Take Breaks**: Fresh eyes spot issues faster
+1. [ ] Complete fresh VS Code install
+2. [ ] Create new Python virtual environment
+3. [ ] Re-clone workshop repository
+4. [ ] Sign out/in GitHub account
+5. [ ] Disable all other VS Code extensions
+6. [ ] Try on different network (mobile hotspot)
+7. [ ] Contact workshop support with diagnostic report
 
 ---
 
-Remember: Every developer faces these issues. You're not alone, and these problems are part of the learning process! 🌟
+Remember: Most issues are related to environment setup or authentication. Stay calm, work through the solutions systematically, and don't hesitate to ask for help!

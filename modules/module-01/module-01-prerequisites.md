@@ -1,214 +1,352 @@
-# Prerequisites for Module 01: Introduction to AI-Powered Development
+# Module 01 Prerequisites
 
-## 🎓 Knowledge Prerequisites
+## 🎯 Overview
 
-### Required Knowledge
-- **Basic Programming Concepts**: Variables, functions, loops, conditionals
-- **Any Programming Language**: Python preferred, but JavaScript, Java, or C# knowledge is sufficient
-- **Text Editor Usage**: Basic familiarity with any code editor
-- **Command Line Basics**: How to navigate directories and run commands
+This guide ensures you have everything needed to succeed in Module 01: Introduction to AI-Powered Development. Follow each section carefully to set up your environment correctly.
 
-### Nice to Have (Not Required)
-- Experience with Git version control
-- Familiarity with VS Code
-- Understanding of API concepts
+## 🖥️ System Requirements
 
-## 💻 System Requirements
-
-### Hardware
-- **Minimum**: 8GB RAM, 2-core processor
-- **Recommended**: 16GB RAM, 4-core processor
+### Minimum Requirements
+- **OS**: Windows 10/11, macOS 12+, or Ubuntu 20.04+
+- **RAM**: 8GB (16GB recommended)
 - **Storage**: 10GB free space
-- **Internet**: Stable broadband connection (for Copilot)
+- **Internet**: Stable broadband connection
 
-### Operating System
-- ✅ Windows 10/11
-- ✅ macOS 10.15 or later
-- ✅ Ubuntu 20.04 or later
-- ✅ Other Linux distributions (with adjustments)
+### Recommended Setup
+- **RAM**: 16GB or more
+- **Processor**: Multi-core (4+ cores)
+- **Display**: 1920x1080 or higher
+- **Internet**: 25+ Mbps
 
-## 🛠️ Software Installation
+## 🛠️ Required Software
 
 ### 1. Visual Studio Code
-Download and install VS Code from [code.visualstudio.com](https://code.visualstudio.com/)
 
+Download and install VS Code from the official website:
+- **Download**: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+- **Version**: Latest stable release
+
+**Installation Verification:**
 ```bash
-# Verify installation
 code --version
 ```
 
+Expected output:
+```
+1.85.0 (or higher)
+f5442...
+x64
+```
+
 ### 2. GitHub Copilot Extension
+
+Install the GitHub Copilot extension in VS Code:
+
 1. Open VS Code
-2. Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
+2. Press `Ctrl+Shift+X` (Windows/Linux) or `Cmd+Shift+X` (macOS)
 3. Search for "GitHub Copilot"
-4. Click Install
-5. Sign in with your GitHub account
+4. Click Install on the official extension by GitHub
+5. Restart VS Code
+
+**Verification:**
+- Look for the Copilot icon in the status bar (bottom right)
+- It should show "GitHub Copilot" when hovering
 
 ### 3. Python Installation
-Install Python 3.8 or later from [python.org](https://www.python.org/)
 
+Install Python 3.11 or higher:
+
+**Windows:**
+```powershell
+# Using Windows installer from python.org
+# Download from: https://www.python.org/downloads/
+
+# Or using Chocolatey:
+choco install python --version=3.11.0
+```
+
+**macOS:**
 ```bash
-# Windows
-python --version
+# Using Homebrew
+brew install python@3.11
 
-# macOS/Linux
+# Add to PATH if needed
+echo 'export PATH="/opt/homebrew/opt/python@3.11/bin:$PATH"' >> ~/.zshrc
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install python3.11 python3.11-venv python3-pip
+```
+
+**Verification:**
+```bash
+python --version
+# or
 python3 --version
 ```
 
-### 4. Git Installation
-Install Git from [git-scm.com](https://git-scm.com/)
+Expected: `Python 3.11.x` or higher
 
+### 4. Git Installation
+
+**Windows:**
+```powershell
+# Download Git for Windows from: https://git-scm.com/download/win
+# Or using Chocolatey:
+choco install git
+```
+
+**macOS:**
 ```bash
-# Configure Git (one-time setup)
+# Git comes with Xcode Command Line Tools
+xcode-select --install
+
+# Or using Homebrew:
+brew install git
+```
+
+**Linux:**
+```bash
+sudo apt update
+sudo apt install git
+```
+
+**Configuration:**
+```bash
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
+```
 
-# Verify installation
+**Verification:**
+```bash
 git --version
 ```
 
-## 🔑 Account Requirements
+Expected: `git version 2.38.0` or higher
 
-### GitHub Account
-1. Create a free account at [github.com](https://github.com)
+## 🔑 Account Setup
+
+### 1. GitHub Account
+
+1. Create a GitHub account at [https://github.com/signup](https://github.com/signup)
 2. Verify your email address
 3. Set up two-factor authentication (recommended)
 
-### GitHub Copilot Subscription
-1. Go to [github.com/copilot](https://github.com/features/copilot)
-2. Choose subscription type:
-   - **Individual**: $10/month or $100/year
-   - **Business**: $19/user/month
-3. Start free 30-day trial if available
-4. Verify subscription is active
+### 2. GitHub Copilot Subscription
 
-## 📋 Setup Verification
+1. Sign in to GitHub
+2. Go to [https://github.com/features/copilot](https://github.com/features/copilot)
+3. Click "Start free trial" or "Subscribe"
+4. Choose Individual ($10/month) or Business ($19/month)
+5. Complete payment setup
 
-### Quick Setup Script
-Run this script to verify all prerequisites:
+**Note**: 30-day free trial available for new users
+
+### 3. Authenticate VS Code with GitHub
+
+1. Open VS Code
+2. Click the accounts icon (bottom left)
+3. Select "Sign in to Sync Settings"
+4. Choose "Sign in with GitHub"
+5. Complete authentication in browser
+6. Return to VS Code
+
+**Verification:**
+```bash
+gh auth status
+```
+
+If `gh` CLI is not installed:
+```bash
+# Windows (Chocolatey)
+choco install gh
+
+# macOS (Homebrew)
+brew install gh
+
+# Linux
+sudo apt install gh
+```
+
+## 📦 Module-Specific Setup
+
+### 1. Create Working Directory
 
 ```bash
-#!/bin/bash
-echo "🔍 Checking Module 01 Prerequisites..."
-
-# Check VS Code
-if command -v code &> /dev/null; then
-    echo "✅ VS Code installed: $(code --version | head -1)"
-else
-    echo "❌ VS Code not found. Please install from code.visualstudio.com"
-fi
-
-# Check Python
-if command -v python3 &> /dev/null; then
-    echo "✅ Python installed: $(python3 --version)"
-elif command -v python &> /dev/null; then
-    echo "✅ Python installed: $(python --version)"
-else
-    echo "❌ Python not found. Please install from python.org"
-fi
-
-# Check Git
-if command -v git &> /dev/null; then
-    echo "✅ Git installed: $(git --version)"
-else
-    echo "❌ Git not found. Please install from git-scm.com"
-fi
-
-# Check GitHub Copilot Extension
-if code --list-extensions | grep -q "GitHub.copilot"; then
-    echo "✅ GitHub Copilot extension installed"
-else
-    echo "❌ GitHub Copilot extension not found. Please install from VS Code"
-fi
-
-echo "🎯 Setup verification complete!"
+# Create a dedicated workspace
+mkdir -p ~/copilot-workshop/module-01
+cd ~/copilot-workshop/module-01
 ```
 
-### Manual Verification Steps
+### 2. Install Python Dependencies
 
-1. **Open VS Code**
-   - You should see the welcome screen
-   - GitHub Copilot icon should appear in the status bar
+Create a virtual environment:
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
 
-2. **Test Python**
-   ```python
-   # Create test.py
-   print("Python is working!")
-   
-   # Run it
-   python test.py  # or python3 test.py
-   ```
+# macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
 
-3. **Test GitHub Copilot**
-   - Create a new file called `test.py`
-   - Type: `# Function to calculate the area of a circle`
-   - Press Enter and wait for suggestions
-   - You should see code suggestions appear
+Install required packages:
+```bash
+pip install --upgrade pip
+pip install pytest black flake8 mypy requests click rich
+```
 
-## 🚧 Troubleshooting
+### 3. VS Code Extensions
 
-### Copilot Not Working?
-1. Check subscription status: [github.com/settings/copilot](https://github.com/settings/copilot)
-2. Sign out and sign in again in VS Code
+Install these additional extensions for the best experience:
+
+1. **Python** by Microsoft
+2. **Pylance** by Microsoft
+3. **Python Indent** by Kevin Rose
+4. **GitLens** by GitKraken
+5. **Error Lens** by Alexander
+
+Install via command:
+```bash
+code --install-extension ms-python.python
+code --install-extension ms-python.vscode-pylance
+code --install-extension KevinRose.vsc-python-indent
+code --install-extension eamodio.gitlens
+code --install-extension usernamehw.errorlens
+```
+
+## ✅ Validation Script
+
+Run this script to verify your setup:
+
+```python
+#!/usr/bin/env python3
+"""Module 01 Prerequisites Checker"""
+
+import sys
+import subprocess
+import importlib
+
+def check_python():
+    """Check Python version."""
+    version = sys.version_info
+    if version.major == 3 and version.minor >= 11:
+        print("✅ Python 3.11+ installed")
+        return True
+    else:
+        print(f"❌ Python {version.major}.{version.minor} found. Need 3.11+")
+        return False
+
+def check_git():
+    """Check Git installation."""
+    try:
+        result = subprocess.run(['git', '--version'], capture_output=True, text=True)
+        if result.returncode == 0:
+            print(f"✅ Git installed: {result.stdout.strip()}")
+            return True
+    except FileNotFoundError:
+        pass
+    print("❌ Git not found")
+    return False
+
+def check_vscode():
+    """Check VS Code installation."""
+    try:
+        result = subprocess.run(['code', '--version'], capture_output=True, text=True)
+        if result.returncode == 0:
+            print("✅ VS Code installed")
+            return True
+    except FileNotFoundError:
+        pass
+    print("❌ VS Code not found")
+    return False
+
+def check_packages():
+    """Check required Python packages."""
+    packages = ['pytest', 'black', 'flake8', 'mypy', 'requests', 'click', 'rich']
+    all_installed = True
+    
+    for package in packages:
+        try:
+            importlib.import_module(package)
+            print(f"✅ {package} installed")
+        except ImportError:
+            print(f"❌ {package} not installed")
+            all_installed = False
+    
+    return all_installed
+
+def main():
+    """Run all checks."""
+    print("🔍 Module 01 Prerequisites Checker")
+    print("=" * 40)
+    
+    checks = [
+        check_python(),
+        check_git(),
+        check_vscode(),
+        check_packages()
+    ]
+    
+    print("=" * 40)
+    
+    if all(checks):
+        print("✅ All prerequisites satisfied!")
+        print("\n🎉 You're ready to start Module 01!")
+        print("Next step: Open exercise1-easy/README.md")
+    else:
+        print("❌ Some prerequisites are missing.")
+        print("Please install missing components and run again.")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+Save this as `check_prerequisites.py` and run:
+```bash
+python check_prerequisites.py
+```
+
+## 🆘 Common Issues
+
+### Copilot Not Activating
+
+1. Ensure you're signed into GitHub in VS Code
+2. Check subscription status at [https://github.com/settings/copilot](https://github.com/settings/copilot)
 3. Restart VS Code
-4. Check internet connection
+4. Check firewall/proxy settings
 
-### Python Issues?
-- **Windows**: Use Python Launcher `py -3 --version`
-- **macOS**: Install via Homebrew `brew install python3`
-- **Linux**: Use package manager `sudo apt install python3`
+### Python Command Not Found
 
-### VS Code Extensions Missing?
-1. Open Command Palette (Ctrl+Shift+P / Cmd+Shift+P)
-2. Type "Install Extensions"
-3. Search and install:
-   - GitHub Copilot
-   - Python
-   - Pylance
+- **Windows**: Add Python to PATH during installation
+- **macOS**: Use `python3` instead of `python`
+- **Linux**: Create alias: `alias python=python3`
 
-## 📚 Optional Enhancements
+### Permission Errors
 
-### Recommended VS Code Extensions
-- **Python**: Microsoft's Python extension
-- **Pylance**: Fast, feature-rich language support
-- **GitLens**: Supercharge Git capabilities
-- **Error Lens**: Inline error highlighting
+- **Windows**: Run as Administrator
+- **macOS/Linux**: Use `sudo` for system-wide installs
+- **Virtual Environment**: Always activate before installing packages
 
-### Recommended VS Code Settings
-```json
-{
-    "github.copilot.enable": {
-        "*": true,
-        "yaml": true,
-        "plaintext": true,
-        "markdown": true
-    },
-    "editor.inlineSuggest.enabled": true,
-    "editor.suggestSelection": "first",
-    "python.defaultInterpreterPath": "python3",
-    "editor.formatOnSave": true
-}
-```
+## 📚 Additional Resources
 
-## ✅ Ready Checklist
+1. [VS Code Python Tutorial](https://code.visualstudio.com/docs/python/python-tutorial)
+2. [GitHub Copilot Getting Started](https://docs.github.com/copilot/getting-started)
+3. [Python Virtual Environments Guide](https://realpython.com/python-virtual-environments-a-primer/)
+4. [Git Basics](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics)
 
-Before starting Module 01, confirm:
-- [ ] VS Code is installed and running
-- [ ] GitHub Copilot extension is installed
-- [ ] GitHub Copilot subscription is active
-- [ ] Python 3.8+ is installed
-- [ ] Git is installed and configured
-- [ ] You can create and run a simple Python file
-- [ ] Copilot shows suggestions when you type comments
+## ✅ Ready to Start?
 
-## 🆘 Getting Help
-
-If you encounter issues:
-1. Check the [Troubleshooting Guide](../../TROUBLESHOOTING.md)
-2. Search [GitHub Copilot Discussions](https://github.com/orgs/community/discussions/categories/copilot)
-3. Ask in the workshop Discord channel
-4. Email workshop support
+If all checks pass:
+1. Navigate to the exercises folder
+2. Open `exercise1-easy/README.md`
+3. Follow the step-by-step instructions
+4. Start coding with AI!
 
 ---
 
-🎉 Once everything is checked, you're ready to begin your AI-powered development journey!
+**Need help?** Check the [troubleshooting guide](troubleshooting.md) or ask in #module-01-setup

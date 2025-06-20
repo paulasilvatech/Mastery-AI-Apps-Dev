@@ -1,4 +1,4 @@
-# 🚀 Mastery AI Code Development Workshop
+# 🚀 Mastery AI Apps and Development Workshop
 
 ## Your Complete Journey to AI Development Excellence
 

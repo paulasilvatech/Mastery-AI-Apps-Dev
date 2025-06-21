@@ -82,16 +82,16 @@ Complete review and ultimate challenge
 | 18 | [Enterprise Integration Patterns](modules/module-18/README.md)  | ESB, CQRS, event sourcing, sagas | 3 hours | 🔴 Enterprise |
 | 19 | [Monitoring and Observability](modules/module-19/README.md)  | APM, logging, tracing, dashboards | 3 hours | 🔴 Enterprise |
 | 20 | [Production Deployment Strategies](modules/module-20/README.md)  | Blue-green, canary, feature flags | 3 hours | 🔴 Enterprise |
-| 21 | Introduction to AI Agents | Agent basics, GitHub Copilot agents | 3 hours | 🟣 AI Agents |
-| 22 | Building Custom Agents | Agent development, tools, function calling | 3 hours | 🟣 AI Agents |
-| 23 | Model Context Protocol (MCP) | MCP fundamentals, servers, clients | 3 hours | 🟣 AI Agents |
-| 24 | Multi-Agent Orchestration | Agent communication, coordination | 3 hours | 🟣 AI Agents |
-| 25 | Advanced Agent Patterns | Complex workflows, error handling | 3 hours | 🟣 AI Agents |
-| 26 | Enterprise .NET Development | Advanced .NET with AI, architecture | 3 hours | ⭐ Enterprise Mastery |
-| 27 | COBOL Modernization | Legacy transformation strategies | 3 hours | ⭐ Enterprise Mastery |
-| 28 | Shift-Left Security & DevOps | GitHub Advanced Security, Defender | 3 hours | ⭐ Enterprise Mastery |
-| 29 | Complete Enterprise Review | Full-stack .NET enterprise system | 3 hours | 🏆 Mastery |
-| 30 | Ultimate Mastery Challenge | Comprehensive 3-hour assessment | 3 hours | 🏆 Mastery |
+| 21 | [Introduction to AI Agents](modules/module-21/README.md)  | Agent basics, GitHub Copilot agents | 3 hours | 🟣 AI Agents |
+| 22 | [Building Custom Agents](modules/module-22/README.md)  | Agent development, tools, function calling | 3 hours | 🟣 AI Agents |
+| 23 | [Model Context Protocol (MCP)](modules/module-23/README.md)  | MCP fundamentals, servers, clients | 3 hours | 🟣 AI Agents |
+| 24 | [Multi-Agent Orchestration](modules/module-24/README.md)  | Agent communication, coordination | 3 hours | 🟣 AI Agents |
+| 25 | [Advanced Agent Patterns](modules/module-25/README.md)  | Complex workflows, error handling | 3 hours | 🟣 AI Agents |
+| 26 | [Enterprise .NET Development](modules/module-26/README.md)  | Advanced .NET with AI, architecture | 3 hours | ⭐ Enterprise Mastery |
+| 27 | [COBOL Modernization](modules/module-27/README.md)  | Legacy transformation strategies | 3 hours | ⭐ Enterprise Mastery |
+| 28 | [Shift-Left Security & DevOps](modules/module-28/README.md)  | GitHub Advanced Security, Defender | 3 hours | ⭐ Enterprise Mastery |
+| 29 | [Complete Enterprise Review](modules/module-29/README.md)  | Full-stack .NET enterprise system | 3 hours | 🏆 Mastery |
+| 30 | [Ultimate Mastery Challenge](modules/module-30/README.md)  | Comprehensive 3-hour assessment | 3 hours | 🏆 Mastery |
 
 ---
 

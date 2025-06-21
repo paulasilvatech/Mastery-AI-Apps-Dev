@@ -8,7 +8,7 @@
 
 ---
 
-## 🌟 Why "Mastery AI Code Development"?
+## 🌟 Why "Mastery AI Apps and Development"?
 
 ### The Complete Learning Journey
 
@@ -26,6 +26,45 @@ This workshop provides unprecedented depth and breadth:
 - **MCP Integration**: Model Context Protocol from basics to advanced
 - **Enterprise Ready**: Including dedicated .NET enterprise track
 - **Continuous Evolution**: Regular updates with latest AI capabilities
+
+---
+
+## 🚀 Quick Start (5 Minutes!)
+
+### Fastest Way to Begin
+
+```bash
+# Clone the workshop
+git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
+cd Mastery-AI-Apps-Dev
+
+# Run the 5-minute quick start
+./scripts/quick-start.sh
+
+# That's it! You're coding with AI! 🎉
+```
+
+### Complete Setup (All Prerequisites)
+
+```bash
+# For comprehensive environment setup
+./scripts/setup-workshop.sh    # Linux/macOS
+.\scripts\setup-workshop.ps1   # Windows PowerShell (as Admin)
+
+# Verify everything is working
+./scripts/validate-prerequisites.sh
+```
+
+### 📜 Available Workshop Scripts
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| **quick-start.sh** | Get started in 5 minutes | `./scripts/quick-start.sh` |
+| **setup-workshop.sh** | Complete environment setup | `./scripts/setup-workshop.sh` |
+| **validate-prerequisites.sh** | Check all requirements | `./scripts/validate-prerequisites.sh` |
+| **cleanup-resources.sh** | Clean up Azure resources | `./scripts/cleanup-resources.sh --module 5` |
+
+[📖 Complete Scripts Documentation](scripts/README.md)
 
 ---
 
@@ -253,33 +292,57 @@ Each module contains 3 progressive exercises:
 
 ---
 
-## 🚀 Getting Started
+## 💻 Getting Started - Detailed Steps
 
-### Quick Start
+### 1. Environment Setup
 
+#### Option A: Quick Start (5 minutes)
 ```bash
-# Clone the workshop repository
-git clone https://github.com/your-org/Mastery-AI-Apps-Dev.git
+git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
 cd Mastery-AI-Apps-Dev
-
-# Run setup script
-./scripts/setup-workshop.sh
-
-# Verify environment
-./scripts/verify-setup.sh
-
-# Start learning!
-cd modules/module-01/README.md
-code .
+./scripts/quick-start.sh
 ```
 
-### Setup Steps
-1. Install prerequisites
-2. Configure GitHub Copilot
-3. Set up Azure account
-4. Join workshop community
+#### Option B: Complete Setup
+```bash
+# Clone repository
+git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
+cd Mastery-AI-Apps-Dev
 
-### 🚀 [Begin Module 1](modules/module-01/README.md)
+# Run appropriate setup script
+./scripts/setup-workshop.sh      # Linux/macOS
+.\scripts\setup-workshop.ps1     # Windows (PowerShell as Admin)
+
+# Validate setup
+./scripts/validate-prerequisites.sh
+```
+
+### 2. Configure GitHub Copilot
+1. Install VS Code GitHub Copilot extension
+2. Sign in with GitHub account
+3. Verify Copilot is active: `gh copilot status`
+
+### 3. Set Up Azure (Optional for early modules)
+```bash
+# Login to Azure
+az login
+
+# Set default subscription
+az account set --subscription "Your-Subscription-Name"
+```
+
+### 4. Start Learning!
+```bash
+# Navigate to first module
+cd modules/module-01
+
+# Open in VS Code
+code .
+
+# Follow the module README
+```
+
+### 🚀 [Begin Module 1 Now!](modules/module-01/README.md)
 
 ---
 
@@ -351,12 +414,32 @@ code .
 
 ---
 
-## 📚 Resources
+## 📚 Additional Resources
 
-- **Documentation Wiki**: Deep dives
-- **Code Repository**: All solutions
-- **Template Library**: Reusable code
-- **Best Practices Guide**: Industry standards
+### Workshop Resources
+- **[Scripts Documentation](scripts/README.md)**: All workshop automation scripts
+- **[Module Documentation](modules/docs/)**: Deep dive guides
+- **[Code Templates](modules/templates/)**: Reusable starter code
+- **[Best Practices](docs/best-practices.md)**: Industry standards
+
+### External Resources
+- [GitHub Copilot Documentation](https://docs.github.com/copilot)
+- [Azure AI Documentation](https://learn.microsoft.com/azure/ai-services/)
+- [Model Context Protocol Spec](https://github.com/modelcontextprotocol/specification)
+- [Microsoft Learn](https://learn.microsoft.com)
+
+---
+
+## 🤝 Community & Support
+
+### Getting Help
+1. Check module-specific troubleshooting guides
+2. Review [FAQ](docs/FAQ.md)
+3. Search [GitHub Issues](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/issues)
+4. Join [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
+
+### Contributing
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
@@ -374,7 +457,7 @@ This isn't just another workshop—it's your transformation into an AI developme
 
 *The best investment you can make is in yourself. The best time to start is now.*
 
-**Welcome to Mastery AI Code Development! 🚀**
+**Welcome to Mastery AI Apps and Development! 🚀**
 
 ---
 

@@ -70,18 +70,18 @@ Complete review and ultimate challenge
 | 6 | [Multi-File Projects and Workspaces](modules/module-06/README.md)  | Complex project management, workspace AI | 3 hours | 🔵 Intermediate |
 | 7 | [Building Web Applications with AI](modules/module-07/README.md)  | Full-stack development with Copilot | 3 hours | 🔵 Intermediate |
 | 8 | [API Development and Integration](modules/module-08/README.md)  | REST, GraphQL, API design with AI | 3 hours | 🔵 Intermediate |
-| 9 | Database Design and Optimization | Schema design, queries, performance | 3 hours | 🔵 Intermediate |
-| 10 | Real-time and Event-Driven Systems | WebSocket, streaming, async patterns | 3 hours | 🔵 Intermediate |
-| 11 | Microservices Architecture | Service design, communication, patterns | 3 hours | 🟠 Advanced |
-| 12 | Cloud-Native Development | Containers, Kubernetes, serverless | 3 hours | 🟠 Advanced |
-| 13 | Infrastructure as Code | Terraform, Bicep, GitOps automation | 3 hours | 🟠 Advanced |
-| 14 | CI/CD with GitHub Actions | Pipelines, automation, deployment | 3 hours | 🟠 Advanced |
-| 15 | Performance and Scalability | Optimization, caching, load balancing | 3 hours | 🟠 Advanced |
-| 16 | Security Implementation | Zero-trust, encryption, compliance | 3 hours | 🔴 Enterprise |
-| 17 | GitHub Models and AI Integration | Model experimentation, embeddings | 3 hours | 🔴 Enterprise |
-| 18 | Enterprise Integration Patterns | ESB, CQRS, event sourcing, sagas | 3 hours | 🔴 Enterprise |
-| 19 | Monitoring and Observability | APM, logging, tracing, dashboards | 3 hours | 🔴 Enterprise |
-| 20 | Production Deployment Strategies | Blue-green, canary, feature flags | 3 hours | 🔴 Enterprise |
+| 9 | [Database Design and Optimization](modules/module-09/README.md)  | Schema design, queries, performance | 3 hours | 🔵 Intermediate |
+| 10 | [Real-time and Event-Driven Systems](modules/module-10/README.md)  | WebSocket, streaming, async patterns | 3 hours | 🔵 Intermediate |
+| 11 | [Microservices Architecture](modules/module-11/README.md) | Service design, communication, patterns | 3 hours | 🟠 Advanced |
+| 12 | [Cloud-Native Development](modules/module-12/README.md)  | Containers, Kubernetes, serverless | 3 hours | 🟠 Advanced |
+| 13 | [Infrastructure as Code](modules/module-13/README.md)  | Terraform, Bicep, GitOps automation | 3 hours | 🟠 Advanced |
+| 14 | [CI/CD with GitHub Actions](modules/module-14/README.md)  | Pipelines, automation, deployment | 3 hours | 🟠 Advanced |
+| 15 | [Performance and Scalability](modules/module-15/README.md)  | Optimization, caching, load balancing | 3 hours | 🟠 Advanced |
+| 16 | [Security Implementation](modules/module-16/README.md)  | Zero-trust, encryption, compliance | 3 hours | 🔴 Enterprise |
+| 17 | [GitHub Models and AI Integration](modules/module-17/README.md)  | Model experimentation, embeddings | 3 hours | 🔴 Enterprise |
+| 18 | [Enterprise Integration Patterns](modules/module-18/README.md)  | ESB, CQRS, event sourcing, sagas | 3 hours | 🔴 Enterprise |
+| 19 | [Monitoring and Observability](modules/module-19/README.md)  | APM, logging, tracing, dashboards | 3 hours | 🔴 Enterprise |
+| 20 | [Production Deployment Strategies](modules/module-20/README.md)  | Blue-green, canary, feature flags | 3 hours | 🔴 Enterprise |
 | 21 | Introduction to AI Agents | Agent basics, GitHub Copilot agents | 3 hours | 🟣 AI Agents |
 | 22 | Building Custom Agents | Agent development, tools, function calling | 3 hours | 🟣 AI Agents |
 | 23 | Model Context Protocol (MCP) | MCP fundamentals, servers, clients | 3 hours | 🟣 AI Agents |

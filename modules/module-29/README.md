@@ -37,71 +37,71 @@ By the end of this module, you will:
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
+    subgraph ClientLayer["Client Layer"]
         BLAZOR[Blazor WebAssembly]
         MAUI[.NET MAUI]
         REACT[React + TypeScript]
         API_CLIENT[API Clients]
     end
     
-    subgraph "API Gateway Layer"
+    subgraph APIGateway["API Gateway Layer"]
         YARP[YARP Reverse Proxy]
         RATE_LIMIT[Rate Limiting]
         AUTH_GATEWAY[Authentication Gateway]
         CACHE_LAYER[Response Cache]
     end
     
-    subgraph "Application Services"
+    subgraph AppServices["Application Services"]
         WEB_API[ASP.NET Core Web API]
         GRPC[gRPC Services]
         GRAPHQL[GraphQL Server]
         SIGNALR[SignalR Hubs]
     end
     
-    subgraph "Business Logic Layer"
+    subgraph BusinessLogic["Business Logic Layer"]
         DOMAIN[Domain Services]
         CQRS[CQRS + MediatR]
         SAGA[Saga Orchestration]
         WORKFLOW[Workflow Engine]
     end
     
-    subgraph "AI Integration Layer"
+    subgraph AIIntegration["AI Integration Layer"]
         SEMANTIC[Semantic Kernel]
         LANGCHAIN[LangChain.NET]
         ML_NET[ML.NET]
         COGNITIVE[Azure Cognitive Services]
     end
     
-    subgraph "Data Access Layer"
+    subgraph DataAccess["Data Access Layer"]
         EF_CORE[Entity Framework Core]
         DAPPER[Dapper]
         COSMOS[Cosmos DB SDK]
         REDIS[Redis Cache]
     end
     
-    subgraph "Infrastructure Services"
+    subgraph Infrastructure["Infrastructure Services"]
         SERVICE_BUS[Azure Service Bus]
         EVENT_GRID[Event Grid]
         DURABLE_FUNC[Durable Functions]
         CONTAINER_APPS[Container Apps]
     end
     
-    subgraph "Cross-Cutting Concerns"
+    subgraph CrossCutting["Cross-Cutting Concerns"]
         IDENTITY[Identity Server]
         LOGGING[Serilog + Seq]
         TELEMETRY[OpenTelemetry]
         HEALTH[Health Checks]
     end
     
-    Client Layer --> API Gateway Layer
-    API Gateway Layer --> Application Services
-    Application Services --> Business Logic Layer
-    Business Logic Layer --> AI Integration Layer
-    Business Logic Layer --> Data Access Layer
-    Business Logic Layer --> Infrastructure Services
+    ClientLayer --> APIGateway
+    APIGateway --> AppServices
+    AppServices --> BusinessLogic
+    BusinessLogic --> AIIntegration
+    BusinessLogic --> DataAccess
+    BusinessLogic --> Infrastructure
     
-    Cross-Cutting Concerns -.-> Application Services
-    Cross-Cutting Concerns -.-> Business Logic Layer
+    CrossCutting -.-> AppServices
+    CrossCutting -.-> BusinessLogic
     
     style WEB_API fill:#512BD4
     style SEMANTIC fill:#10B981

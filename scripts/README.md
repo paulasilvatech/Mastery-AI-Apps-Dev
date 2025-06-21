@@ -41,7 +41,7 @@ Comprehensive validation script that checks if your system meets all workshop re
 ./scripts/validate-prerequisites.sh
 ```
 
-#### 3. **quick-start.sh**
+#### 3. **quick-start.sh** / **quick-start.ps1**
 Get started with the workshop in just 5 minutes!
 
 **Features:**
@@ -54,7 +54,11 @@ Get started with the workshop in just 5 minutes!
 
 **Usage:**
 ```bash
+# Linux/macOS
 ./scripts/quick-start.sh
+
+# Windows PowerShell
+.\scripts\quick-start.ps1
 ```
 
 #### 4. **cleanup-resources.sh**
@@ -81,6 +85,32 @@ Safely clean up Azure resources created during the workshop.
 
 # Check deletion status
 ./scripts/cleanup-resources.sh --check
+```
+
+#### 5. **backup-progress.sh**
+Backup your workshop progress and solutions.
+
+**Features:**
+- Selective module backup
+- Option to include/exclude solutions
+- Progress report generation
+- Compression support
+- Metadata tracking
+- Custom backup naming
+
+**Usage:**
+```bash
+# Backup all your work (excluding solutions)
+./scripts/backup-progress.sh --modules all
+
+# Backup modules 1-5 with solutions
+./scripts/backup-progress.sh --modules 1-5 --solutions
+
+# Backup specific modules
+./scripts/backup-progress.sh --modules "1,3,5-7,10"
+
+# Custom backup location and name
+./scripts/backup-progress.sh --modules all --output ~/backups --name my-workshop-progress
 ```
 
 ## 🔧 Script Requirements
@@ -123,12 +153,14 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 1. **setup-workshop.sh** - Install and configure everything
 2. **validate-prerequisites.sh** - Verify setup was successful
 3. **quick-start.sh** - Get your first AI code running
-4. **cleanup-resources.sh** - Clean up after each module
+4. **backup-progress.sh** - Save your work regularly
+5. **cleanup-resources.sh** - Clean up after each module
 
 ### For Experienced Users:
 - Run **validate-prerequisites.sh** first
 - Use **quick-start.sh** to jump right in
 - Run **cleanup-resources.sh** regularly to manage costs
+- Use **backup-progress.sh** before major changes
 
 ## 🐛 Troubleshooting
 
@@ -163,12 +195,13 @@ ls scripts/
 
 ## 📊 Script Features Matrix
 
-| Script | Auto-Install | Validation | Cleanup | Interactive | Dry-Run |
-|--------|-------------|------------|---------|-------------|---------|
-| setup-workshop | ✅ | ✅ | ❌ | ✅ | ❌ |
-| validate-prerequisites | ❌ | ✅ | ❌ | ❌ | ❌ |
-| quick-start | ❌ | ✅ | ❌ | ✅ | ❌ |
-| cleanup-resources | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Script | Auto-Install | Validation | Cleanup | Interactive | Dry-Run | Backup |
+|--------|-------------|------------|---------|-------------|---------|---------|
+| setup-workshop | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| validate-prerequisites | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| quick-start | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| cleanup-resources | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| backup-progress | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
 
 ## 🔄 Updating Scripts
 

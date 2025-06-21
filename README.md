@@ -359,32 +359,6 @@ code .
 
 ---
 
-## 📈 Why This Workshop?
-
-### Industry Demand
-- 500% increase in AI development jobs
-- $180k+ average salary for AI developers
-- 90% of companies adopting AI by 2025
-- Critical skill gap in the market
-
-### Career Impact
-- Become 10x more productive
-- Lead AI initiatives
-- Command premium salaries
-- Future-proof your career
-- Join elite developer community
-
-## 🔄 Continuous Updates
-
-This workshop evolves with:
-- Latest GitHub features
-- New Azure AI services
-- Emerging best practices
-- Community feedback
-- Industry trends
-
----
-
 ## 📄 License
 
 MIT License - Use freely with attribution

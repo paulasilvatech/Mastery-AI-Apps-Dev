@@ -62,14 +62,14 @@ Complete review and ultimate challenge
 
 | Module | Title | Focus Area | Duration | Track |
 |--------|-------|------------|----------|-------|
-| 1 | Introduction to AI-Powered Development | GitHub Copilot setup, first AI code, basic prompts | 3 hours | 🟢 Fundamentals |
-| 2 | GitHub Copilot Core Features | Suggestions, completions, basic patterns | 3 hours | 🟢 Fundamentals |
-| 3 | Effective Prompting Techniques | Context optimization, custom instructions | 3 hours | 🟢 Fundamentals |
-| 4 | AI-Assisted Debugging and Testing | Test generation, bug detection, TDD | 3 hours | 🟢 Fundamentals |
-| 5 | Documentation and Code Quality | AI documentation, refactoring, standards | 3 hours | 🟢 Fundamentals |
-| 6 | Multi-File Projects and Workspaces | Complex project management, workspace AI | 3 hours | 🔵 Intermediate |
-| 7 | Building Web Applications with AI | Full-stack development with Copilot | 3 hours | 🔵 Intermediate |
-| 8 | API Development and Integration | REST, GraphQL, API design with AI | 3 hours | 🔵 Intermediate |
+| 1 | [Introduction to AI-Powered Development](modules/module-01/README.md) | GitHub Copilot setup, first AI code, basic prompts | 3 hours | 🟢 Fundamentals |
+| 2 | [GitHub Copilot Core Features](modules/module-02/README.md)  | Suggestions, completions, basic patterns | 3 hours | 🟢 Fundamentals |
+| 3 | [Effective Prompting Techniques](modules/module-03/README.md)  | Context optimization, custom instructions | 3 hours | 🟢 Fundamentals |
+| 4 | [AI-Assisted Debugging and Testing](modules/module-04/README.md)  | Test generation, bug detection, TDD | 3 hours | 🟢 Fundamentals |
+| 5 | [Documentation and Code Quality](modules/module-05/README.md)  | AI documentation, refactoring, standards | 3 hours | 🟢 Fundamentals |
+| 6 | [Multi-File Projects and Workspaces](modules/module-06/README.md)  | Complex project management, workspace AI | 3 hours | 🔵 Intermediate |
+| 7 | [Building Web Applications with AI](modules/module-07/README.md)  | Full-stack development with Copilot | 3 hours | 🔵 Intermediate |
+| 8 | [API Development and Integration](modules/module-08/README.md)  | REST, GraphQL, API design with AI | 3 hours | 🔵 Intermediate |
 | 9 | Database Design and Optimization | Schema design, queries, performance | 3 hours | 🔵 Intermediate |
 | 10 | Real-time and Event-Driven Systems | WebSocket, streaming, async patterns | 3 hours | 🔵 Intermediate |
 | 11 | Microservices Architecture | Service design, communication, patterns | 3 hours | 🟠 Advanced |

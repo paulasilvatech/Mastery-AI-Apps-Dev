@@ -278,7 +278,8 @@ code .
 2. Configure GitHub Copilot
 3. Set up Azure account
 4. Join workshop community
-## 5. [Begin Module 1](modules/module-01/README.md)
+
+### [Begin Module 1](modules/module-01/README.md)
 
 ---
 

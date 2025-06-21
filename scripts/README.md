@@ -1,10 +1,10 @@
 # 📜 Workshop Scripts
 
-This directory contains essential scripts for the **Mastery AI Apps and Development Workshop**. These scripts help automate setup, validation, and management tasks throughout your learning journey.
+This directory contains essential scripts for the **Mastery AI Apps and Development Workshop**. These scripts help automate setup, validation, management, and organization tasks throughout your learning journey.
 
 ## 🚀 Available Scripts
 
-### Core Scripts (Cross-Platform)
+### Core Setup Scripts
 
 #### 1. **setup-workshop.sh** / **setup-workshop.ps1**
 Complete workshop environment setup script.
@@ -61,6 +61,8 @@ Get started with the workshop in just 5 minutes!
 .\scripts\quick-start.ps1
 ```
 
+### Management Scripts
+
 #### 4. **cleanup-resources.sh**
 Safely clean up Azure resources created during the workshop.
 
@@ -113,6 +115,68 @@ Backup your workshop progress and solutions.
 ./scripts/backup-progress.sh --modules all --output ~/backups --name my-workshop-progress
 ```
 
+### Organization Scripts
+
+#### 6. **organize-modules.sh**
+Creates standard directory structure for all modules.
+
+**Features:**
+- Creates organized folder structure
+- Sets up exercise directories
+- Creates documentation folders
+- Adds navigation templates
+- Generates exercise READMEs
+
+**Usage:**
+```bash
+./scripts/organize-modules.sh
+```
+
+#### 7. **enhance-navigation.sh**
+Adds comprehensive navigation to all workshop documents.
+
+**Features:**
+- Adds breadcrumb navigation
+- Creates module navigation bars
+- Adds quick navigation sidebars
+- Generates workshop resource footers
+- Links all related documents
+
+**Usage:**
+```bash
+./scripts/enhance-navigation.sh
+```
+
+#### 8. **reorganize-files.sh**
+Moves existing module files to the new organized structure.
+
+**Features:**
+- Reorganizes exercise files
+- Moves documentation to proper folders
+- Creates starter templates
+- Maintains file relationships
+- Generates index files
+
+**Usage:**
+```bash
+./scripts/reorganize-files.sh
+```
+
+#### 9. **create-navigation-links.sh**
+Creates comprehensive navigation links between all documents.
+
+**Features:**
+- Adds navigation to root documents
+- Creates module navigation map
+- Generates complete link index
+- Verifies all internal links
+- Reports broken links
+
+**Usage:**
+```bash
+./scripts/create-navigation-links.sh
+```
+
 ## 🔧 Script Requirements
 
 ### Operating Systems
@@ -149,18 +213,20 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ## 🎯 Script Workflow
 
-### Recommended Order for New Users:
+### For Initial Setup
 1. **setup-workshop.sh** - Install and configure everything
 2. **validate-prerequisites.sh** - Verify setup was successful
-3. **quick-start.sh** - Get your first AI code running
-4. **backup-progress.sh** - Save your work regularly
-5. **cleanup-resources.sh** - Clean up after each module
+3. **organize-modules.sh** - Create module structure
+4. **quick-start.sh** - Get your first AI code running
 
-### For Experienced Users:
-- Run **validate-prerequisites.sh** first
-- Use **quick-start.sh** to jump right in
-- Run **cleanup-resources.sh** regularly to manage costs
-- Use **backup-progress.sh** before major changes
+### For Daily Use
+1. **backup-progress.sh** - Save your work regularly
+2. **cleanup-resources.sh** - Clean up after each module
+
+### For Workshop Maintenance
+1. **reorganize-files.sh** - Reorganize existing files
+2. **enhance-navigation.sh** - Add navigation features
+3. **create-navigation-links.sh** - Verify and fix links
 
 ## 🐛 Troubleshooting
 
@@ -202,6 +268,10 @@ ls scripts/
 | quick-start | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
 | cleanup-resources | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | backup-progress | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| organize-modules | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| enhance-navigation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| reorganize-files | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| create-navigation-links | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 
 ## 🔄 Updating Scripts
 

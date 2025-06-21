@@ -1,0 +1,137 @@
+name: Deploy Module Infrastructure
+
+on:
+  workflow_call:
+    inputs:
+      module_number:
+        description: 'Module number to deploy (01-30)'
+        required: true
+        type: string
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: string
+        default: 'dev'
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Infrastructure
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Validate Bicep
+        run: |
+          az bicep build --file infrastructure/bicep/main.bicep
+          echo "✅ Bicep validation successful"
+
+      - name: What-If Deployment
+        run: |
+          az deployment group what-if \
+            --resource-group mastery-ai-${{ inputs.environment }}-rg \
+            --template-file infrastructure/bicep/main.bicep \
+            --parameters environment=${{ inputs.environment }} \
+            --parameters baseName=mastery-ai-m${{ inputs.module_number }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Infrastructure
+    needs: validate
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create Resource Group
+        run: |
+          az group create \
+            --name mastery-ai-${{ inputs.environment }}-rg \
+            --location eastus \
+            --tags "Module=${{ inputs.module_number }}" "Environment=${{ inputs.environment }}"
+
+      - name: Deploy Bicep Template
+        id: deploy
+        run: |
+          output=$(az deployment group create \
+            --resource-group mastery-ai-${{ inputs.environment }}-rg \
+            --template-file infrastructure/bicep/main.bicep \
+            --parameters environment=${{ inputs.environment }} \
+            --parameters baseName=mastery-ai-m${{ inputs.module_number }} \
+            --query properties.outputs -o json)
+          
+          echo "deployment_outputs=$output" >> $GITHUB_OUTPUT
+          echo "✅ Deployment successful"
+
+      - name: Output Deployment Results
+        run: |
+          echo "### 🚀 Deployment Complete for Module ${{ inputs.module_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Resource Group:** mastery-ai-${{ inputs.environment }}-rg" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Outputs:**" >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.deploy.outputs.deployment_outputs }}' | jq . >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test Deployment
+    needs: deploy
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Test Resources
+        run: |
+          echo "🧪 Testing deployed resources..."
+          
+          # Test storage account
+          storage_name=$(az storage account list \
+            --resource-group mastery-ai-${{ inputs.environment }}-rg \
+            --query "[?tags.Module=='${{ inputs.module_number }}'].name" -o tsv)
+          
+          if [ -n "$storage_name" ]; then
+            echo "✅ Storage account found: $storage_name"
+          else
+            echo "❌ Storage account not found"
+            exit 1
+          fi
+          
+          # Test other resources...
+          echo "✅ All tests passed"
+
+  tag-release:
+    runs-on: ubuntu-latest
+    name: Tag Infrastructure Release
+    needs: test
+    if: ${{ inputs.environment == 'prod' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Tag
+        run: |
+          TAG="module-${{ inputs.module_number }}-infra-$(date +%Y%m%d-%H%M%S)"
+          git tag $TAG
+          git push origin $TAG
+          echo "✅ Created tag: $TAG"

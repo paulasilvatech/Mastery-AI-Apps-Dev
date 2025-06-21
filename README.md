@@ -259,7 +259,7 @@ Each module contains 3 progressive exercises:
 
 ```bash
 # Clone the workshop repository
-git clone https://github.com/your-org/mastery-ai-code-development.git
+git clone https://github.com/your-org/Mastery-AI-Apss-Dev.git
 cd mastery-ai-code-development
 
 # Run setup script

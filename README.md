@@ -269,7 +269,7 @@ cd mastery-ai-code-development
 ./scripts/verify-setup.sh
 
 # Start learning!
-cd modules/module-01-introduction
+cd modules/module-01/README.md
 code .
 ```
 

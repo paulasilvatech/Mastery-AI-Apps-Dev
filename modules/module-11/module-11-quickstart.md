@@ -6,7 +6,7 @@ Get up and running with microservices in 5 minutes!
 
 ### 1. Clone and Navigate
 ```bash
-cd modules/module-11-microservices-architecture
+cd modules/microservices-architecture
 ```
 
 ### 2. Run Setup Script

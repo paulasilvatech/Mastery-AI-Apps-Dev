@@ -3,7 +3,7 @@
 ## 📁 Repository Structure
 
 ```
-module-22-advanced-agent-development/
+advanced-agent-development/
 ├── README.md                          # Module overview
 ├── prerequisites.md                   # Setup requirements
 ├── best-practices.md                 # Production patterns
@@ -82,10 +82,10 @@ module-22-advanced-agent-development/
 ## 📄 Document Creation Plan
 
 ### 1. Main Module Files
-- ✅ **README.md** - Exists (from module-22-readme.md)
-- ✅ **prerequisites.md** - Exists (from module-22-prerequisites.md)
-- ✅ **best-practices.md** - Exists (from module-22-best-practices.md)
-- ✅ **troubleshooting.md** - Exists (from module-22-troubleshooting.md)
+- ✅ **README.md** - Exists (from readme.md)
+- ✅ **prerequisites.md** - Exists (from prerequisites.md)
+- ✅ **best-practices.md** - Exists (from best-practices.md)
+- ✅ **troubleshooting.md** - Exists (from troubleshooting.md)
 
 ### 2. Exercise Files
 - ✅ **exercise1** - Documentation Generation Agent (complete)

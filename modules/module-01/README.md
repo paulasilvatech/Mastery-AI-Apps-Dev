@@ -1,6 +1,12 @@
-[🏠 Workshop](../../README.md) > [📚 Modules](../README.md) > **Module 01**
+[🏠 Workshop](../../README.md) > [📚 Modules](../README.md) > [Module 1](README.md)
 
 <div align="center">
+
+**📖 Module 1: Introduction to AI-Powered Development** | [Module 02: GitHub Copilot Core Features ➡️](../module-02/README.md)
+
+</div>
+
+---
 
 # Module 01: Introduction to AI-Powered Development
 
@@ -38,10 +44,10 @@ By the end of this module, you will be able to:
 <td valign="top">
 
 ### 📖 Module Content
-- [Prerequisites](module-01-prerequisites.md)
-- [Best Practices](module-01-best-practices.md)
-- [Troubleshooting](module-01-troubleshooting.md)
-- [Prompt Templates](module-01-prompt-templates.md)
+- [Prerequisites](prerequisites.md)
+- [Best Practices](best-practices.md)
+- [Troubleshooting](troubleshooting.md)
+- [Prompt Templates](prompt-templates.md)
 
 </td>
 <td valign="top">
@@ -56,7 +62,7 @@ By the end of this module, you will be able to:
 <td valign="top">
 
 ### 📚 Resources
-- [Common Patterns](module-01-common-patterns.md)
+- [Common Patterns](common-patterns.md)
 - [Setup Script](module-01-setup-script.sh)
 - [Test Examples](module-01-tests-example.py)
 - [Utility Solutions](module-01-utils-solution.py)
@@ -107,7 +113,7 @@ GitHub Copilot is an AI pair programmer that helps you write code faster and wit
 ```
 module-01/
 ├── 📄 README.md                        # This file
-├── 📋 module-01-prerequisites.md       # Detailed setup guide
+├── 📋 prerequisites.md       # Detailed setup guide
 ├── 💻 Exercises/
 │   ├── module-01-exercise1-part1.md    # First AI Code - Setup
 │   ├── module-01-exercise1-part2.md    # First AI Code - Implementation
@@ -119,10 +125,10 @@ module-01/
 │   ├── module-01-exercise3-part2.md    # Full App - Building
 │   └── module-01-exercise3-part3.md    # Full App - Deployment
 ├── 📚 Documentation/
-│   ├── module-01-best-practices.md     # Production patterns
-│   ├── module-01-troubleshooting.md    # Common issues
-│   ├── module-01-common-patterns.md    # Reusable patterns
-│   └── module-01-prompt-templates.md   # Prompt examples
+│   ├── best-practices.md     # Production patterns
+│   ├── troubleshooting.md    # Common issues
+│   ├── common-patterns.md    # Reusable patterns
+│   └── prompt-templates.md   # Prompt examples
 ├── 🔧 Resources/
 │   ├── module-01-setup-script.sh       # Auto setup script
 │   ├── module-01-tests-example.py      # Test templates
@@ -252,7 +258,7 @@ To complete this module successfully:
 
 ## 🤝 Getting Help
 
-- **Module Support**: See [Troubleshooting Guide](module-01-troubleshooting.md)
+- **Module Support**: See [Troubleshooting Guide](troubleshooting.md)
 - **Workshop FAQ**: [Main FAQ](../../FAQ.md)
 - **Discussion Forum**: [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
 - **Quick Help**: [Workshop Troubleshooting](../../TROUBLESHOOTING.md)
@@ -310,3 +316,309 @@ After mastering the basics:
 [📖 Module 02: GitHub Copilot Core Features ➡️](../module-02/README.md)
 
 </div>
+
+---
+
+## 🔗 Quick Links
+
+### Module Resources
+- [📋 Prerequisites](prerequisites.md)
+- [📖 Best Practices](docs/best-practices.md)
+- [🔧 Troubleshooting](docs/troubleshooting.md)
+- [💡 Prompt Templates](docs/prompt-templates.md)
+
+### Exercises
+- [⭐ Exercise 1 - Foundation](exercises/exercise1/README.md)
+- [⭐⭐ Exercise 2 - Application](exercises/exercise2/README.md)
+- [⭐⭐⭐ Exercise 3 - Mastery](exercises/exercise3/README.md)
+
+### Workshop Resources
+- [🏠 Workshop Home](../../README.md)
+- [📚 All Modules](../../README.md#-complete-module-overview)
+- [🚀 Quick Start](../../QUICKSTART.md)
+- [❓ FAQ](../../FAQ.md)
+- [🤖 Prompt Guide](../../PROMPT-GUIDE.md)
+- [🔧 Troubleshooting](../../TROUBLESHOOTING.md)
+
+
+---
+
+## 🔗 Quick Links
+
+### Module Resources
+- [📋 Prerequisites](prerequisites.md)
+- [📖 Best Practices](docs/best-practices.md)
+- [🔧 Troubleshooting](docs/troubleshooting.md)
+- [💡 Prompt Templates](docs/prompt-templates.md)
+
+### Exercises
+- [⭐ Exercise 1 - Foundation](exercises/exercise1/README.md)
+- [⭐⭐ Exercise 2 - Application](exercises/exercise2/README.md)
+- [⭐⭐⭐ Exercise 3 - Mastery](exercises/exercise3/README.md)
+
+### Workshop Resources
+- [🏠 Workshop Home](../../README.md)
+- [📚 All Modules](../../README.md#-complete-module-overview)
+- [🚀 Quick Start](../../QUICKSTART.md)
+- [❓ FAQ](../../FAQ.md)
+- [🤖 Prompt Guide](../../PROMPT-GUIDE.md)
+- [🔧 Troubleshooting](../../TROUBLESHOOTING.md)
+
+
+---
+
+## 🔗 Quick Links
+
+### Module Resources
+- [📋 Prerequisites](prerequisites.md)
+- [📖 Best Practices](docs/best-practices.md)
+- [🔧 Troubleshooting](docs/troubleshooting.md)
+- [💡 Prompt Templates](docs/prompt-templates.md)
+
+### Exercises
+- [⭐ Exercise 1 - Foundation](exercises/exercise1/README.md)
+- [⭐⭐ Exercise 2 - Application](exercises/exercise2/README.md)
+- [⭐⭐⭐ Exercise 3 - Mastery](exercises/exercise3/README.md)
+
+### Workshop Resources
+- [🏠 Workshop Home](../../README.md)
+- [📚 All Modules](../../README.md#-complete-module-overview)
+- [🚀 Quick Start](../../QUICKSTART.md)
+- [❓ FAQ](../../FAQ.md)
+- [🤖 Prompt Guide](../../PROMPT-GUIDE.md)
+- [🔧 Troubleshooting](../../TROUBLESHOOTING.md)
+
+
+
+## 🧭 Quick Navigation
+
+<table>
+<tr>
+<td valign="top">
+
+### 📖 Module Content
+- [Overview](README.md)
+- [Prerequisites](prerequisites.md)
+- [Setup Guide](docs/setup.md)
+- [Troubleshooting](docs/troubleshooting.md)
+
+</td>
+<td valign="top">
+
+### 💻 Exercises
+- [Exercise 1 - Foundation ⭐](exercises/exercise1/README.md)
+- [Exercise 2 - Application ⭐⭐](exercises/exercise2/README.md)
+- [Exercise 3 - Mastery ⭐⭐⭐](exercises/exercise3/README.md)
+- [Independent Project](project/README.md)
+
+</td>
+<td valign="top">
+
+### 📚 Resources
+- [Best Practices](docs/best-practices.md)
+- [Common Patterns](docs/common-patterns.md)
+- [Prompt Templates](docs/prompt-templates.md)
+- [Additional Resources](resources/README.md)
+
+</td>
+</tr>
+</table>
+
+
+---
+
+## 🌐 Workshop Resources
+
+<div align="center">
+
+| Core Documentation | Learning Resources | Tools & Scripts |
+|:------------------:|:-----------------:|:---------------:|
+| [🏠 Home](../../README.md) | [🚀 Quick Start](../../QUICKSTART.md) | [🛠️ Scripts](../../scripts/README.md) |
+| [📋 Prerequisites](../../PREREQUISITES.md) | [❓ FAQ](../../FAQ.md) | [🔧 Setup](../../scripts/setup-workshop.sh) |
+| [📚 All Modules](../README.md) | [🤖 Prompt Guide](../../PROMPT-GUIDE.md) | [✅ Validate](../../scripts/validate-prerequisites.sh) |
+| [🗺️ Learning Paths](../../README.md#-learning-paths) | [🔧 Troubleshooting](../../TROUBLESHOOTING.md) | [🧹 Cleanup](../../scripts/cleanup-resources.sh) |
+
+</div>
+
+### 🏷️ Module Categories
+
+<div align="center">
+
+| 🟢 Fundamentals | 🔵 Intermediate | 🟠 Advanced | 🔴 Enterprise | 🟣 AI Agents | ⭐ Mastery |
+|:---------------:|:---------------:|:-----------:|:-------------:|:------------:|:----------:|
+| Modules 1-5 | Modules 6-10 | Modules 11-15 | Modules 16-20 | Modules 21-25 | Modules 26-30 |
+
+</div>
+
+
+---
+
+## 🔗 Quick Links
+
+### Module Resources
+- [📋 Prerequisites](prerequisites.md)
+- [📖 Best Practices](docs/best-practices.md)
+- [🔧 Troubleshooting](docs/troubleshooting.md)
+- [💡 Prompt Templates](docs/prompt-templates.md)
+
+### Exercises
+- [⭐ Exercise 1 - Foundation](exercises/exercise1/README.md)
+- [⭐⭐ Exercise 2 - Application](exercises/exercise2/README.md)
+- [⭐⭐⭐ Exercise 3 - Mastery](exercises/exercise3/README.md)
+
+### Workshop Resources
+- [🏠 Workshop Home](../../README.md)
+- [📚 All Modules](../../README.md#-complete-module-overview)
+- [🚀 Quick Start](../../QUICKSTART.md)
+- [❓ FAQ](../../FAQ.md)
+- [🤖 Prompt Guide](../../PROMPT-GUIDE.md)
+- [🔧 Troubleshooting](../../TROUBLESHOOTING.md)
+
+
+
+## 🧭 Quick Navigation
+
+<table>
+<tr>
+<td valign="top">
+
+### 📖 Module Content
+- [Overview](README.md)
+- [Prerequisites](prerequisites.md)
+- [Setup Guide](docs/setup.md)
+- [Troubleshooting](docs/troubleshooting.md)
+
+</td>
+<td valign="top">
+
+### 💻 Exercises
+- [Exercise 1 - Foundation ⭐](exercises/exercise1/README.md)
+- [Exercise 2 - Application ⭐⭐](exercises/exercise2/README.md)
+- [Exercise 3 - Mastery ⭐⭐⭐](exercises/exercise3/README.md)
+- [Independent Project](project/README.md)
+
+</td>
+<td valign="top">
+
+### 📚 Resources
+- [Best Practices](docs/best-practices.md)
+- [Common Patterns](docs/common-patterns.md)
+- [Prompt Templates](docs/prompt-templates.md)
+- [Additional Resources](resources/README.md)
+
+</td>
+</tr>
+</table>
+
+
+---
+
+## 🌐 Workshop Resources
+
+<div align="center">
+
+| Core Documentation | Learning Resources | Tools & Scripts |
+|:------------------:|:-----------------:|:---------------:|
+| [🏠 Home](../../README.md) | [🚀 Quick Start](../../QUICKSTART.md) | [🛠️ Scripts](../../scripts/README.md) |
+| [📋 Prerequisites](../../PREREQUISITES.md) | [❓ FAQ](../../FAQ.md) | [🔧 Setup](../../scripts/setup-workshop.sh) |
+| [📚 All Modules](../README.md) | [🤖 Prompt Guide](../../PROMPT-GUIDE.md) | [✅ Validate](../../scripts/validate-prerequisites.sh) |
+| [🗺️ Learning Paths](../../README.md#-learning-paths) | [🔧 Troubleshooting](../../TROUBLESHOOTING.md) | [🧹 Cleanup](../../scripts/cleanup-resources.sh) |
+
+</div>
+
+### 🏷️ Module Categories
+
+<div align="center">
+
+| 🟢 Fundamentals | 🔵 Intermediate | 🟠 Advanced | 🔴 Enterprise | 🟣 AI Agents | ⭐ Mastery |
+|:---------------:|:---------------:|:-----------:|:-------------:|:------------:|:----------:|
+| Modules 1-5 | Modules 6-10 | Modules 11-15 | Modules 16-20 | Modules 21-25 | Modules 26-30 |
+
+</div>
+
+
+---
+
+## 🔗 Quick Links
+
+### Module Resources
+- [📋 Prerequisites](prerequisites.md)
+- [📖 Best Practices](docs/best-practices.md)
+- [🔧 Troubleshooting](docs/troubleshooting.md)
+- [💡 Prompt Templates](docs/prompt-templates.md)
+
+### Exercises
+- [⭐ Exercise 1 - Foundation](exercises/exercise1/README.md)
+- [⭐⭐ Exercise 2 - Application](exercises/exercise2/README.md)
+- [⭐⭐⭐ Exercise 3 - Mastery](exercises/exercise3/README.md)
+
+### Workshop Resources
+- [🏠 Workshop Home](../../README.md)
+- [📚 All Modules](../../README.md#-complete-module-overview)
+- [🚀 Quick Start](../../QUICKSTART.md)
+- [❓ FAQ](../../FAQ.md)
+- [🤖 Prompt Guide](../../PROMPT-GUIDE.md)
+- [🔧 Troubleshooting](../../TROUBLESHOOTING.md)
+
+
+
+## 🧭 Quick Navigation
+
+<table>
+<tr>
+<td valign="top">
+
+### 📖 Module Content
+- [Overview](README.md)
+- [Prerequisites](prerequisites.md)
+- [Setup Guide](docs/setup.md)
+- [Troubleshooting](docs/troubleshooting.md)
+
+</td>
+<td valign="top">
+
+### 💻 Exercises
+- [Exercise 1 - Foundation ⭐](exercises/exercise1/README.md)
+- [Exercise 2 - Application ⭐⭐](exercises/exercise2/README.md)
+- [Exercise 3 - Mastery ⭐⭐⭐](exercises/exercise3/README.md)
+- [Independent Project](project/README.md)
+
+</td>
+<td valign="top">
+
+### 📚 Resources
+- [Best Practices](docs/best-practices.md)
+- [Common Patterns](docs/common-patterns.md)
+- [Prompt Templates](docs/prompt-templates.md)
+- [Additional Resources](resources/README.md)
+
+</td>
+</tr>
+</table>
+
+
+---
+
+## 🌐 Workshop Resources
+
+<div align="center">
+
+| Core Documentation | Learning Resources | Tools & Scripts |
+|:------------------:|:-----------------:|:---------------:|
+| [🏠 Home](../../README.md) | [🚀 Quick Start](../../QUICKSTART.md) | [🛠️ Scripts](../../scripts/README.md) |
+| [📋 Prerequisites](../../PREREQUISITES.md) | [❓ FAQ](../../FAQ.md) | [🔧 Setup](../../scripts/setup-workshop.sh) |
+| [📚 All Modules](../README.md) | [🤖 Prompt Guide](../../PROMPT-GUIDE.md) | [✅ Validate](../../scripts/validate-prerequisites.sh) |
+| [🗺️ Learning Paths](../../README.md#-learning-paths) | [🔧 Troubleshooting](../../TROUBLESHOOTING.md) | [🧹 Cleanup](../../scripts/cleanup-resources.sh) |
+
+</div>
+
+### 🏷️ Module Categories
+
+<div align="center">
+
+| 🟢 Fundamentals | 🔵 Intermediate | 🟠 Advanced | 🔴 Enterprise | 🟣 AI Agents | ⭐ Mastery |
+|:---------------:|:---------------:|:-----------:|:-------------:|:------------:|:----------:|
+| Modules 1-5 | Modules 6-10 | Modules 11-15 | Modules 16-20 | Modules 21-25 | Modules 26-30 |
+
+</div>
+

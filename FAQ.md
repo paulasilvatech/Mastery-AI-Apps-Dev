@@ -195,3 +195,179 @@ However, instructions are written for VS Code.
 4. Ask in the community!
 
 Remember: There are no silly questions. We're all here to learn! 🚀
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>
+
+---
+
+## 🔗 Quick Navigation
+
+<div align="center">
+
+| Documentation | Getting Started | Resources |
+|:-------------:|:---------------:|:---------:|
+| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
+| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
+| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
+
+</div>
+
+### 🎯 Start Your Journey
+
+<div align="center">
+
+[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
+
+</div>

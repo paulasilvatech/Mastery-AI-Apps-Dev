@@ -3,7 +3,7 @@
 ## 📁 Module Structure
 
 ```
-modules/module-20-deployment-strategies/
+modules/deployment-strategies/
 ├── README.md                          ✅ Created - Module overview and learning objectives
 ├── prerequisites.md                   ✅ Created - Detailed setup requirements
 ├── exercises/

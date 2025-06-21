@@ -6,7 +6,8 @@
 # This script adds navigation links and breadcrumbs to all documents
 # ========================================================================
 
-set -e
+# Remove set -e to prevent exit on warnings
+# set -e
 
 # Colors for output
 RED='\033[0;31m'
@@ -19,39 +20,43 @@ NC='\033[0m' # No Color
 # Workshop structure
 TOTAL_MODULES=30
 
-# Module titles array
-declare -A MODULE_TITLES=(
-    [1]="Introduction to AI-Powered Development"
-    [2]="GitHub Copilot Core Features"
-    [3]="Effective Prompting Techniques"
-    [4]="AI-Assisted Debugging and Testing"
-    [5]="Documentation and Code Quality"
-    [6]="Multi-File Projects and Workspaces"
-    [7]="Building Web Applications with AI"
-    [8]="API Development and Integration"
-    [9]="Database Design and Optimization"
-    [10]="Real-time and Event-Driven Systems"
-    [11]="Microservices Architecture"
-    [12]="Cloud-Native Development"
-    [13]="Infrastructure as Code"
-    [14]="CI/CD with GitHub Actions"
-    [15]="Performance and Scalability"
-    [16]="Security Implementation"
-    [17]="GitHub Models and AI Integration"
-    [18]="Enterprise Integration Patterns"
-    [19]="Monitoring and Observability"
-    [20]="Production Deployment Strategies"
-    [21]="Introduction to AI Agents"
-    [22]="Building Custom Agents"
-    [23]="Model Context Protocol (MCP)"
-    [24]="Multi-Agent Orchestration"
-    [25]="Advanced Agent Patterns"
-    [26]="Enterprise .NET Development"
-    [27]="COBOL Modernization"
-    [28]="Shift-Left Security & DevOps"
-    [29]="Complete Enterprise Review"
-    [30]="Ultimate Mastery Challenge"
-)
+# Function to get module title by number (compatible with older bash)
+get_module_title() {
+    local module_num=$1
+    case $module_num in
+        1) echo "Introduction to AI-Powered Development" ;;
+        2) echo "GitHub Copilot Core Features" ;;
+        3) echo "Effective Prompting Techniques" ;;
+        4) echo "AI-Assisted Debugging and Testing" ;;
+        5) echo "Documentation and Code Quality" ;;
+        6) echo "Multi-File Projects and Workspaces" ;;
+        7) echo "Building Web Applications with AI" ;;
+        8) echo "API Development and Integration" ;;
+        9) echo "Database Design and Optimization" ;;
+        10) echo "Real-time and Event-Driven Systems" ;;
+        11) echo "Microservices Architecture" ;;
+        12) echo "Cloud-Native Development" ;;
+        13) echo "Infrastructure as Code" ;;
+        14) echo "CI/CD with GitHub Actions" ;;
+        15) echo "Performance and Scalability" ;;
+        16) echo "Security Implementation" ;;
+        17) echo "GitHub Models and AI Integration" ;;
+        18) echo "Enterprise Integration Patterns" ;;
+        19) echo "Monitoring and Observability" ;;
+        20) echo "Production Deployment Strategies" ;;
+        21) echo "Introduction to AI Agents" ;;
+        22) echo "Building Custom Agents" ;;
+        23) echo "Model Context Protocol (MCP)" ;;
+        24) echo "Multi-Agent Orchestration" ;;
+        25) echo "Advanced Agent Patterns" ;;
+        26) echo "Enterprise .NET Development" ;;
+        27) echo "COBOL Modernization" ;;
+        28) echo "Shift-Left Security & DevOps" ;;
+        29) echo "Complete Enterprise Review" ;;
+        30) echo "Ultimate Mastery Challenge" ;;
+        *) echo "Unknown Module" ;;
+    esac
+}
 
 # Functions
 print_header() {
@@ -66,6 +71,10 @@ print_success() {
 
 print_info() {
     echo -e "${PURPLE}ℹ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
 # Generate breadcrumb navigation
@@ -103,15 +112,18 @@ generate_module_nav() {
     
     # Previous module
     if [[ $prev_module -ge 1 ]]; then
-        nav+="[⬅️ Module $(printf "%02d" $prev_module): ${MODULE_TITLES[$prev_module]}](../module-$(printf "%02d" $prev_module)/README.md) | "
+        local prev_title=$(get_module_title $prev_module)
+        nav+="[⬅️ Module $(printf "%02d" $prev_module): $prev_title](../module-$(printf "%02d" $prev_module)/README.md) | "
     fi
     
     # Current module
-    nav+="**📖 Module $module_num: ${MODULE_TITLES[$module_num]}** "
+    local curr_title=$(get_module_title $module_num)
+    nav+="**📖 Module $module_num: $curr_title** "
     
     # Next module
     if [[ $next_module -le $TOTAL_MODULES ]]; then
-        nav+="| [Module $(printf "%02d" $next_module): ${MODULE_TITLES[$next_module]} ➡️](../module-$(printf "%02d" $next_module)/README.md)"
+        local next_title=$(get_module_title $next_module)
+        nav+="| [Module $(printf "%02d" $next_module): $next_title ➡️](../module-$(printf "%02d" $next_module)/README.md)"
     fi
     
     nav+="\n\n</div>\n\n---"

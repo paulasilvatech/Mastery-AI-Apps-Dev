@@ -5,7 +5,7 @@ This is a comprehensive list of all documents created for Module 11: Microservic
 ## 📂 Repository Structure
 
 ```
-module-11-microservices-architecture/
+microservices-architecture/
 ├── 📄 Core Documentation
 │   ├── README.md                          # Module overview and navigation
 │   ├── prerequisites.md                   # Detailed setup requirements
@@ -15,7 +15,7 @@ module-11-microservices-architecture/
 │
 ├── 📁 scripts/                            # Automation scripts
 │   ├── setup-module-11.sh                 # Complete environment setup
-│   ├── check-module-11-prerequisites.sh   # Prerequisites validation
+│   ├── check-prerequisites.sh   # Prerequisites validation
 │   ├── cleanup-resources.sh               # Resource cleanup
 │   └── diagnostic.sh                      # System diagnostics
 │
@@ -129,7 +129,7 @@ Each exercise includes:
    - Directory structure creation
    - Docker image pulling
 
-2. **check-module-11-prerequisites.sh**
+2. **check-prerequisites.sh**
    - System requirement validation
    - Tool version checking
    - Port availability verification
@@ -204,7 +204,7 @@ Each exercise includes:
 
 ```bash
 # 1. Navigate to module directory
-cd modules/module-11-microservices-architecture
+cd modules/microservices-architecture
 
 # 2. Run setup
 ./scripts/setup-module-11.sh

@@ -277,7 +277,7 @@ services:
 
 ## ⚙️ GitHub Actions Workflow
 
-Save as `.github/workflows/module-12-ci-cd.yml`:
+Save as `.github/workflows/ci-cd.yml`:
 
 ```yaml
 name: Module 12 CI/CD
@@ -294,7 +294,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/module-12-product-catalog
+  IMAGE_NAME: ${{ github.repository }}/product-catalog
   PYTHON_VERSION: '3.11'
 
 jobs:

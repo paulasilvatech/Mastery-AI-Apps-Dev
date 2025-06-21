@@ -3,7 +3,7 @@
 ## 📁 Module Directory Structure
 
 ```
-module-21-introduction-to-ai-agents/
+introduction-to-ai-agents/
 ├── README.md                           # Main module overview (✅ Created)
 ├── prerequisites.md                    # Setup requirements (✅ Created)
 ├── exercises/

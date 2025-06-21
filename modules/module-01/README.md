@@ -1,4 +1,16 @@
+[🏠 Workshop](../../README.md) > [📚 Modules](../README.md) > **Module 01**
+
+<div align="center">
+
 # Module 01: Introduction to AI-Powered Development
+
+**🟢 Fundamentals Track** | Duration: 3 hours | Difficulty: ⭐
+
+[📖 Module 02: GitHub Copilot Core Features ➡️](../module-02/README.md)
+
+</div>
+
+---
 
 ## 🎯 Module Overview
 
@@ -8,9 +20,6 @@ Welcome to the beginning of your AI-powered development journey! This foundation
 - **Total Time**: 3 hours
 - **Lecture/Demo**: 45 minutes
 - **Hands-on Exercises**: 2 hours 15 minutes
-
-### Track
-- 🟢 Fundamentals Track (Modules 1-5)
 
 ## 🎓 Learning Objectives
 
@@ -22,15 +31,39 @@ By the end of this module, you will be able to:
 4. **Understand AI Patterns** - Learn how Copilot thinks and predicts
 5. **Apply Best Practices** - Write prompts that produce quality code
 
-## 🔧 Prerequisites
+## 🧭 Quick Navigation
 
-- ✅ Basic programming knowledge (any language)
-- ✅ VS Code installed
-- ✅ GitHub account with Copilot subscription
-- ✅ Git installed and configured
-- ✅ Python 3.11+ installed
+<table>
+<tr>
+<td valign="top">
 
-See [prerequisites.md](prerequisites.md) for detailed setup instructions.
+### 📖 Module Content
+- [Prerequisites](module-01-prerequisites.md)
+- [Best Practices](module-01-best-practices.md)
+- [Troubleshooting](module-01-troubleshooting.md)
+- [Prompt Templates](module-01-prompt-templates.md)
+
+</td>
+<td valign="top">
+
+### 💻 Exercises
+- [Exercise 1 - First AI Code ⭐](module-01-exercise1-part1.md)
+- [Exercise 2 - CLI Tool ⭐⭐](module-01-exercise2-part1.md)
+- [Exercise 3 - Full App ⭐⭐⭐](module-01-exercise3-part1.md)
+- [Independent Project](module-01-project-readme.md)
+
+</td>
+<td valign="top">
+
+### 📚 Resources
+- [Common Patterns](module-01-common-patterns.md)
+- [Setup Script](module-01-setup-script.sh)
+- [Test Examples](module-01-tests-example.py)
+- [Utility Solutions](module-01-utils-solution.py)
+
+</td>
+</tr>
+</table>
 
 ## 📚 Key Concepts
 
@@ -72,30 +105,30 @@ GitHub Copilot is an AI pair programmer that helps you write code faster and wit
 ## 📦 Module Structure
 
 ```
-module-01-introduction/
-├── README.md                    # This file
-├── prerequisites.md             # Detailed setup guide
-├── exercises/
-│   ├── exercise1-easy/         # First AI Code
-│   │   ├── instructions/
-│   │   │   ├── part1.md       # Setup and basics
-│   │   │   ├── part2.md       # Writing functions
-│   │   │   └── part3.md       # Testing and validation
-│   │   ├── starter/           # Starting files
-│   │   ├── solution/          # Complete solution
-│   │   └── tests/             # Validation tests
-│   ├── exercise2-medium/       # Building a CLI Tool
-│   │   └── [same structure]
-│   └── exercise3-hard/         # Complete Application
-│       └── [same structure]
-├── best-practices.md           # Production patterns
-├── resources/
-│   ├── prompt-templates.md
-│   ├── copilot-settings.json
-│   └── common-patterns.md
-├── troubleshooting.md
-└── project/                    # Independent project
-    └── README.md
+module-01/
+├── 📄 README.md                        # This file
+├── 📋 module-01-prerequisites.md       # Detailed setup guide
+├── 💻 Exercises/
+│   ├── module-01-exercise1-part1.md    # First AI Code - Setup
+│   ├── module-01-exercise1-part2.md    # First AI Code - Implementation
+│   ├── module-01-exercise1-part3.md    # First AI Code - Testing
+│   ├── module-01-exercise2-part1.md    # CLI Tool - Architecture
+│   ├── module-01-exercise2-part2.md    # CLI Tool - Development
+│   ├── module-01-exercise2-part3.md    # CLI Tool - Enhancement
+│   ├── module-01-exercise3-part1.md    # Full App - Planning
+│   ├── module-01-exercise3-part2.md    # Full App - Building
+│   └── module-01-exercise3-part3.md    # Full App - Deployment
+├── 📚 Documentation/
+│   ├── module-01-best-practices.md     # Production patterns
+│   ├── module-01-troubleshooting.md    # Common issues
+│   ├── module-01-common-patterns.md    # Reusable patterns
+│   └── module-01-prompt-templates.md   # Prompt examples
+├── 🔧 Resources/
+│   ├── module-01-setup-script.sh       # Auto setup script
+│   ├── module-01-tests-example.py      # Test templates
+│   └── module-01-utils-solution.py     # Utility functions
+└── 🚀 Project/
+    └── module-01-project-readme.md     # Independent project
 ```
 
 ## 🚀 Quick Start
@@ -107,10 +140,9 @@ module-01-introduction/
    gh copilot status # Copilot active
    ```
 
-2. **Clone Module Repository**
+2. **Run Setup Script**
    ```bash
-   git clone https://github.com/workshop/mastery-ai-development.git
-   cd mastery-ai-development/modules/module-01-introduction
+   ./module-01-setup-script.sh
    ```
 
 3. **Open in VS Code**
@@ -119,9 +151,9 @@ module-01-introduction/
    ```
 
 4. **Start with Exercise 1**
-   ```bash
-   cd exercises/exercise1-easy
-   ```
+   - [Part 1: Setup and Basics](module-01-exercise1-part1.md)
+   - [Part 2: Writing Functions](module-01-exercise1-part2.md)
+   - [Part 3: Testing and Validation](module-01-exercise1-part3.md)
 
 ## 📝 Exercises Overview
 
@@ -129,16 +161,19 @@ module-01-introduction/
 - **Duration**: 30-45 minutes
 - **Goal**: Write your first AI-assisted functions
 - **Skills**: Basic prompts, accepting suggestions, simple functions
+- **Start**: [Exercise 1 Part 1](module-01-exercise1-part1.md)
 
 ### Exercise 2: Building a CLI Tool (⭐⭐ Medium)
 - **Duration**: 45-60 minutes
 - **Goal**: Create a complete command-line application
 - **Skills**: Multi-file context, complex prompts, project structure
+- **Start**: [Exercise 2 Part 1](module-01-exercise2-part1.md)
 
 ### Exercise 3: Complete Application (⭐⭐⭐ Hard)
 - **Duration**: 60-90 minutes
 - **Goal**: Build a full-featured task management system
 - **Skills**: Architecture, testing, documentation, deployment
+- **Start**: [Exercise 3 Part 1](module-01-exercise3-part1.md)
 
 ## 🎪 Live Demo Topics
 
@@ -217,15 +252,15 @@ To complete this module successfully:
 
 ## 🤝 Getting Help
 
-- **Module Support**: See [troubleshooting.md](troubleshooting.md)
-- **Discussion Forum**: GitHub Discussions for Module 01
-- **Office Hours**: Mondays 3-4 PM PT
-- **Slack Channel**: #module-01-introduction
+- **Module Support**: See [Troubleshooting Guide](module-01-troubleshooting.md)
+- **Workshop FAQ**: [Main FAQ](../../FAQ.md)
+- **Discussion Forum**: [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
+- **Quick Help**: [Workshop Troubleshooting](../../TROUBLESHOOTING.md)
 
 ## ⏭️ What's Next?
 
 After mastering the basics:
-- **Module 02**: GitHub Copilot Core Features
+- **[Module 02](../module-02/README.md)**: GitHub Copilot Core Features
 - Deep dive into advanced Copilot features
 - Multi-file editing and workspace context
 - Custom instructions and preferences
@@ -240,6 +275,38 @@ After mastering the basics:
 
 ---
 
-🎉 **Welcome to the future of coding!** This module starts your transformation into an AI-powered developer. Embrace the technology, but remember: Copilot is your assistant, not your replacement. Understanding the code you write remains paramount.
+## 🌐 Workshop Resources
 
-Ready to begin? Head to [Exercise 1](exercises/exercise1-easy/README.md) and let's write some AI-powered code!
+<div align="center">
+
+| Core Documentation | Learning Resources | Tools & Scripts |
+|:------------------:|:-----------------:|:---------------:|
+| [🏠 Home](../../README.md) | [🚀 Quick Start](../../QUICKSTART.md) | [🛠️ Scripts](../../scripts/README.md) |
+| [📋 Prerequisites](../../PREREQUISITES.md) | [❓ FAQ](../../FAQ.md) | [🔧 Setup](../../scripts/setup-workshop.sh) |
+| [📚 All Modules](../README.md) | [🤖 Prompt Guide](../../PROMPT-GUIDE.md) | [✅ Validate](../../scripts/validate-prerequisites.sh) |
+| [🗺️ Learning Paths](../../README.md#-learning-paths) | [🔧 Troubleshooting](../../TROUBLESHOOTING.md) | [🧹 Cleanup](../../scripts/cleanup-resources.sh) |
+
+</div>
+
+### 🏷️ Module Categories
+
+<div align="center">
+
+| 🟢 Fundamentals | 🔵 Intermediate | 🟠 Advanced | 🔴 Enterprise | 🟣 AI Agents | ⭐ Mastery |
+|:---------------:|:---------------:|:-----------:|:-------------:|:------------:|:----------:|
+| **Modules 1-5** | Modules 6-10 | Modules 11-15 | Modules 16-20 | Modules 21-25 | Modules 26-30 |
+| **Current Track** | | | | | |
+
+</div>
+
+---
+
+<div align="center">
+
+🎉 **Welcome to the future of coding!** This module starts your transformation into an AI-powered developer.
+
+**Ready to begin?** → [Start Exercise 1](module-01-exercise1-part1.md)
+
+[📖 Module 02: GitHub Copilot Core Features ➡️](../module-02/README.md)
+
+</div>

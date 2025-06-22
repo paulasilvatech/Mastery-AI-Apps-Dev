@@ -1,0 +1,29 @@
+# Example Terraform variables for development environment
+# Copy this file to terraform.tfvars and update with your values
+# DO NOT commit terraform.tfvars with real values!
+
+project_name = "masteryai"
+location     = "eastus"
+
+tags = {
+  Environment  = "Development"
+  CostCenter   = "Training"
+  Owner        = "your-email@example.com"
+  AutoShutdown = "true"
+  Department   = "Engineering"
+}
+
+enable_auto_shutdown = true
+
+# List of allowed IP addresses (your team's IPs)
+allowed_ip_addresses = [
+  # "YOUR_IP_ADDRESS/32",
+  # "OFFICE_IP_RANGE/24"
+]
+
+# Email for alerts and notifications
+alert_email = "alerts@example.com"
+
+# GitHub token - set via environment variable instead:
+# export TF_VAR_github_token="your-github-token"
+# github_token = "ghp_xxxxxxxxxxxxxxxxxxxx"

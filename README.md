@@ -1,357 +1,487 @@
-# 🤖 Mastery AI Code Development Workshop
+# 🚀 Mastery AI Apps and Development Workshop
 
-> **The Complete 30-Module Journey to AI Development Mastery**
+## Your Complete Journey to AI Development Excellence
 
-[![GitHub Stars](https://img.shields.io/github/stars/paulasilvatech/Mastery-AI-Apps-Dev?style=social)](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Workshop Status](https://img.shields.io/badge/Status-Active-green.svg)](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/projects)
-[![Azure](https://img.shields.io/badge/Azure-Ready-blue.svg)](https://azure.microsoft.com)
-[![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-Optimized-purple.svg)](https://copilot.github.com)
+> **"From your first AI-assisted 'Hello World' to orchestrating enterprise multi-agent systems, this workshop is your comprehensive path to mastering every aspect of AI-powered development."** - [@paulanunes85](https://github.com/paulanunes85)
 
-## 🎯 What You'll Master
+### Welcome to the most complete AI development program available. Through 30 progressive modules and 90 hands-on exercises, you'll transform from AI-curious developer to AI development master.
 
-Transform your development skills with the most comprehensive AI-powered coding workshop available. From your first AI-assisted function to deploying production-ready agent orchestration systems, this workshop covers everything.
+---
 
-```python
-# From this...
-def hello_world():
-    print("Hello World")
+## 🌟 Why "Mastery AI Apps and Development"?
 
-# To this... (with AI assistance)
-async def deploy_multi_agent_system():
-    orchestrator = AgentOrchestrator(
-        agents=[ResearchAgent(), AnalysisAgent(), DeploymentAgent()],
-        scaling_policy=AutoScalingPolicy(min_agents=3, max_agents=50),
-        monitoring=AzureMonitor(workspace=log_analytics)
-    )
-    await orchestrator.deploy_to_production()
-```
+### The Complete Learning Journey
 
-## 🚀 Quick Start (5 Minutes)
+This workshop provides unprecedented depth and breadth:
+- **30 Comprehensive Modules**: From absolute basics to cutting-edge techniques
+- **90 Hands-on Exercises**: 3 per module, progressively challenging
+- **Multiple Learning Tracks**: Clear progression for all skill levels
+- **Real-World Focus**: Production-ready skills, not just theory
+- **Complete Stack Coverage**: Frontend, backend, cloud, AI, and enterprise
 
-Get coding with AI immediately:
+### What Makes This Workshop Unique
+
+- **GitHub + Azure Native**: Leveraging the full Microsoft ecosystem
+- **Agent Development Focus**: Deep dive into AI agents and orchestration
+- **MCP Integration**: Model Context Protocol from basics to advanced
+- **Enterprise Ready**: Including dedicated .NET enterprise track
+- **Continuous Evolution**: Regular updates with latest AI capabilities
+
+---
+
+## 🚀 Quick Start (5 Minutes!)
+
+### Fastest Way to Begin
 
 ```bash
-# Clone and start coding in 5 minutes
+# Clone the workshop
 git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
 cd Mastery-AI-Apps-Dev
+
+# Run the 5-minute quick start
 ./scripts/quick-start.sh
 
-# Open VS Code and start with Module 1
-code modules/module-01-introduction/exercises/hello_ai.py
+# That's it! You're coding with AI! 🎉
 ```
 
-**Prerequisites**: Git, Python 3.11+, VS Code with GitHub Copilot
+### Complete Setup (All Prerequisites)
 
-## 📚 Learning Tracks
+```bash
+# For comprehensive environment setup
+./scripts/setup-workshop.sh    # Linux/macOS
+.\scripts\setup-workshop.ps1   # Windows PowerShell (as Admin)
 
-### 🟢 **Fundamentals Track** (Modules 1-5)
-*Perfect for beginners - 15 hours*
+# Verify everything is working
+./scripts/validate-prerequisites.sh
+```
 
-Master the basics of AI-assisted development with GitHub Copilot.
+### 📜 Available Workshop Scripts
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [01](modules/module-01-introduction) | Introduction to AI-Powered Development | 3h |
-| [02](modules/module-02-copilot-fundamentals) | GitHub Copilot Core Features | 3h |
-| [03](modules/module-03-prompting-techniques) | Effective Prompting Techniques | 3h |
-| [04](modules/module-04-debugging-testing) | AI-Assisted Debugging and Testing | 3h |
-| [05](modules/module-05-code-quality) | Documentation and Code Quality | 3h |
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| **quick-start.sh** | Get started in 5 minutes | `./scripts/quick-start.sh` |
+| **setup-workshop.sh** | Complete environment setup | `./scripts/setup-workshop.sh` |
+| **validate-prerequisites.sh** | Check all requirements | `./scripts/validate-prerequisites.sh` |
+| **cleanup-resources.sh** | Clean up Azure resources | `./scripts/cleanup-resources.sh --module 5` |
 
-### 🔵 **Intermediate Track** (Modules 6-10)
-*Build real applications - 15 hours*
+[📖 Complete Scripts Documentation](scripts/README.md)
 
-Create full-stack applications with AI assistance.
+---
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [06](modules/module-06-multi-file-projects) | Multi-File Projects and Workspaces | 3h |
-| [07](modules/module-07-web-applications) | Building Web Applications with AI | 3h |
-| [08](modules/module-08-api-development) | API Development and Integration | 3h |
-| [09](modules/module-09-database-design) | Database Design and Optimization | 3h |
-| [10](modules/module-10-realtime-systems) | Real-time and Event-Driven Systems | 3h |
+## 📚 Workshop Structure: 30 Modules to Mastery
 
-### 🟠 **Advanced Track** (Modules 11-15)
-*Production-ready systems - 15 hours*
+### Progressive Learning Tracks
 
-Scale to enterprise-level cloud-native applications.
+#### 🟢 **Fundamentals Track** (Modules 1-5)
+Master the basics of AI-assisted development
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [11](modules/module-11-microservices) | Microservices Architecture | 3h |
-| [12](modules/module-12-cloud-native) | Cloud-Native Development | 3h |
-| [13](modules/module-13-infrastructure-code) | Infrastructure as Code | 3h |
-| [14](modules/module-14-cicd-automation) | CI/CD with GitHub Actions | 3h |
-| [15](modules/module-15-performance-scalability) | Performance and Scalability | 3h |
+#### 🔵 **Intermediate Track** (Modules 6-10)
+Build complete applications with AI acceleration
 
-### 🔴 **Enterprise Track** (Modules 16-20)
-*Enterprise-grade solutions - 15 hours*
+#### 🟠 **Advanced Track** (Modules 11-15)
+Design enterprise architectures and cloud-native systems
 
-Implement security, compliance, and production deployment strategies.
+#### 🔴 **Enterprise Track** (Modules 16-20)
+Implement production-grade, scalable solutions
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [16](modules/module-16-security) | Security Implementation | 3h |
-| [17](modules/module-17-github-models) | GitHub Models and AI Integration | 3h |
-| [18](modules/module-18-integration-patterns) | Enterprise Integration Patterns | 3h |
-| [19](modules/module-19-monitoring) | Monitoring and Observability | 3h |
-| [20](modules/module-20-deployment-strategies) | Production Deployment Strategies | 3h |
+#### 🟣 **AI Agents & MCP Track** (Modules 21-25)
+Master agent development and orchestration
 
-### 🟣 **AI Agents Track** (Modules 21-25)
-*The future of development - 15 hours*
+#### ⭐ **Enterprise Mastery Track** (Modules 26-28)
+Advanced enterprise scenarios with .NET focus
 
-Build intelligent agents and multi-agent orchestration systems.
+#### 🏆 **Mastery Validation** (Modules 29-30)
+Complete review and ultimate challenge
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [21](modules/module-21-ai-agents-intro) | Introduction to AI Agents | 3h |
-| [22](modules/module-22-custom-agents) | Building Custom Agents | 3h |
-| [23](modules/module-23-mcp-protocol) | Model Context Protocol (MCP) | 3h |
-| [24](modules/module-24-multi-agent) | Multi-Agent Orchestration | 3h |
-| [25](modules/module-25-advanced-agents) | Advanced Agent Patterns | 3h |
+---
 
-### ⭐ **Enterprise Mastery** (Modules 26-28)
-*Specialized expertise - 9 hours*
+## 📋 Complete Module Overview
 
-Master .NET, legacy modernization, and DevSecOps.
+### Detailed Module Breakdown
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [26](modules/module-26-dotnet-enterprise) | Enterprise .NET Development | 3h |
-| [27](modules/module-27-cobol-modernization) | COBOL Modernization | 3h |
-| [28](modules/module-28-shift-left-security) | Shift-Left Security & DevOps | 3h |
+| Module | Title | Focus Area | Duration | Track |
+|--------|-------|------------|----------|-------|
+| 1 | [Introduction to AI-Powered Development](modules/module-01/README.md) | GitHub Copilot setup, first AI code, basic prompts | 3 hours | 🟢 Fundamentals |
+| 2 | [GitHub Copilot Core Features](modules/module-02/README.md)  | Suggestions, completions, basic patterns | 3 hours | 🟢 Fundamentals |
+| 3 | [Effective Prompting Techniques](modules/module-03/README.md)  | Context optimization, custom instructions | 3 hours | 🟢 Fundamentals |
+| 4 | [AI-Assisted Debugging and Testing](modules/module-04/README.md)  | Test generation, bug detection, TDD | 3 hours | 🟢 Fundamentals |
+| 5 | [Documentation and Code Quality](modules/module-05/README.md)  | AI documentation, refactoring, standards | 3 hours | 🟢 Fundamentals |
+| 6 | [Multi-File Projects and Workspaces](modules/module-06/README.md)  | Complex project management, workspace AI | 3 hours | 🔵 Intermediate |
+| 7 | [Building Web Applications with AI](modules/module-07/README.md)  | Full-stack development with Copilot | 3 hours | 🔵 Intermediate |
+| 8 | [API Development and Integration](modules/module-08/README.md)  | REST, GraphQL, API design with AI | 3 hours | 🔵 Intermediate |
+| 9 | [Database Design and Optimization](modules/module-09/README.md)  | Schema design, queries, performance | 3 hours | 🔵 Intermediate |
+| 10 | [Real-time and Event-Driven Systems](modules/module-10/README.md)  | WebSocket, streaming, async patterns | 3 hours | 🔵 Intermediate |
+| 11 | [Microservices Architecture](modules/module-11/README.md) | Service design, communication, patterns | 3 hours | 🟠 Advanced |
+| 12 | [Cloud-Native Development](modules/module-12/README.md)  | Containers, Kubernetes, serverless | 3 hours | 🟠 Advanced |
+| 13 | [Infrastructure as Code](modules/module-13/README.md)  | Terraform, Bicep, GitOps automation | 3 hours | 🟠 Advanced |
+| 14 | [CI/CD with GitHub Actions](modules/module-14/README.md)  | Pipelines, automation, deployment | 3 hours | 🟠 Advanced |
+| 15 | [Performance and Scalability](modules/module-15/README.md)  | Optimization, caching, load balancing | 3 hours | 🟠 Advanced |
+| 16 | [Security Implementation](modules/module-16/README.md)  | Zero-trust, encryption, compliance | 3 hours | 🔴 Enterprise |
+| 17 | [GitHub Models and AI Integration](modules/module-17/README.md)  | Model experimentation, embeddings | 3 hours | 🔴 Enterprise |
+| 18 | [Enterprise Integration Patterns](modules/module-18/README.md)  | ESB, CQRS, event sourcing, sagas | 3 hours | 🔴 Enterprise |
+| 19 | [Monitoring and Observability](modules/module-19/README.md)  | APM, logging, tracing, dashboards | 3 hours | 🔴 Enterprise |
+| 20 | [Production Deployment Strategies](modules/module-20/README.md)  | Blue-green, canary, feature flags | 3 hours | 🔴 Enterprise |
+| 21 | [Introduction to AI Agents](modules/module-21/README.md)  | Agent basics, GitHub Copilot agents | 3 hours | 🟣 AI Agents |
+| 22 | [Building Custom Agents](modules/module-22/README.md)  | Agent development, tools, function calling | 3 hours | 🟣 AI Agents |
+| 23 | [Model Context Protocol (MCP)](modules/module-23/README.md)  | MCP fundamentals, servers, clients | 3 hours | 🟣 AI Agents |
+| 24 | [Multi-Agent Orchestration](modules/module-24/README.md)  | Agent communication, coordination | 3 hours | 🟣 AI Agents |
+| 25 | [Advanced Agent Patterns](modules/module-25/README.md)  | Complex workflows, error handling | 3 hours | 🟣 AI Agents |
+| 26 | [Enterprise .NET Development](modules/module-26/README.md)  | Advanced .NET with AI, architecture | 3 hours | ⭐ Enterprise Mastery |
+| 27 | [COBOL Modernization](modules/module-27/README.md)  | Legacy transformation strategies | 3 hours | ⭐ Enterprise Mastery |
+| 28 | [Shift-Left Security & DevOps](modules/module-28/README.md)  | GitHub Advanced Security, Defender | 3 hours | ⭐ Enterprise Mastery |
+| 29 | [Complete Enterprise Review](modules/module-29/README.md)  | Full-stack .NET enterprise system | 3 hours | 🏆 Mastery |
+| 30 | [Ultimate Mastery Challenge](modules/module-30/README.md)  | Comprehensive 3-hour assessment | 3 hours | 🏆 Mastery |
 
-### 🏆 **Mastery Validation** (Modules 29-30)
-*Prove your expertise - 6 hours*
+---
 
-Comprehensive review and ultimate challenge.
+## 🎯 Learning Objectives by Track
 
-| Module | Focus | Duration |
-|--------|-------|----------|
-| [29](modules/module-29-enterprise-review) | Complete Enterprise Review | 3h |
-| [30](modules/module-30-mastery-challenge) | Ultimate Mastery Challenge | 3h |
+### Fundamentals (Modules 1-5)
+- Set up and configure GitHub Copilot
+- Write AI-assisted code efficiently
+- Master prompting techniques
+- Debug and test with AI
+- Create comprehensive documentation
+
+### Intermediate (Modules 6-10)
+- Build full-stack applications
+- Design and implement APIs
+- Work with databases effectively
+- Handle real-time communication
+- Manage complex projects
+
+### Advanced (Modules 11-15)
+- Architect microservices systems
+- Implement cloud-native patterns
+- Automate infrastructure
+- Create CI/CD pipelines
+- Optimize for scale
+
+### Enterprise (Modules 16-20)
+- Implement enterprise security
+- Integrate AI models
+- Apply enterprise patterns
+- Monitor production systems
+- Deploy with confidence
+
+### AI Agents & MCP (Modules 21-25)
+- Understand agent architectures
+- Build custom AI agents
+- Master Model Context Protocol
+- Orchestrate multiple agents
+- Implement complex agent workflows
+
+### Enterprise Mastery (Modules 26-28)
+- Advanced .NET enterprise development
+- Modernize legacy systems
+- Implement shift-left security
+- Master agentic DevOps
+
+### Mastery Validation (Modules 29-30)
+- Complete enterprise system review
+- Demonstrate all learned skills
+- Prove production readiness
+
+---
 
 ## 🛠️ Technology Stack
 
-### **Core Technologies**
-- **AI Platform**: GitHub Copilot + GitHub Models
-- **Languages**: Python (primary), TypeScript/JavaScript, .NET, COBOL
-- **Cloud**: Microsoft Azure (AI Foundry, OpenAI, Cosmos DB, AKS)
-- **Infrastructure**: Docker, Kubernetes, Terraform, Bicep
-- **Development**: VS Code, GitHub Actions, Azure DevOps
+### Core Development
+- **Languages**: Python 3.11+, .NET 8+, TypeScript, JavaScript
+- **IDEs**: Visual Studio Code, Visual Studio 2022
+- **Version Control**: Git, GitHub
 
-### **AI & Agent Technologies**
-- **GitHub Copilot**: Code completion and chat
-- **GitHub Models**: AI model experimentation
-- **Model Context Protocol (MCP)**: Agent communication
-- **Azure OpenAI**: GPT-4, embeddings, function calling
-- **Azure AI Search**: Vector search and retrieval
+### AI and Automation
+- **GitHub Copilot**: All features including agents
+- **GitHub Models**: AI model playground and experimentation
+- **GitHub Actions**: CI/CD and agent orchestration
+- **Model Context Protocol (MCP)**: Agent communication standard
+- **Azure OpenAI Service**: GPT-4, embeddings, fine-tuning
+- **Azure AI Foundry**: Enterprise AI platform
+- **Semantic Kernel**: Microsoft's orchestration framework
 
-### **Production Technologies**
-- **Monitoring**: Azure Monitor, Application Insights, Grafana
-- **Security**: Azure Key Vault, Defender for Cloud, GitHub Advanced Security
-- **Data**: Cosmos DB, Azure SQL, Redis, PostgreSQL
-- **Messaging**: Service Bus, Event Grid, SignalR
+### Cloud Platform (Azure)
+- **Compute**: AKS, Functions, Container Instances
+- **AI Services**: 
+  - Azure AI Search (vector capabilities)
+  - Cosmos DB (vector search)
+  - Azure Machine Learning
+  - Cognitive Services
+- **Data**: Data Lake, Synapse Analytics
+- **Integration**: Service Bus, Event Grid, Logic Apps
+- **Security**: Key Vault, Defender, Sentinel
 
-## 🎯 Learning Outcomes
+### Enterprise Tools
+- **Monitoring**: Application Insights, Prometheus, Grafana
+- **Security**: GitHub Advanced Security, Defender for Cloud
+- **IaC**: Terraform, Bicep, ARM Templates
+- **Orchestration**: Kubernetes, Docker
 
-By completing this workshop, you will:
+---
 
-### **Immediate Skills** (Modules 1-10)
-- ✅ Write code 10x faster with AI assistance
-- ✅ Build full-stack web applications
-- ✅ Create robust APIs and microservices
-- ✅ Implement proper testing and debugging
-- ✅ Master modern development workflows
+## 📝 Exercise Structure
 
-### **Advanced Capabilities** (Modules 11-20)
-- ✅ Design cloud-native architectures
-- ✅ Implement CI/CD and GitOps
-- ✅ Ensure enterprise security and compliance
-- ✅ Monitor and optimize production systems
-- ✅ Scale applications globally
+Each module contains 3 progressive exercises:
 
-### **AI Mastery** (Modules 21-30)
-- ✅ Build custom AI agents
-- ✅ Orchestrate multi-agent systems
-- ✅ Implement MCP protocols
-- ✅ Modernize legacy systems
-- ✅ Lead AI transformation initiatives
+### Standard Exercise Format
 
-## 📋 Prerequisites
+1. **Exercise 1 - Foundation (⭐)**
+   - Duration: 30-45 minutes
+   - Guided implementation
+   - Core concept focus
 
-### **Required**
-- **Hardware**: 16GB RAM, 100GB free disk space
-- **Software**: Git, Python 3.11+, Node.js 18+, VS Code
-- **Accounts**: GitHub (with Copilot), Azure subscription
-- **Knowledge**: Basic programming in any language
+2. **Exercise 2 - Application (⭐⭐)**
+   - Duration: 45-60 minutes
+   - Real-world scenario
+   - Integration focus
 
-### **Quick Setup**
-```bash
-# Validate your system
-./scripts/validate-prerequisites.sh
+3. **Exercise 3 - Mastery (⭐⭐⭐)**
+   - Duration: 60-90 minutes
+   - Complex challenge
+   - Production-ready
 
-# Complete setup (if validation passes)
-./scripts/setup-workshop.sh
-```
+### Exercise Components
+- Clear objectives and requirements
+- Step-by-step instructions
+- Copilot prompt suggestions
+- Validation tests
+- Troubleshooting guide
+- Extension challenges
 
-See [PREREQUISITES.md](PREREQUISITES.md) for detailed requirements.
+---
 
-## 🎮 Learning Experience
+## 🔧 Prerequisites by Track
 
-### **Progressive Difficulty**
-Each module builds on previous knowledge with carefully designed exercises:
+### General Requirements
+- Computer with 16GB RAM minimum
+- Stable internet connection
+- GitHub account
+- Azure subscription (free tier OK)
 
-- **⭐ Easy** (30-45 min): Guided implementation with step-by-step instructions
-- **⭐⭐ Medium** (45-60 min): Real-world scenarios with partial guidance
-- **⭐⭐⭐ Hard** (60-90 min): Production challenges with minimal guidance
+### Track-Specific Prerequisites
 
-### **Hands-On Projects**
-Every module includes practical projects you can showcase:
+#### Fundamentals (Modules 1-5)
+- Basic programming knowledge
+- Familiarity with Git
+- No AI experience required
 
-```
-📁 Your Portfolio After Completion
-├── 🌐 Full-stack web applications
-├── 🤖 Custom AI agents and tools
-├── ☁️ Cloud-native microservices
-├── 🔧 Infrastructure as Code templates
-├── 📊 Monitoring and observability dashboards
-├── 🔒 Security-first applications
-└── 🚀 Production deployment pipelines
-```
+#### Intermediate (Modules 6-10)
+- Complete Fundamentals track
+- Web development basics
+- Database concepts
 
-### **Real-World Focus**
-- Production-ready code patterns
-- Industry best practices
-- Enterprise security requirements
-- Scalability considerations
-- Cost optimization strategies
+#### Advanced (Modules 11-15)
+- Complete Intermediate track
+- Cloud computing basics
+- System design knowledge
 
-## 🌟 Success Stories
+#### Enterprise (Modules 16-20)
+- Complete Advanced track
+- Production experience helpful
+- Security awareness
 
-> *"This workshop transformed how our team develops software. We're shipping features 3x faster with higher quality."*  
-> **— Senior Developer, Fortune 500 Company**
+#### AI Agents & MCP (Modules 21-25)
+- Complete Enterprise track
+- API development experience
+- Async programming knowledge
 
-> *"The AI agents module alone revolutionized our automation workflows. Incredible ROI."*  
-> **— DevOps Lead, Tech Startup**
+#### Enterprise Mastery (Modules 26-28)
+- All previous tracks
+- .NET experience (for module 26)
+- Enterprise architecture knowledge
 
-> *"Most comprehensive AI development training available. Worth every hour invested."*  
-> **— Principal Engineer, Cloud Provider**
+---
 
-## 🎓 Certification Path
+## 💻 Getting Started - Detailed Steps
 
-### **Workshop Certificates**
-- 🥉 **Fundamentals Certified** (Modules 1-5)
-- 🥈 **Advanced Developer** (Modules 1-15)
-- 🥇 **Enterprise Expert** (Modules 1-20)
-- 🏆 **AI Mastery** (Complete all 30 modules)
+### 1. Environment Setup
 
-### **Verification Process**
-- Complete all exercises in each track
-- Pass practical assessments
-- Submit portfolio projects
-- Peer review participation
-
-## 🤝 Community
-
-### **Get Help**
-- 💬 [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) - Ask questions, share projects
-- 🐛 [Issue Tracker](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/issues) - Report bugs, request features
-- 📖 [Wiki](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/wiki) - Extended documentation
-
-### **Contribute**
-- 🔧 Submit bug fixes and improvements
-- 📝 Add new exercises and examples
-- 🌍 Translate to other languages
-- 📚 Improve documentation
-
-## 📅 Learning Schedule
-
-### **Self-Paced Options**
-- **Intensive**: 2 weeks (6 hours/day)
-- **Standard**: 6 weeks (3 hours/day)
-- **Relaxed**: 12 weeks (1.5 hours/day)
-- **Weekend**: 15 weekends (6 hours/weekend)
-
-### **Recommended Paths**
-
-#### **🚀 Fast Track** (Experienced Developers)
-Modules 1, 3, 6, 8, 11, 13, 16, 19, 21, 23, 25, 30
-
-#### **🎯 Full Journey** (Complete Mastery)
-Sequential completion of all 30 modules
-
-#### **🏢 Enterprise Focus**
-Modules 1-5, 11-20, 26, 28-30
-
-#### **🤖 AI Specialist**
-Modules 1-5, 17, 21-25, 30
-
-## 🔧 Quick Commands
-
-```bash
-# Setup and validation
-./scripts/setup-workshop.sh          # Complete workshop setup
-./scripts/validate-prerequisites.sh  # Check requirements
-./scripts/quick-start.sh             # 5-minute quick start
-
-# Resource management
-./scripts/cleanup-resources.sh       # Clean up Azure resources
-./scripts/cleanup-resources.sh -m 5  # Clean specific module
-./scripts/cleanup-resources.sh --dry-run  # Preview cleanup
-
-# Development
-source venv/bin/activate             # Activate Python environment
-code modules/module-XX-name/         # Open specific module
-```
-
-## 📊 Workshop Statistics
-
-- **📚 30 Comprehensive Modules**: 90 hours of content
-- **🛠️ 90+ Hands-On Exercises**: Real-world projects
-- **☁️ 50+ Azure Resources**: Production infrastructure
-- **🤖 15+ AI Agents**: Custom automation tools
-- **🔧 25+ GitHub Actions**: CI/CD workflows
-- **📈 100% Practical**: No theoretical fluff
-
-## 🎯 Start Your Journey
-
-Ready to master AI-powered development? Choose your path:
-
-### **🚀 I want to start immediately**
+#### Option A: Quick Start (5 minutes)
 ```bash
 git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
 cd Mastery-AI-Apps-Dev
 ./scripts/quick-start.sh
 ```
 
-### **📋 I need to check prerequisites first**
-1. Read [PREREQUISITES.md](PREREQUISITES.md)
-2. Run `./scripts/validate-prerequisites.sh`
-3. Follow setup instructions
+#### Option B: Complete Setup
+```bash
+# Clone repository
+git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
+cd Mastery-AI-Apps-Dev
 
-### **❓ I have questions**
-- Check [FAQ.md](FAQ.md)
-- Browse [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
-- Read [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+# Run appropriate setup script
+./scripts/setup-workshop.sh      # Linux/macOS
+.\scripts\setup-workshop.ps1     # Windows (PowerShell as Admin)
+
+# Validate setup
+./scripts/validate-prerequisites.sh
+```
+
+### 2. Configure GitHub Copilot
+1. Install VS Code GitHub Copilot extension
+2. Sign in with GitHub account
+3. Verify Copilot is active: `gh copilot status`
+
+### 3. Set Up Azure (Optional for early modules)
+```bash
+# Login to Azure
+az login
+
+# Set default subscription
+az account set --subscription "Your-Subscription-Name"
+```
+
+### 4. Start Learning!
+```bash
+# Navigate to first module
+cd modules/module-01
+
+# Open in VS Code
+code .
+
+# Follow the module README
+```
+
+### 🚀 [Begin Module 1 Now!](modules/module-01/README.md)
 
 ---
 
-## 📄 License & Attribution
+## 📚 Learning Paths
 
-MIT License - see [LICENSE](LICENSE) for details.
+### For Beginners (12-16 weeks)
+- Weeks 1-3: Fundamentals (Modules 1-5)
+- Weeks 4-6: Intermediate (Modules 6-10)
+- Weeks 7-9: Advanced (Modules 11-15)
+- Weeks 10-12: Enterprise (Modules 16-20)
+- Weeks 13-15: AI Agents (Modules 21-25)
+- Week 16: Review and Challenge
 
-**Created by**: [Paula Silva](https://github.com/paulasilvatech)  
-**Powered by**: GitHub Copilot, Azure AI, and the amazing open-source community
+### For Experienced Developers (8-10 weeks)
+- Week 1: Fast-track Fundamentals
+- Weeks 2-3: Intermediate
+- Weeks 4-5: Advanced
+- Week 6: Enterprise
+- Weeks 7-8: AI Agents & MCP
+- Week 9: Enterprise Mastery
+- Week 10: Final Challenge
+
+### For Teams (Custom)
+- Cohort-based learning
+- Weekly sync sessions
+- Pair programming
+- Team challenges
+- Custom scheduling
 
 ---
 
-⭐ **Found this helpful?** Star the repo and share with your team!
+## 🎯 Expected Outcomes
 
-🤝 **Want to contribute?** Check out our [Contributing Guide](CONTRIBUTING.md)
+### After Fundamentals
+- 2-3x faster coding with AI
+- Effective prompt engineering
+- AI-powered debugging
+- Quality documentation
 
-💬 **Questions?** Join our [community discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
+### After Intermediate
+- Full-stack application development
+- API design and implementation
+- Database optimization
+- Real-time features
+
+### After Advanced
+- Cloud-native architectures
+- Infrastructure automation
+- CI/CD pipelines
+- Performance optimization
+
+### After Enterprise
+- Production-ready systems
+- Security implementation
+- Monitoring and observability
+- Deployment strategies
+
+### After AI Agents & MCP
+- Custom agent development
+- Multi-agent orchestration
+- MCP implementation
+- Complex AI workflows
+
+### After Complete Workshop
+- Complete AI development mastery
+- Enterprise architect capabilities
+- Team leadership skills
+- Innovation mindset
 
 ---
 
-*Last updated: $(date +"%B %Y") | Workshop Version: 1.0.0 | Modules: 30/30 Complete*
+## 📚 Additional Resources
+
+### Workshop Resources
+- **[Scripts Documentation](scripts/README.md)**: All workshop automation scripts
+- **[Module Documentation](modules/docs/)**: Deep dive guides
+- **[Code Templates](modules/templates/)**: Reusable starter code
+- **[Best Practices](docs/best-practices.md)**: Industry standards
+
+### External Resources
+- [GitHub Copilot Documentation](https://docs.github.com/copilot)
+- [Azure AI Documentation](https://learn.microsoft.com/azure/ai-services/)
+- [Model Context Protocol Spec](https://github.com/modelcontextprotocol/specification)
+- [Microsoft Learn](https://learn.microsoft.com)
+
+---
+
+## 🤝 Community & Support
+
+### Getting Help
+1. Check module-specific troubleshooting guides
+2. Review [FAQ](docs/FAQ.md)
+3. Search [GitHub Issues](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/issues)
+4. Join [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
+
+### Contributing
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## 📄 License
+
+MIT License - Use freely with attribution
+
+---
+
+## 🎉 Ready to Master AI Development?
+
+This isn't just another workshop—it's your transformation into an AI development master. With 30 comprehensive modules, 90 hands-on exercises, and a supportive community, you have everything needed to excel in the AI-powered future of software development.
+
+---
+
+*The best investment you can make is in yourself. The best time to start is now.*
+
+**Welcome to Mastery AI Apps and Development! 🚀**
+
+---
+
+## 🔗 Related Repositories
+
+### [AI Code Development](https://github.com/paulasilvatech/Code-AI-Dev)
+Complete workshop for leveraging AI tools like GitHub Copilot to optimize and improve code quality in enterprise environments. Learn advanced AI-assisted workflows, refactoring techniques, and best practices for integrating AI tools into development processes.
+
+### [Secure Code AI Development](https://github.com/paulasilvatech/Secure-Code-AI-Dev)
+Comprehensive workshop for implementing secure coding practices using AI-powered tools, GitHub Advanced Security, and modern DevSecOps workflows. Learn to shift-left security, reduce vulnerabilities significantly, and achieve enterprise-grade security compliance with AI assistance.
+
+### [Agentic Operations & Observability](https://github.com/paulasilvatech/Agentic-Ops-Dev)
+Hands-on workshop for implementing comprehensive observability solutions using Azure Monitor, Application Insights, and AI-powered tools. Learn to build modern monitoring systems, implement AI-enhanced observability, and create intelligent DevOps practices for cloud applications.
+
+### [Design-to-Code Development](https://github.com/paulasilvatech/Design-to-Code-Dev) 
+Comprehensive workshop for implementing design-to-code workflows using AI-powered tools, Figma integration, and modern development practices. Learn to bridge the gap between design and development, creating consistent and maintainable user interfaces with intelligent automation.
+
+### [Figma-to-Code Development](https://github.com/paulasilvatech/Figma-to-Code-Dev)
+Hands-on workshop for transforming Figma designs into production-ready code using GitHub Copilot Agent Mode and AI-powered tools. Learn to convert sophisticated designs into fully functional applications, achieving significant time reduction in development cycles with enterprise-grade features.
+
+---
+
+## 👤 Credits
+
+This workshop was developed by [Paula Silva](https://github.com/paulanunes85), AI App and Software Developer [Global Black Belt at Microsoft Americas](https://www.linkedin.com/in/paulanunes/).
+
+---

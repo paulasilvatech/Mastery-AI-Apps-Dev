@@ -383,7 +383,7 @@ You've successfully:
 - Error handling improves with specific requirements
 - Classes benefit from clear method descriptions
 
-**Next**: Continue to [Part 3](part3.md) where we'll test our functions and create a complete CLI application!
+**Next**: Continue to [Part 3](module-01-exercise1-part3.md) where we'll test our functions and create a complete CLI application!
 
 ---
 

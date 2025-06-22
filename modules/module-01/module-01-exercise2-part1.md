@@ -608,7 +608,7 @@ You've successfully:
 - Atomic writes prevent data corruption
 - Singleton pattern ensures consistent state
 
-**Next**: Continue to [Part 2](part2.md) where we'll build the CLI interface!
+**Next**: Continue to [Part 2](module-01-exercise2-part2.md) where we'll build the CLI interface!
 
 ---
 

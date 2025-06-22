@@ -1,0 +1,324 @@
+# Exercise 1: Validation Tests
+# Run these tests to verify your implementation
+
+import asyncio
+import httpx
+from typing import Dict, Any
+import json
+from uuid import uuid4
+import sys
+
+# ANSI color codes
+GREEN = '\033[92m'
+RED = '\033[91m'
+YELLOW = '\033[93m'
+BLUE = '\033[94m'
+RESET = '\033[0m'
+
+class TestResult:
+    def __init__(self):
+        self.passed = 0
+        self.failed = 0
+        self.tests = []
+    
+    def add_test(self, name: str, passed: bool, message: str = ""):
+        self.tests.append({
+            "name": name,
+            "passed": passed,
+            "message": message
+        })
+        if passed:
+            self.passed += 1
+        else:
+            self.failed += 1
+    
+    def print_summary(self):
+        print(f"\n{BLUE}Test Summary:{RESET}")
+        print(f"{GREEN}Passed: {self.passed}{RESET}")
+        print(f"{RED}Failed: {self.failed}{RESET}")
+        
+        if self.failed > 0:
+            print(f"\n{RED}Failed Tests:{RESET}")
+            for test in self.tests:
+                if not test["passed"]:
+                    print(f"  - {test['name']}: {test['message']}")
+
+async def test_service_health(client: httpx.AsyncClient, service_name: str, port: int) -> bool:
+    """Test if service health endpoint is working"""
+    try:
+        response = await client.get(f"http://localhost:{port}/health")
+        return response.status_code == 200 and response.json()["status"] == "healthy"
+    except Exception as e:
+        print(f"{RED}Error checking {service_name} health: {e}{RESET}")
+        return False
+
+async def test_user_service(results: TestResult):
+    """Test User Service functionality"""
+    print(f"\n{BLUE}Testing User Service...{RESET}")
+    
+    async with httpx.AsyncClient() as client:
+        base_url = "http://localhost:8001"
+        
+        # Test 1: Health Check
+        health_ok = await test_service_health(client, "User Service", 8001)
+        results.add_test(
+            "User Service Health Check",
+            health_ok,
+            "Service not responding on port 8001"
+        )
+        
+        if not health_ok:
+            return
+        
+        # Test 2: Create User
+        user_data = {
+            "username": f"testuser_{uuid4().hex[:8]}",
+            "email": f"test_{uuid4().hex[:8]}@example.com",
+            "full_name": "Test User",
+            "password": "securepassword123"
+        }
+        
+        try:
+            response = await client.post(f"{base_url}/api/users", json=user_data)
+            user_created = response.status_code == 201
+            if user_created:
+                created_user = response.json()
+                user_id = created_user.get("id")
+            results.add_test(
+                "Create User",
+                user_created,
+                f"Failed to create user: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Create User", False, str(e))
+            return
+        
+        # Test 3: Get User
+        try:
+            response = await client.get(f"{base_url}/api/users/{user_id}")
+            results.add_test(
+                "Get User by ID",
+                response.status_code == 200,
+                f"Failed to get user: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Get User by ID", False, str(e))
+        
+        # Test 4: List Users
+        try:
+            response = await client.get(f"{base_url}/api/users")
+            results.add_test(
+                "List Users",
+                response.status_code == 200 and isinstance(response.json(), list),
+                f"Failed to list users: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("List Users", False, str(e))
+        
+        # Test 5: Update User
+        try:
+            update_data = {"full_name": "Updated Test User"}
+            response = await client.put(f"{base_url}/api/users/{user_id}", json=update_data)
+            results.add_test(
+                "Update User",
+                response.status_code == 200,
+                f"Failed to update user: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Update User", False, str(e))
+        
+        # Test 6: Delete User
+        try:
+            response = await client.delete(f"{base_url}/api/users/{user_id}")
+            results.add_test(
+                "Delete User",
+                response.status_code == 204,
+                f"Failed to delete user: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Delete User", False, str(e))
+
+async def test_product_service(results: TestResult):
+    """Test Product Service functionality"""
+    print(f"\n{BLUE}Testing Product Service...{RESET}")
+    
+    async with httpx.AsyncClient() as client:
+        base_url = "http://localhost:8002"
+        
+        # Test 1: Health Check
+        health_ok = await test_service_health(client, "Product Service", 8002)
+        results.add_test(
+            "Product Service Health Check",
+            health_ok,
+            "Service not responding on port 8002"
+        )
+        
+        if not health_ok:
+            return
+        
+        # Test 2: Create Product
+        product_data = {
+            "name": f"Test Product {uuid4().hex[:8]}",
+            "description": "A test product",
+            "price": 99.99,
+            "stock_quantity": 100,
+            "category": "Electronics"
+        }
+        
+        try:
+            response = await client.post(f"{base_url}/api/products", json=product_data)
+            results.add_test(
+                "Create Product",
+                response.status_code == 201,
+                f"Failed to create product: {response.status_code}"
+            )
+            if response.status_code == 201:
+                product_id = response.json().get("id")
+        except Exception as e:
+            results.add_test("Create Product", False, str(e))
+            return
+        
+        # Test 3: Get Product
+        try:
+            response = await client.get(f"{base_url}/api/products/{product_id}")
+            results.add_test(
+                "Get Product by ID",
+                response.status_code == 200,
+                f"Failed to get product: {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Get Product by ID", False, str(e))
+
+async def test_order_service(results: TestResult):
+    """Test Order Service with inter-service communication"""
+    print(f"\n{BLUE}Testing Order Service...{RESET}")
+    
+    async with httpx.AsyncClient() as client:
+        # First, create test data in other services
+        # Create a user
+        user_data = {
+            "username": f"ordertest_{uuid4().hex[:8]}",
+            "email": f"order_{uuid4().hex[:8]}@example.com",
+            "full_name": "Order Test User",
+            "password": "password123"
+        }
+        
+        user_response = await client.post("http://localhost:8001/api/users", json=user_data)
+        if user_response.status_code != 201:
+            results.add_test(
+                "Order Service Setup",
+                False,
+                "Failed to create test user"
+            )
+            return
+        
+        user_id = user_response.json()["id"]
+        
+        # Create a product
+        product_data = {
+            "name": "Order Test Product",
+            "description": "Product for order testing",
+            "price": 50.00,
+            "stock_quantity": 10,
+            "category": "Test"
+        }
+        
+        product_response = await client.post("http://localhost:8002/api/products", json=product_data)
+        if product_response.status_code != 201:
+            results.add_test(
+                "Order Service Setup",
+                False,
+                "Failed to create test product"
+            )
+            return
+        
+        product_id = product_response.json()["id"]
+        
+        # Test Order Service
+        base_url = "http://localhost:8003"
+        
+        # Test 1: Health Check
+        health_ok = await test_service_health(client, "Order Service", 8003)
+        results.add_test(
+            "Order Service Health Check",
+            health_ok,
+            "Service not responding on port 8003"
+        )
+        
+        if not health_ok:
+            return
+        
+        # Test 2: Create Order
+        order_data = {
+            "user_id": user_id,
+            "items": [
+                {
+                    "product_id": product_id,
+                    "quantity": 2
+                }
+            ]
+        }
+        
+        try:
+            response = await client.post(f"{base_url}/api/orders", json=order_data)
+            results.add_test(
+                "Create Order (Inter-service Communication)",
+                response.status_code == 201,
+                f"Failed to create order: {response.status_code}"
+            )
+            
+            if response.status_code == 201:
+                order = response.json()
+                # Verify order has calculated total
+                has_total = "total_amount" in order or "items" in order
+                results.add_test(
+                    "Order Total Calculation",
+                    has_total,
+                    "Order missing total amount or items"
+                )
+        except Exception as e:
+            results.add_test("Create Order", False, str(e))
+        
+        # Test 3: Invalid Order (non-existent user)
+        try:
+            invalid_order = {
+                "user_id": str(uuid4()),
+                "items": [{"product_id": product_id, "quantity": 1}]
+            }
+            response = await client.post(f"{base_url}/api/orders", json=invalid_order)
+            results.add_test(
+                "Order Validation (Invalid User)",
+                response.status_code == 400,
+                f"Expected 400 for invalid user, got {response.status_code}"
+            )
+        except Exception as e:
+            results.add_test("Order Validation", False, str(e))
+
+async def run_all_tests():
+    """Run all validation tests"""
+    print(f"{BLUE}{'='*50}{RESET}")
+    print(f"{BLUE}Module 11 - Exercise 1 Validation Tests{RESET}")
+    print(f"{BLUE}{'='*50}{RESET}")
+    
+    results = TestResult()
+    
+    # Test each service
+    await test_user_service(results)
+    await test_product_service(results)
+    await test_order_service(results)
+    
+    # Print summary
+    results.print_summary()
+    
+    # Return exit code
+    return 0 if results.failed == 0 else 1
+
+if __name__ == "__main__":
+    exit_code = asyncio.run(run_all_tests())
+    
+    if exit_code == 0:
+        print(f"\n{GREEN}✓ All tests passed! Great job!{RESET}")
+    else:
+        print(f"\n{RED}✗ Some tests failed. Please review and fix the issues.{RESET}")
+    
+    sys.exit(exit_code)

@@ -1,0 +1,237 @@
+{
+  "rabbit_version": "3.12",
+  "rabbitmq_version": "3.12",
+  "product_name": "RabbitMQ",
+  "product_version": "3.12",
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "kI3GCqW5JLMJa4iX1lo7X4D6XbYqlLAYgiJkD8+VgI0ZvmQO",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"],
+      "limits": {}
+    },
+    {
+      "name": "microservices",
+      "password_hash": "WZbH+kgmS8+J7qUzaQY1lJqDYjfY6YEqpMmfH5z6NeZLHfXm",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["monitoring"],
+      "limits": {}
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/",
+      "limits": {}
+    },
+    {
+      "name": "microservices",
+      "description": "Virtual host for microservices communication",
+      "tags": ["production"],
+      "limits": {}
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "microservices",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "microservices",
+      "vhost": "microservices",
+      "configure": "^(events|commands|notifications).*",
+      "write": "^(events|commands|notifications).*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-module11"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "microservices",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    },
+    {
+      "vhost": "microservices",
+      "name": "message-ttl",
+      "pattern": "^temp\\.",
+      "apply-to": "queues",
+      "definition": {
+        "message-ttl": 3600000,
+        "max-length": 100000
+      },
+      "priority": 1
+    }
+  ],
+  "queues": [
+    {
+      "name": "notifications.email",
+      "vhost": "microservices",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 86400000,
+        "x-dead-letter-exchange": "dlx",
+        "x-dead-letter-routing-key": "failed.notifications.email"
+      }
+    },
+    {
+      "name": "notifications.sms",
+      "vhost": "microservices",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 86400000,
+        "x-dead-letter-exchange": "dlx",
+        "x-dead-letter-routing-key": "failed.notifications.sms"
+      }
+    },
+    {
+      "name": "inventory.updates",
+      "vhost": "microservices",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-max-priority": 10
+      }
+    },
+    {
+      "name": "orders.processing",
+      "vhost": "microservices",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 3600000,
+        "x-max-length": 10000
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "events",
+      "vhost": "microservices",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "commands",
+      "vhost": "microservices",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "notifications",
+      "vhost": "microservices",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "dlx",
+      "vhost": "microservices",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "saga",
+      "vhost": "microservices",
+      "type": "headers",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "events",
+      "vhost": "microservices",
+      "destination": "notifications.email",
+      "destination_type": "queue",
+      "routing_key": "order.created",
+      "arguments": {}
+    },
+    {
+      "source": "events",
+      "vhost": "microservices",
+      "destination": "notifications.email",
+      "destination_type": "queue",
+      "routing_key": "order.completed",
+      "arguments": {}
+    },
+    {
+      "source": "events",
+      "vhost": "microservices",
+      "destination": "notifications.sms",
+      "destination_type": "queue",
+      "routing_key": "order.*.urgent",
+      "arguments": {}
+    },
+    {
+      "source": "events",
+      "vhost": "microservices",
+      "destination": "inventory.updates",
+      "destination_type": "queue",
+      "routing_key": "inventory.*",
+      "arguments": {}
+    },
+    {
+      "source": "commands",
+      "vhost": "microservices",
+      "destination": "orders.processing",
+      "destination_type": "queue",
+      "routing_key": "process-order",
+      "arguments": {}
+    },
+    {
+      "source": "notifications",
+      "vhost": "microservices",
+      "destination": "notifications.email",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "notifications",
+      "vhost": "microservices",
+      "destination": "notifications.sms",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+# Module 17: Docker Compose Configuration
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Vector Database - Qdrant
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: module17-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"  # gRPC port
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: module17-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: module17-postgres
+    environment:
+      POSTGRES_USER: workshop
+      POSTGRES_PASSWORD: workshop123
+      POSTGRES_DB: ai_workshop
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U workshop"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus for metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: module17-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    restart: unless-stopped
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: module17-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # Jaeger for distributed tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: module17-jaeger
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"  # UI
+      - "14268:14268"
+      - "14250:14250"
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    restart: unless-stopped
+
+  # API Service (Exercise 1)
+  semantic-search:
+    build:
+      context: ./exercises/exercise1-foundation
+      dockerfile: Dockerfile
+    container_name: module17-semantic-search
+    ports:
+      - "8001:8000"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - QDRANT_URL=http://qdrant:6333
+    depends_on:
+      - qdrant
+      - redis
+    volumes:
+      - ./exercises/exercise1-foundation:/app
+    restart: unless-stopped
+
+  # RAG Service (Exercise 2)
+  rag-system:
+    build:
+      context: ./exercises/exercise2-application
+      dockerfile: Dockerfile
+    container_name: module17-rag-system
+    ports:
+      - "8002:8000"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - QDRANT_URL=http://qdrant:6333
+      - POSTGRES_URL=postgresql://workshop:workshop123@postgres:5432/ai_workshop
+    depends_on:
+      - qdrant
+      - redis
+      - postgres
+    volumes:
+      - ./exercises/exercise2-application:/app
+      - ./data:/data
+    restart: unless-stopped
+
+  # Orchestrator Service (Exercise 3)
+  orchestrator:
+    build:
+      context: ./exercises/exercise3-mastery
+      dockerfile: Dockerfile
+    container_name: module17-orchestrator
+    ports:
+      - "8000:8000"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - PROMETHEUS_URL=http://prometheus:9090
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_AGENT_PORT=6831
+    depends_on:
+      - redis
+      - prometheus
+      - jaeger
+    volumes:
+      - ./exercises/exercise3-mastery:/app
+      - ./models:/app/models
+    restart: unless-stopped
+
+  # Monitoring Dashboard
+  dashboard:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile.dashboard
+    container_name: module17-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://orchestrator:8000
+      - PROMETHEUS_URL=http://prometheus:9090
+      - GRAFANA_URL=http://grafana:3000
+    depends_on:
+      - orchestrator
+      - prometheus
+      - grafana
+    volumes:
+      - ./monitoring/dashboard:/app
+    restart: unless-stopped
+
+  # Development Jupyter Notebook
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: module17-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data:/home/jovyan/data
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  redis_data:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    name: module17-network

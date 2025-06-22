@@ -1,0 +1,134 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-size="28" font-weight="bold" fill="#1f2937">
+    GitHub Copilot Core Features Architecture
+  </text>
+  
+  <!-- Context Sources Section -->
+  <g id="context-sources">
+    <rect x="50" y="80" width="300" height="200" rx="10" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+    <text x="200" y="110" text-anchor="middle" font-size="20" font-weight="bold" fill="#0c4a6e">Context Sources</text>
+    
+    <rect x="70" y="130" width="260" height="40" rx="5" fill="#bae6fd" stroke="#0284c7"/>
+    <text x="200" y="155" text-anchor="middle" font-size="14" fill="#0c4a6e">Active File & Cursor Position</text>
+    
+    <rect x="70" y="180" width="260" height="40" rx="5" fill="#bae6fd" stroke="#0284c7"/>
+    <text x="200" y="205" text-anchor="middle" font-size="14" fill="#0c4a6e">Open Files in Workspace</text>
+    
+    <rect x="70" y="230" width="260" height="40" rx="5" fill="#bae6fd" stroke="#0284c7"/>
+    <text x="200" y="255" text-anchor="middle" font-size="14" fill="#0c4a6e">Recent Edits & Patterns</text>
+  </g>
+  
+  <!-- Processing Engine -->
+  <g id="processing-engine">
+    <rect x="450" y="80" width="300" height="250" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="600" y="110" text-anchor="middle" font-size="20" font-weight="bold" fill="#78350f">Processing Engine</text>
+    
+    <circle cx="600" cy="160" r="30" fill="#fed7aa" stroke="#f59e0b" stroke-width="2"/>
+    <text x="600" y="165" text-anchor="middle" font-size="12" fill="#78350f">Context</text>
+    <text x="600" y="178" text-anchor="middle" font-size="12" fill="#78350f">Analysis</text>
+    
+    <circle cx="600" cy="230" r="30" fill="#fed7aa" stroke="#f59e0b" stroke-width="2"/>
+    <text x="600" y="235" text-anchor="middle" font-size="12" fill="#78350f">Intent</text>
+    <text x="600" y="248" text-anchor="middle" font-size="12" fill="#78350f">Detection</text>
+    
+    <circle cx="600" cy="300" r="30" fill="#fed7aa" stroke="#f59e0b" stroke-width="2"/>
+    <text x="600" y="305" text-anchor="middle" font-size="12" fill="#78350f">Response</text>
+    <text x="600" y="318" text-anchor="middle" font-size="12" fill="#78350f">Generation</text>
+    
+    <!-- Arrows within processing -->
+    <path d="M 600 190 L 600 200" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead1)"/>
+    <path d="M 600 260 L 600 270" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead1)"/>
+  </g>
+  
+  <!-- Output Modes -->
+  <g id="output-modes">
+    <rect x="850" y="80" width="300" height="200" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="1000" y="110" text-anchor="middle" font-size="20" font-weight="bold" fill="#312e81">Output Modes</text>
+    
+    <rect x="870" y="130" width="260" height="40" rx="5" fill="#c7d2fe" stroke="#6366f1"/>
+    <text x="1000" y="155" text-anchor="middle" font-size="14" fill="#312e81">Inline Suggestions (Ghost Text)</text>
+    
+    <rect x="870" y="180" width="260" height="40" rx="5" fill="#c7d2fe" stroke="#6366f1"/>
+    <text x="1000" y="205" text-anchor="middle" font-size="14" fill="#312e81">Chat Interface</text>
+    
+    <rect x="870" y="230" width="260" height="40" rx="5" fill="#c7d2fe" stroke="#6366f1"/>
+    <text x="1000" y="255" text-anchor="middle" font-size="14" fill="#312e81">Multi-File Edit Mode</text>
+  </g>
+  
+  <!-- Features Section -->
+  <g id="features">
+    <rect x="50" y="350" width="1100" height="180" rx="10" fill="#ecfccb" stroke="#84cc16" stroke-width="2"/>
+    <text x="600" y="380" text-anchor="middle" font-size="20" font-weight="bold" fill="#365314">Core Features</text>
+    
+    <!-- Feature boxes -->
+    <g id="feature1">
+      <rect x="80" y="400" width="200" height="100" rx="5" fill="#d9f99d" stroke="#84cc16"/>
+      <text x="180" y="425" text-anchor="middle" font-size="14" font-weight="bold" fill="#365314">Code Completion</text>
+      <text x="180" y="445" text-anchor="middle" font-size="12" fill="#365314">• Single line</text>
+      <text x="180" y="460" text-anchor="middle" font-size="12" fill="#365314">• Multi-line blocks</text>
+      <text x="180" y="475" text-anchor="middle" font-size="12" fill="#365314">• Whole functions</text>
+    </g>
+    
+    <g id="feature2">
+      <rect x="310" y="400" width="200" height="100" rx="5" fill="#d9f99d" stroke="#84cc16"/>
+      <text x="410" y="425" text-anchor="middle" font-size="14" font-weight="bold" fill="#365314">Pattern Recognition</text>
+      <text x="410" y="445" text-anchor="middle" font-size="12" fill="#365314">• Code patterns</text>
+      <text x="410" y="460" text-anchor="middle" font-size="12" fill="#365314">• Naming conventions</text>
+      <text x="410" y="475" text-anchor="middle" font-size="12" fill="#365314">• Style consistency</text>
+    </g>
+    
+    <g id="feature3">
+      <rect x="540" y="400" width="200" height="100" rx="5" fill="#d9f99d" stroke="#84cc16"/>
+      <text x="640" y="425" text-anchor="middle" font-size="14" font-weight="bold" fill="#365314">Context Awareness</text>
+      <text x="640" y="445" text-anchor="middle" font-size="12" fill="#365314">• File imports</text>
+      <text x="640" y="460" text-anchor="middle" font-size="12" fill="#365314">• Variable types</text>
+      <text x="640" y="475" text-anchor="middle" font-size="12" fill="#365314">• Project structure</text>
+    </g>
+    
+    <g id="feature4">
+      <rect x="770" y="400" width="200" height="100" rx="5" fill="#d9f99d" stroke="#84cc16"/>
+      <text x="870" y="425" text-anchor="middle" font-size="14" font-weight="bold" fill="#365314">Alternative Suggestions</text>
+      <text x="870" y="445" text-anchor="middle" font-size="12" fill="#365314">• Multiple options</text>
+      <text x="870" y="460" text-anchor="middle" font-size="12" fill="#365314">• Cycle through (Alt+])</text>
+      <text x="870" y="475" text-anchor="middle" font-size="12" fill="#365314">• Quality ranking</text>
+    </g>
+  </g>
+  
+  <!-- Best Practices -->
+  <g id="best-practices">
+    <rect x="50" y="550" width="1100" height="120" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+    <text x="600" y="580" text-anchor="middle" font-size="20" font-weight="bold" fill="#831843">Best Practices for Optimal Results</text>
+    
+    <text x="150" y="610" font-size="14" fill="#831843">• Use descriptive variable and function names</text>
+    <text x="150" y="630" font-size="14" fill="#831843">• Add type hints and annotations</text>
+    <text x="150" y="650" font-size="14" fill="#831843">• Write clear comments before implementation</text>
+    
+    <text x="650" y="610" font-size="14" fill="#831843">• Keep related files open in workspace</text>
+    <text x="650" y="630" font-size="14" fill="#831843">• Follow consistent coding patterns</text>
+    <text x="650" y="650" font-size="14" fill="#831843">• Use examples to guide suggestions</text>
+  </g>
+  
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrowhead1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#6b7280"/>
+    </marker>
+  </defs>
+  
+  <!-- Connection arrows -->
+  <path d="M 350 180 L 440 160" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead1)"/>
+  <path d="M 750 205 L 840 180" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead1)"/>
+  <path d="M 600 330 L 600 340" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead1)"/>
+  
+  <!-- Keyboard shortcuts -->
+  <g id="shortcuts">
+    <rect x="50" y="700" width="1100" height="60" rx="10" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+    <text x="600" y="720" text-anchor="middle" font-size="16" font-weight="bold" fill="#374151">Keyboard Shortcuts</text>
+    <text x="200" y="745" font-size="14" fill="#374151">Tab: Accept suggestion</text>
+    <text x="400" y="745" font-size="14" fill="#374151">Alt+]: Next suggestion</text>
+    <text x="600" y="745" font-size="14" fill="#374151">Alt+[: Previous suggestion</text>
+    <text x="800" y="745" font-size="14" fill="#374151">Esc: Dismiss suggestion</text>
+    <text x="1000" y="745" font-size="14" fill="#374151">Ctrl+Enter: Show suggestions</text>
+  </g>
+</svg>

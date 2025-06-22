@@ -1,0 +1,131 @@
+# Redis Configuration for Module 11: Microservices Architecture
+# This configuration is optimized for development and learning
+
+# Network and General
+bind 0.0.0.0
+protected-mode no
+port 6379
+tcp-backlog 511
+timeout 0
+tcp-keepalive 300
+
+# General
+daemonize no
+supervised no
+pidfile /var/run/redis_6379.pid
+loglevel notice
+logfile ""
+databases 16
+always-show-logo yes
+
+# Snapshotting (Persistence)
+save 900 1      # Save after 900 sec (15 min) if at least 1 key changed
+save 300 10     # Save after 300 sec (5 min) if at least 10 keys changed
+save 60 10000   # Save after 60 sec if at least 10000 keys changed
+
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+dir ./
+
+# Replication
+replica-serve-stale-data yes
+replica-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-disable-tcp-nodelay no
+replica-priority 100
+
+# Security
+# requirepass your_redis_password_here
+# Warning: since Redis is pretty fast an outside user can try up to
+# 150k passwords per second against a good box. This means that you should
+# use a very strong password otherwise it will be very easy to break.
+
+# Clients
+maxclients 10000
+
+# Memory Management
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+# Eviction policies:
+# - noeviction: return errors when memory limit reached
+# - allkeys-lru: evict any key using LRU
+# - volatile-lru: evict keys with expire set using LRU
+# - allkeys-random: evict random keys
+# - volatile-random: evict random keys with expire set
+# - volatile-ttl: evict keys with expire set, shortest TTL first
+
+# Lazy Freeing
+lazyfree-lazy-eviction no
+lazyfree-lazy-expire no
+lazyfree-lazy-server-del no
+replica-lazy-flush no
+
+# Append Only Mode (AOF)
+appendonly no
+appendfilename "appendonly.aof"
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+aof-use-rdb-preamble yes
+
+# Lua Scripting
+lua-time-limit 5000
+
+# Cluster
+cluster-enabled no
+
+# Slow Log
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+
+# Latency Monitor
+latency-monitor-threshold 0
+
+# Event Notification
+notify-keyspace-events ""
+
+# Advanced Config
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-size -2
+list-compress-depth 0
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+stream-node-max-bytes 4096
+stream-node-max-entries 100
+
+# Active Rehashing
+activerehashing yes
+
+# Client Output Buffer Limits
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit replica 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+
+# Frequency
+hz 10
+
+# AOF Rewrite
+dynamic-hz yes
+aof-rewrite-incremental-fsync yes
+rdb-save-incremental-fsync yes
+
+# Module 11 Specific Settings
+# Cache configuration for microservices
+maxmemory-samples 5
+
+# Enable keyspace notifications for cache invalidation
+notify-keyspace-events "Ex"
+
+# Optimize for low latency
+tcp-nodelay yes
+
+# Increase output buffer for pub/sub (used for cache invalidation)
+client-output-buffer-limit pubsub 64mb 32mb 60

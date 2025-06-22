@@ -1,0 +1,427 @@
+# Module 09: Database Design and Optimization - Windows Setup Script
+# This script sets up the complete environment for Module 09 on Windows
+
+# Requires PowerShell to be run as Administrator for some operations
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "🚀 Setting up Module 09: Database Design and Optimization" -ForegroundColor Green
+Write-Host "========================================================" -ForegroundColor Green
+
+# Function to check if running as Administrator
+function Test-Administrator {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+# Function to check if command exists
+function Test-CommandExists {
+    param($command)
+    $null = Get-Command $command -ErrorAction SilentlyContinue
+    return $?
+}
+
+# Function to print status messages
+function Write-Status {
+    param($message)
+    Write-Host "✓ $message" -ForegroundColor Green
+}
+
+function Write-Error-Message {
+    param($message)
+    Write-Host "✗ $message" -ForegroundColor Red
+}
+
+function Write-Warning-Message {
+    param($message)
+    Write-Host "⚠ $message" -ForegroundColor Yellow
+}
+
+# Check if Chocolatey is installed
+Write-Host "`n📦 Checking for Chocolatey..." -ForegroundColor Cyan
+if (-not (Test-CommandExists "choco")) {
+    Write-Warning-Message "Chocolatey not found. Installing Chocolatey..."
+    
+    if (Test-Administrator) {
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        
+        # Refresh PATH
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        Write-Status "Chocolatey installed"
+    } else {
+        Write-Error-Message "Please run PowerShell as Administrator to install Chocolatey"
+        exit 1
+    }
+} else {
+    Write-Status "Chocolatey found"
+}
+
+# Check Python version
+Write-Host "`n🐍 Checking Python installation..." -ForegroundColor Cyan
+if (Test-CommandExists "python") {
+    $pythonVersion = python --version 2>&1
+    if ($pythonVersion -match "Python (\d+)\.(\d+)") {
+        $majorVersion = [int]$matches[1]
+        $minorVersion = [int]$matches[2]
+        
+        if ($majorVersion -eq 3 -and $minorVersion -ge 11) {
+            Write-Status "Python $majorVersion.$minorVersion found"
+        } else {
+            Write-Error-Message "Python 3.11 or higher required (found $majorVersion.$minorVersion)"
+            Write-Host "Installing Python 3.11..." -ForegroundColor Yellow
+            choco install python311 -y
+        }
+    }
+} else {
+    Write-Warning-Message "Python not found. Installing Python 3.11..."
+    choco install python311 -y
+}
+
+# Check and install PostgreSQL
+Write-Host "`n🐘 Checking PostgreSQL..." -ForegroundColor Cyan
+if (-not (Test-CommandExists "psql")) {
+    Write-Warning-Message "PostgreSQL not found. Installing PostgreSQL 15..."
+    choco install postgresql15 -y --params '/Password:postgres'
+    
+    # Add PostgreSQL to PATH
+    $pgPath = "C:\Program Files\PostgreSQL\15\bin"
+    if (Test-Path $pgPath) {
+        $env:Path += ";$pgPath"
+        [Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTarget]::User)
+    }
+    
+    Write-Status "PostgreSQL 15 installed"
+} else {
+    $pgVersion = psql --version
+    Write-Status "PostgreSQL found: $pgVersion"
+}
+
+# Check and install Redis
+Write-Host "`n🔴 Checking Redis..." -ForegroundColor Cyan
+if (-not (Test-CommandExists "redis-cli")) {
+    Write-Warning-Message "Redis not found. Installing Redis..."
+    choco install redis-64 -y
+    
+    # Start Redis service
+    redis-server --service-install
+    redis-server --service-start
+    
+    Write-Status "Redis installed and started"
+} else {
+    Write-Status "Redis found"
+}
+
+# Check and install Git
+Write-Host "`n📦 Checking Git..." -ForegroundColor Cyan
+if (-not (Test-CommandExists "git")) {
+    Write-Warning-Message "Git not found. Installing Git..."
+    choco install git -y
+    Write-Status "Git installed"
+} else {
+    Write-Status "Git found"
+}
+
+# Create project directory
+$projectPath = "$PWD\module-09-database-optimization"
+if (-not (Test-Path $projectPath)) {
+    New-Item -ItemType Directory -Path $projectPath | Out-Null
+    Write-Status "Project directory created: $projectPath"
+}
+
+Set-Location $projectPath
+
+# Create Python virtual environment
+Write-Host "`n🐍 Creating Python virtual environment..." -ForegroundColor Cyan
+if (-not (Test-Path "venv")) {
+    python -m venv venv
+    Write-Status "Virtual environment created"
+} else {
+    Write-Status "Virtual environment already exists"
+}
+
+# Activate virtual environment
+& ".\venv\Scripts\Activate.ps1"
+
+# Upgrade pip
+Write-Host "`n📦 Upgrading pip..." -ForegroundColor Cyan
+python -m pip install --upgrade pip setuptools wheel
+
+# Create requirements.txt
+Write-Host "`n📦 Creating requirements.txt..." -ForegroundColor Cyan
+@"
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.13.0
+redis==5.0.1
+asyncpg==0.29.0
+
+# Azure (optional)
+azure-cosmos==4.5.1
+azure-search-documents==11.4.0
+
+# Web framework
+fastapi==0.104.1
+uvicorn==0.24.0
+websockets==12.0
+
+# Data processing
+pandas==2.1.4
+numpy==1.26.2
+
+# Vector search
+pgvector==0.2.4
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+
+# Streaming (optional)
+aiokafka==0.10.0
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Development
+pytest==7.4.3
+pytest-asyncio==0.21.1
+black==23.11.0
+mypy==1.7.0
+locust==2.17.0
+
+# Monitoring
+prometheus-client==0.19.0
+"@ | Out-File -FilePath "requirements.txt" -Encoding UTF8
+
+# Install Python dependencies
+Write-Host "`n📦 Installing Python dependencies..." -ForegroundColor Cyan
+python -m pip install -r requirements.txt
+Write-Status "Python dependencies installed"
+
+# Setup PostgreSQL databases
+Write-Host "`n🐘 Setting up PostgreSQL databases..." -ForegroundColor Cyan
+
+$pgSetupScript = @"
+-- Create workshop user if not exists
+DO `$`$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = 'workshop_user') THEN
+        CREATE USER workshop_user WITH PASSWORD 'workshop_pass';
+    END IF;
+END
+`$`$;
+
+-- Create databases
+CREATE DATABASE workshop_db;
+CREATE DATABASE ecommerce_db;
+CREATE DATABASE ecommerce_test;
+CREATE DATABASE analytics_db;
+
+-- Grant privileges
+GRANT ALL PRIVILEGES ON DATABASE workshop_db TO workshop_user;
+GRANT ALL PRIVILEGES ON DATABASE ecommerce_db TO workshop_user;
+GRANT ALL PRIVILEGES ON DATABASE ecommerce_test TO workshop_user;
+GRANT ALL PRIVILEGES ON DATABASE analytics_db TO workshop_user;
+"@
+
+# Save script to file
+$pgSetupScript | Out-File -FilePath "pg_setup.sql" -Encoding UTF8
+
+# Execute PostgreSQL setup
+try {
+    $env:PGPASSWORD = "postgres"
+    psql -U postgres -h localhost -f pg_setup.sql
+    Write-Status "PostgreSQL databases created"
+    
+    # Create extensions
+    psql -U postgres -h localhost -d workshop_db -c "CREATE EXTENSION IF NOT EXISTS `"uuid-ossp`";"
+    psql -U postgres -h localhost -d ecommerce_db -c "CREATE EXTENSION IF NOT EXISTS `"uuid-ossp`";"
+    
+    Write-Status "PostgreSQL extensions created"
+} catch {
+    Write-Warning-Message "Could not setup PostgreSQL automatically. Please run pg_setup.sql manually."
+}
+
+# Test connections
+Write-Host "`n🧪 Testing connections..." -ForegroundColor Cyan
+
+# Test PostgreSQL
+$env:PGPASSWORD = "workshop_pass"
+$pgTest = psql -U workshop_user -h localhost -d workshop_db -c "SELECT version();" 2>&1
+if ($LASTEXITCODE -eq 0) {
+    Write-Status "PostgreSQL connection successful"
+} else {
+    Write-Error-Message "PostgreSQL connection failed"
+}
+
+# Test Redis
+$redisTest = redis-cli ping 2>&1
+if ($redisTest -eq "PONG") {
+    Write-Status "Redis connection successful"
+} else {
+    Write-Error-Message "Redis connection failed"
+}
+
+# Create .env file
+Write-Host "`n📝 Creating .env file..." -ForegroundColor Cyan
+@"
+# PostgreSQL
+DATABASE_URL=postgresql://workshop_user:workshop_pass@localhost/workshop_db
+ECOMMERCE_DATABASE_URL=postgresql://workshop_user:workshop_pass@localhost/ecommerce_db
+TEST_DATABASE_URL=postgresql://workshop_user:workshop_pass@localhost/ecommerce_test
+ANALYTICS_DATABASE_URL=postgresql://workshop_user:workshop_pass@localhost/analytics_db
+
+# Redis
+REDIS_URL=redis://localhost:6379/0
+
+# Azure (optional - update with your values)
+AZURE_COSMOS_ENDPOINT=https://your-cosmos.documents.azure.com:443/
+AZURE_COSMOS_KEY=your-key-here
+AZURE_SEARCH_ENDPOINT=https://your-search.search.windows.net
+AZURE_SEARCH_KEY=your-key-here
+
+# Application
+APP_ENV=development
+LOG_LEVEL=INFO
+SECRET_KEY=$(python -c 'import secrets; print(secrets.token_hex(32))')
+
+# GitHub (optional)
+GITHUB_TOKEN=your-token-here
+"@ | Out-File -FilePath ".env" -Encoding UTF8
+
+Write-Status ".env file created"
+
+# Create project directories
+Write-Host "`n📁 Creating project directories..." -ForegroundColor Cyan
+$directories = @(
+    "exercises\exercise1-easy\starter",
+    "exercises\exercise1-easy\solution",
+    "exercises\exercise1-easy\tests",
+    "exercises\exercise2-medium\starter",
+    "exercises\exercise2-medium\solution",
+    "exercises\exercise2-medium\tests",
+    "exercises\exercise3-hard\starter",
+    "exercises\exercise3-hard\solution",
+    "exercises\exercise3-hard\tests",
+    "scripts",
+    "resources",
+    "infrastructure\docker",
+    "infrastructure\kubernetes"
+)
+
+foreach ($dir in $directories) {
+    if (-not (Test-Path $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+}
+Write-Status "Project directories created"
+
+# Create VS Code workspace file
+Write-Host "`n📝 Creating VS Code workspace..." -ForegroundColor Cyan
+@"
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "python.defaultInterpreterPath": "./venv/Scripts/python.exe",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.flake8Enabled": true,
+        "python.linting.mypyEnabled": true,
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "files.exclude": {
+            "**/__pycache__": true,
+            "**/*.pyc": true,
+            "venv": true
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            "github.copilot",
+            "mtxr.sqltools",
+            "mtxr.sqltools-driver-pg",
+            "cweijan.vscode-redis-client",
+            "ms-azuretools.vscode-docker"
+        ]
+    }
+}
+"@ | Out-File -FilePath "module-09.code-workspace" -Encoding UTF8
+
+Write-Status "VS Code workspace created"
+
+# Create Docker Compose file
+Write-Host "`n🐳 Creating Docker Compose configuration..." -ForegroundColor Cyan
+@"
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: workshop_user
+      POSTGRES_PASSWORD: workshop_pass
+      POSTGRES_DB: workshop_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U workshop_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@workshop.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+"@ | Out-File -FilePath "docker-compose.yml" -Encoding UTF8
+
+Write-Status "Docker Compose configuration created"
+
+# Final message
+Write-Host "`n✅ Module 09 setup complete!" -ForegroundColor Green
+Write-Host "`n📋 Next steps:" -ForegroundColor Cyan
+Write-Host "1. Ensure virtual environment is activated:"
+Write-Host "   .\venv\Scripts\Activate.ps1" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "2. Open the project in VS Code:"
+Write-Host "   code module-09.code-workspace" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "3. Start with Exercise 1:"
+Write-Host "   cd exercises\exercise1-easy" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "💡 Tips:" -ForegroundColor Cyan
+Write-Host "- Use 'docker-compose up' for containerized PostgreSQL and Redis"
+Write-Host "- Access pgAdmin at http://localhost:5050 (admin@workshop.local/admin)"
+Write-Host "- Run PostgreSQL as a Windows service for persistence"
+Write-Host "- Check the troubleshooting guide if you encounter issues"
+Write-Host ""
+Write-Host "Happy coding! 🚀" -ForegroundColor Green

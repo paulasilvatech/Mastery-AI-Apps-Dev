@@ -1,0 +1,1402 @@
+# Exercise 1: AI-Powered COBOL Analyzer (⭐ Easy - 30 minutes)
+
+## 🎯 Objective
+Build an AI-powered system that analyzes COBOL code, identifies patterns, complexity metrics, and suggests modernization strategies using natural language processing.
+
+## 🧠 What You'll Learn
+- COBOL program structure and syntax
+- Static code analysis techniques
+- AI-powered pattern recognition
+- Complexity metrics calculation
+- Modernization opportunity identification
+- Documentation generation
+
+## 📋 Prerequisites
+- COBOL compiler installed (GnuCOBOL)
+- Python environment set up
+- OpenAI API key configured
+- Basic understanding of COBOL structure
+
+## 📚 Background
+
+COBOL programs often contain decades of business logic that needs careful analysis before modernization. Manual analysis is time-consuming and error-prone. AI can help by:
+
+- **Pattern Recognition**: Identifying common COBOL patterns and anti-patterns
+- **Complexity Analysis**: Measuring cyclomatic complexity and maintainability
+- **Dependency Mapping**: Understanding program interconnections
+- **Documentation**: Generating missing documentation from code
+- **Risk Assessment**: Identifying high-risk areas for modernization
+
+## 🏗️ Analyzer Architecture
+
+```mermaid
+graph LR
+    subgraph "Input"
+        COBOL[COBOL Source Files]
+        COPY[Copybooks]
+        JCL[JCL Scripts]
+    end
+    
+    subgraph "Parser Layer"
+        LEX[Lexical Analyzer]
+        PARSE[COBOL Parser]
+        AST[AST Builder]
+    end
+    
+    subgraph "Analysis Engine"
+        METRIC[Metrics Calculator]
+        PATTERN[Pattern Detector]
+        FLOW[Flow Analyzer]
+        DEPEND[Dependency Mapper]
+    end
+    
+    subgraph "AI Enhancement"
+        GPT[GPT-4 Analysis]
+        NLP[NLP Processing]
+        DOC[Doc Generator]
+        SUGGEST[Suggestion Engine]
+    end
+    
+    subgraph "Output"
+        REPORT[Analysis Report]
+        VIZ[Visualizations]
+        MODERN[Modernization Plan]
+    end
+    
+    COBOL --> LEX
+    COPY --> LEX
+    JCL --> LEX
+    
+    LEX --> PARSE
+    PARSE --> AST
+    
+    AST --> METRIC
+    AST --> PATTERN
+    AST --> FLOW
+    AST --> DEPEND
+    
+    PATTERN --> GPT
+    FLOW --> GPT
+    GPT --> DOC
+    GPT --> SUGGEST
+    
+    METRIC --> REPORT
+    DEPEND --> VIZ
+    SUGGEST --> MODERN
+    
+    style GPT fill:#10B981
+    style AST fill:#3B82F6
+    style MODERN fill:#F59E0B
+```
+
+## 🛠️ Step-by-Step Instructions
+
+### Step 1: Create COBOL Parser
+
+**Copilot Prompt Suggestion:**
+```python
+# Create a COBOL parser that:
+# - Tokenizes COBOL source code
+# - Identifies divisions, sections, and paragraphs
+# - Extracts data definitions and procedures
+# - Handles COPY statements and includes
+# - Builds an Abstract Syntax Tree (AST)
+# Use regex and state machines for parsing
+```
+
+Create `analyzers/cobol_parser.py`:
+```python
+import re
+import json
+from dataclasses import dataclass, field
+from typing import List, Dict, Optional, Tuple
+from enum import Enum
+from pathlib import Path
+
+class Division(Enum):
+    IDENTIFICATION = "IDENTIFICATION"
+    ENVIRONMENT = "ENVIRONMENT"
+    DATA = "DATA"
+    PROCEDURE = "PROCEDURE"
+
+class StatementType(Enum):
+    MOVE = "MOVE"
+    PERFORM = "PERFORM"
+    IF = "IF"
+    COMPUTE = "COMPUTE"
+    CALL = "CALL"
+    READ = "READ"
+    WRITE = "WRITE"
+    DISPLAY = "DISPLAY"
+    ACCEPT = "ACCEPT"
+    EVALUATE = "EVALUATE"
+
+@dataclass
+class DataItem:
+    level: str
+    name: str
+    picture: Optional[str] = None
+    value: Optional[str] = None
+    occurs: Optional[int] = None
+    redefines: Optional[str] = None
+    
+@dataclass
+class Procedure:
+    name: str
+    statements: List[Dict] = field(default_factory=list)
+    called_procedures: List[str] = field(default_factory=list)
+    complexity: int = 1
+
+@dataclass
+class COBOLProgram:
+    program_id: str
+    divisions: Dict[Division, bool] = field(default_factory=dict)
+    data_items: List[DataItem] = field(default_factory=list)
+    procedures: Dict[str, Procedure] = field(default_factory=dict)
+    copybooks: List[str] = field(default_factory=list)
+    external_calls: List[str] = field(default_factory=list)
+
+class COBOLParser:
+    """Parse COBOL source code and build AST"""
+    
+    def __init__(self, copybook_dirs: List[str] = None):
+        self.copybook_dirs = copybook_dirs or []
+        self.current_division = None
+        self.current_section = None
+        self.current_procedure = None
+        
+    def parse_file(self, filepath: str) -> COBOLProgram:
+        """Parse a COBOL source file"""
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+            lines = f.readlines()
+            
+        # Preprocess: handle line continuations and comments
+        lines = self._preprocess_lines(lines)
+        
+        # Initialize program structure
+        program = COBOLProgram(program_id="UNKNOWN")
+        
+        # Parse line by line
+        for line_num, line in enumerate(lines):
+            try:
+                self._parse_line(line, line_num, program)
+            except Exception as e:
+                print(f"Error parsing line {line_num}: {line}")
+                print(f"Error: {e}")
+                
+        # Post-process
+        self._calculate_complexity(program)
+        
+        return program
+    
+    def _preprocess_lines(self, lines: List[str]) -> List[str]:
+        """Preprocess COBOL source lines"""
+        processed = []
+        continued_line = ""
+        
+        for line in lines:
+            # Skip comment lines
+            if len(line) > 6 and line[6] in ('*', '/'):
+                continue
+                
+            # Handle line numbers (columns 1-6)
+            if len(line) > 6:
+                line = line[6:]
+            
+            # Handle continuation (column 7)
+            if len(line) > 0 and line[0] == '-':
+                continued_line += line[1:].rstrip()
+                continue
+            elif continued_line:
+                line = continued_line + line
+                continued_line = ""
+                
+            # Remove trailing spaces and period
+            line = line.rstrip()
+            
+            if line:
+                processed.append(line)
+                
+        return processed
+    
+    def _parse_line(self, line: str, line_num: int, program: COBOLProgram):
+        """Parse a single line of COBOL"""
+        # Skip empty lines
+        if not line.strip():
+            return
+            
+        # Check for divisions
+        if self._is_division(line):
+            self._parse_division(line, program)
+            return
+            
+        # Check for sections
+        if self._is_section(line):
+            self._parse_section(line, program)
+            return
+            
+        # Parse based on current division
+        if self.current_division == Division.IDENTIFICATION:
+            self._parse_identification(line, program)
+        elif self.current_division == Division.DATA:
+            self._parse_data_division(line, program)
+        elif self.current_division == Division.PROCEDURE:
+            self._parse_procedure_division(line, program)
+    
+    def _is_division(self, line: str) -> bool:
+        """Check if line declares a division"""
+        return bool(re.match(r'^\s*(\w+)\s+DIVISION\s*\.', line))
+    
+    def _parse_division(self, line: str, program: COBOLProgram):
+        """Parse division declaration"""
+        match = re.match(r'^\s*(\w+)\s+DIVISION\s*\.', line)
+        if match:
+            division_name = match.group(1)
+            try:
+                self.current_division = Division(division_name)
+                program.divisions[self.current_division] = True
+            except ValueError:
+                print(f"Unknown division: {division_name}")
+    
+    def _is_section(self, line: str) -> bool:
+        """Check if line declares a section"""
+        return bool(re.match(r'^\s*(\w+)\s+SECTION\s*\.', line))
+    
+    def _parse_section(self, line: str, program: COBOLProgram):
+        """Parse section declaration"""
+        match = re.match(r'^\s*(\w+)\s+SECTION\s*\.', line)
+        if match:
+            self.current_section = match.group(1)
+    
+    def _parse_identification(self, line: str, program: COBOLProgram):
+        """Parse identification division"""
+        # Extract PROGRAM-ID
+        match = re.match(r'^\s*PROGRAM-ID\s*\.\s*(\w+)', line)
+        if match:
+            program.program_id = match.group(1)
+    
+    def _parse_data_division(self, line: str, program: COBOLProgram):
+        """Parse data division"""
+        # Parse COPY statements
+        copy_match = re.match(r'^\s*COPY\s+(\w+)\s*\.', line)
+        if copy_match:
+            copybook = copy_match.group(1)
+            program.copybooks.append(copybook)
+            self._include_copybook(copybook, program)
+            return
+            
+        # Parse data definitions
+        data_match = re.match(
+            r'^\s*(\d{2})\s+(\S+)(?:\s+PIC(?:TURE)?\s+(?:IS\s+)?([^\s\.]+))?'
+            r'(?:\s+VALUE\s+(?:IS\s+)?([^\s\.]+))?'
+            r'(?:\s+OCCURS\s+(\d+))?',
+            line
+        )
+        if data_match:
+            level = data_match.group(1)
+            name = data_match.group(2)
+            picture = data_match.group(3)
+            value = data_match.group(4)
+            occurs = int(data_match.group(5)) if data_match.group(5) else None
+            
+            data_item = DataItem(
+                level=level,
+                name=name,
+                picture=picture,
+                value=value,
+                occurs=occurs
+            )
+            program.data_items.append(data_item)
+    
+    def _parse_procedure_division(self, line: str, program: COBOLProgram):
+        """Parse procedure division"""
+        # Check for paragraph/section names
+        if re.match(r'^[A-Z][\w-]*\s*\.', line):
+            proc_name = line.split('.')[0].strip()
+            self.current_procedure = Procedure(name=proc_name)
+            program.procedures[proc_name] = self.current_procedure
+            return
+            
+        # Parse statements
+        if self.current_procedure:
+            self._parse_statement(line, self.current_procedure, program)
+    
+    def _parse_statement(self, line: str, procedure: Procedure, program: COBOLProgram):
+        """Parse COBOL statements"""
+        # PERFORM statement
+        if re.search(r'\bPERFORM\s+(\w+)', line):
+            match = re.search(r'\bPERFORM\s+(\w+)', line)
+            called_proc = match.group(1)
+            procedure.called_procedures.append(called_proc)
+            procedure.statements.append({
+                'type': StatementType.PERFORM.value,
+                'target': called_proc
+            })
+            
+        # CALL statement (external)
+        elif re.search(r'\bCALL\s+["\'](\w+)["\']', line):
+            match = re.search(r'\bCALL\s+["\'](\w+)["\']', line)
+            external_program = match.group(1)
+            program.external_calls.append(external_program)
+            procedure.statements.append({
+                'type': StatementType.CALL.value,
+                'target': external_program
+            })
+            
+        # IF statement (increases complexity)
+        elif re.search(r'\bIF\b', line):
+            procedure.complexity += 1
+            procedure.statements.append({'type': StatementType.IF.value})
+            
+        # EVALUATE statement (increases complexity)
+        elif re.search(r'\bEVALUATE\b', line):
+            procedure.complexity += 2
+            procedure.statements.append({'type': StatementType.EVALUATE.value})
+            
+        # Other statements
+        for stmt_type in [StatementType.MOVE, StatementType.COMPUTE, 
+                         StatementType.READ, StatementType.WRITE,
+                         StatementType.DISPLAY, StatementType.ACCEPT]:
+            if re.search(rf'\b{stmt_type.value}\b', line):
+                procedure.statements.append({'type': stmt_type.value})
+                break
+    
+    def _include_copybook(self, copybook_name: str, program: COBOLProgram):
+        """Include copybook definitions"""
+        for dir_path in self.copybook_dirs:
+            copybook_path = Path(dir_path) / f"{copybook_name}.cpy"
+            if copybook_path.exists():
+                # Parse copybook recursively
+                with open(copybook_path, 'r') as f:
+                    lines = self._preprocess_lines(f.readlines())
+                    for line in lines:
+                        if self.current_division == Division.DATA:
+                            self._parse_data_division(line, program)
+                break
+    
+    def _calculate_complexity(self, program: COBOLProgram):
+        """Calculate cyclomatic complexity for procedures"""
+        for proc in program.procedures.values():
+            # Add complexity for each called procedure
+            proc.complexity += len(proc.called_procedures)
+            
+            # Add complexity for nested conditions
+            statement_types = [s['type'] for s in proc.statements]
+            proc.complexity += statement_types.count(StatementType.IF.value)
+            proc.complexity += statement_types.count(StatementType.EVALUATE.value) * 2
+```
+
+### Step 2: Create Metrics Calculator
+
+Create `analyzers/cobol_metrics.py`:
+```python
+from dataclasses import dataclass
+from typing import Dict, List, Tuple
+import math
+from collections import Counter
+from cobol_parser import COBOLProgram, Procedure, DataItem
+
+@dataclass
+class COBOLMetrics:
+    """Metrics for COBOL program analysis"""
+    total_lines: int = 0
+    code_lines: int = 0
+    comment_lines: int = 0
+    blank_lines: int = 0
+    
+    # Complexity metrics
+    cyclomatic_complexity: int = 0
+    average_procedure_complexity: float = 0.0
+    max_procedure_complexity: int = 0
+    
+    # Size metrics
+    procedure_count: int = 0
+    data_item_count: int = 0
+    copybook_count: int = 0
+    external_call_count: int = 0
+    
+    # Maintainability metrics
+    maintainability_index: float = 0.0
+    technical_debt_ratio: float = 0.0
+    
+    # Risk metrics
+    risk_score: float = 0.0
+    modernization_difficulty: str = "Low"
+
+class MetricsCalculator:
+    """Calculate various metrics for COBOL programs"""
+    
+    def __init__(self):
+        self.metrics = COBOLMetrics()
+    
+    def analyze_file(self, filepath: str, program: COBOLProgram) -> COBOLMetrics:
+        """Analyze a COBOL file and calculate metrics"""
+        # Count lines
+        self._count_lines(filepath)
+        
+        # Calculate size metrics
+        self._calculate_size_metrics(program)
+        
+        # Calculate complexity metrics
+        self._calculate_complexity_metrics(program)
+        
+        # Calculate maintainability index
+        self._calculate_maintainability_index()
+        
+        # Calculate risk score
+        self._calculate_risk_score()
+        
+        return self.metrics
+    
+    def _count_lines(self, filepath: str):
+        """Count different types of lines"""
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+            lines = f.readlines()
+            
+        self.metrics.total_lines = len(lines)
+        
+        for line in lines:
+            if len(line) > 6:
+                # Check for comment
+                if line[6] in ('*', '/'):
+                    self.metrics.comment_lines += 1
+                elif line[7:].strip():
+                    self.metrics.code_lines += 1
+                else:
+                    self.metrics.blank_lines += 1
+            else:
+                self.metrics.blank_lines += 1
+    
+    def _calculate_size_metrics(self, program: COBOLProgram):
+        """Calculate size-related metrics"""
+        self.metrics.procedure_count = len(program.procedures)
+        self.metrics.data_item_count = len(program.data_items)
+        self.metrics.copybook_count = len(program.copybooks)
+        self.metrics.external_call_count = len(set(program.external_calls))
+    
+    def _calculate_complexity_metrics(self, program: COBOLProgram):
+        """Calculate complexity metrics"""
+        if not program.procedures:
+            return
+            
+        complexities = [proc.complexity for proc in program.procedures.values()]
+        
+        self.metrics.cyclomatic_complexity = sum(complexities)
+        self.metrics.average_procedure_complexity = sum(complexities) / len(complexities)
+        self.metrics.max_procedure_complexity = max(complexities)
+    
+    def _calculate_maintainability_index(self):
+        """Calculate maintainability index (0-100)"""
+        # Microsoft's Maintainability Index formula
+        # MI = 171 - 5.2 * ln(HV) - 0.23 * CC - 16.2 * ln(LOC)
+        # Simplified version for COBOL
+        
+        if self.metrics.code_lines == 0:
+            self.metrics.maintainability_index = 100.0
+            return
+            
+        halstead_volume = self.metrics.code_lines * math.log2(self.metrics.procedure_count + 1)
+        
+        mi = (171 
+              - 5.2 * math.log(max(halstead_volume, 1))
+              - 0.23 * self.metrics.cyclomatic_complexity
+              - 16.2 * math.log(self.metrics.code_lines))
+        
+        # Normalize to 0-100
+        self.metrics.maintainability_index = max(0, min(100, mi))
+        
+        # Calculate technical debt ratio
+        if self.metrics.maintainability_index < 20:
+            self.metrics.technical_debt_ratio = 0.8
+        elif self.metrics.maintainability_index < 50:
+            self.metrics.technical_debt_ratio = 0.5
+        else:
+            self.metrics.technical_debt_ratio = 0.2
+    
+    def _calculate_risk_score(self):
+        """Calculate modernization risk score"""
+        risk_factors = []
+        
+        # Size risk
+        if self.metrics.code_lines > 10000:
+            risk_factors.append(3.0)
+        elif self.metrics.code_lines > 5000:
+            risk_factors.append(2.0)
+        else:
+            risk_factors.append(1.0)
+            
+        # Complexity risk
+        if self.metrics.average_procedure_complexity > 10:
+            risk_factors.append(3.0)
+        elif self.metrics.average_procedure_complexity > 5:
+            risk_factors.append(2.0)
+        else:
+            risk_factors.append(1.0)
+            
+        # External dependency risk
+        if self.metrics.external_call_count > 20:
+            risk_factors.append(3.0)
+        elif self.metrics.external_call_count > 10:
+            risk_factors.append(2.0)
+        else:
+            risk_factors.append(1.0)
+            
+        # Calculate average risk
+        self.metrics.risk_score = sum(risk_factors) / len(risk_factors)
+        
+        # Determine difficulty
+        if self.metrics.risk_score > 2.5:
+            self.metrics.modernization_difficulty = "High"
+        elif self.metrics.risk_score > 1.5:
+            self.metrics.modernization_difficulty = "Medium"
+        else:
+            self.metrics.modernization_difficulty = "Low"
+    
+    def generate_report(self) -> Dict:
+        """Generate metrics report"""
+        return {
+            "line_metrics": {
+                "total_lines": self.metrics.total_lines,
+                "code_lines": self.metrics.code_lines,
+                "comment_lines": self.metrics.comment_lines,
+                "comment_ratio": self.metrics.comment_lines / max(self.metrics.total_lines, 1)
+            },
+            "complexity_metrics": {
+                "cyclomatic_complexity": self.metrics.cyclomatic_complexity,
+                "average_complexity": round(self.metrics.average_procedure_complexity, 2),
+                "max_complexity": self.metrics.max_procedure_complexity
+            },
+            "size_metrics": {
+                "procedures": self.metrics.procedure_count,
+                "data_items": self.metrics.data_item_count,
+                "copybooks": self.metrics.copybook_count,
+                "external_calls": self.metrics.external_call_count
+            },
+            "quality_metrics": {
+                "maintainability_index": round(self.metrics.maintainability_index, 2),
+                "technical_debt_ratio": round(self.metrics.technical_debt_ratio, 2),
+                "risk_score": round(self.metrics.risk_score, 2),
+                "modernization_difficulty": self.metrics.modernization_difficulty
+            }
+        }
+```
+
+### Step 3: Create AI-Powered Analyzer
+
+Create `analyzers/ai_analyzer.py`:
+```python
+import openai
+import json
+from typing import Dict, List, Optional
+from dataclasses import dataclass
+import os
+from cobol_parser import COBOLProgram
+from cobol_metrics import COBOLMetrics
+
+@dataclass
+class ModernizationSuggestion:
+    category: str
+    priority: str
+    description: str
+    effort: str
+    risk: str
+    approach: str
+
+class AIAnalyzer:
+    """AI-powered COBOL analysis and modernization suggestions"""
+    
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        if not self.api_key:
+            raise ValueError("OpenAI API key not provided")
+        openai.api_key = self.api_key
+    
+    def analyze_program(self, 
+                       program: COBOLProgram, 
+                       metrics: COBOLMetrics,
+                       source_snippet: str) -> Dict:
+        """Analyze COBOL program using AI"""
+        
+        # Generate program summary
+        summary = self._generate_program_summary(program, metrics)
+        
+        # Analyze business logic
+        business_logic = self._analyze_business_logic(program, source_snippet)
+        
+        # Generate documentation
+        documentation = self._generate_documentation(program, source_snippet)
+        
+        # Get modernization suggestions
+        suggestions = self._get_modernization_suggestions(program, metrics, business_logic)
+        
+        # Identify patterns
+        patterns = self._identify_patterns(source_snippet)
+        
+        return {
+            "summary": summary,
+            "business_logic": business_logic,
+            "documentation": documentation,
+            "suggestions": suggestions,
+            "patterns": patterns
+        }
+    
+    def _generate_program_summary(self, program: COBOLProgram, metrics: COBOLMetrics) -> str:
+        """Generate natural language summary of the program"""
+        
+        prompt = f"""
+        Analyze this COBOL program structure and provide a concise summary:
+        
+        Program ID: {program.program_id}
+        Total Procedures: {metrics.procedure_count}
+        Data Items: {metrics.data_item_count}
+        External Calls: {metrics.external_call_count}
+        Complexity: {metrics.cyclomatic_complexity}
+        Maintainability Index: {metrics.maintainability_index}
+        
+        Key Procedures: {', '.join(list(program.procedures.keys())[:10])}
+        
+        Provide a 2-3 paragraph summary explaining:
+        1. What this program appears to do
+        2. Its complexity and maintainability
+        3. Key observations about its structure
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a COBOL expert analyzing legacy code."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3,
+            max_tokens=500
+        )
+        
+        return response.choices[0].message.content
+    
+    def _analyze_business_logic(self, program: COBOLProgram, source_snippet: str) -> Dict:
+        """Extract and explain business logic"""
+        
+        prompt = f"""
+        Analyze the business logic in this COBOL code snippet and identify:
+        
+        1. Business rules and validations
+        2. Calculations and formulas
+        3. Data transformations
+        4. Decision logic
+        
+        Code snippet:
+        ```cobol
+        {source_snippet[:2000]}
+        ```
+        
+        Provide the analysis in JSON format with these keys:
+        - business_rules: list of identified rules
+        - calculations: list of calculations/formulas
+        - validations: list of validation logic
+        - decision_points: list of key decision points
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a business analyst examining COBOL code."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.2,
+            max_tokens=1000
+        )
+        
+        try:
+            return json.loads(response.choices[0].message.content)
+        except:
+            return {"error": "Failed to parse AI response", "raw": response.choices[0].message.content}
+    
+    def _generate_documentation(self, program: COBOLProgram, source_snippet: str) -> str:
+        """Generate missing documentation"""
+        
+        prompt = f"""
+        Generate comprehensive documentation for this COBOL program:
+        
+        Program: {program.program_id}
+        
+        Key data structures:
+        {self._format_data_items(program.data_items[:20])}
+        
+        Main procedures:
+        {self._format_procedures(program.procedures)}
+        
+        Create documentation including:
+        1. Program purpose and overview
+        2. Input/Output specifications
+        3. Key business logic
+        4. Data flow description
+        5. Dependencies and interfaces
+        
+        Format as Markdown documentation.
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a technical writer documenting COBOL programs."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3,
+            max_tokens=1500
+        )
+        
+        return response.choices[0].message.content
+    
+    def _get_modernization_suggestions(self, 
+                                      program: COBOLProgram, 
+                                      metrics: COBOLMetrics,
+                                      business_logic: Dict) -> List[ModernizationSuggestion]:
+        """Generate modernization suggestions"""
+        
+        prompt = f"""
+        Based on this COBOL program analysis, provide modernization recommendations:
+        
+        Program: {program.program_id}
+        Complexity: {metrics.cyclomatic_complexity}
+        Maintainability: {metrics.maintainability_index}
+        Risk Score: {metrics.risk_score}
+        External Dependencies: {metrics.external_call_count}
+        
+        Business Logic Summary:
+        {json.dumps(business_logic, indent=2)[:1000]}
+        
+        Provide 5-7 specific modernization suggestions in JSON format, each with:
+        - category: (architecture, data, integration, refactoring, replatforming)
+        - priority: (high, medium, low)
+        - description: detailed description
+        - effort: (days, weeks, months)
+        - risk: (low, medium, high)
+        - approach: step-by-step approach
+        
+        Consider:
+        1. Gradual modernization using strangler fig pattern
+        2. API enablement for key functions
+        3. Data modernization opportunities
+        4. Cloud migration readiness
+        5. Microservices decomposition possibilities
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a modernization architect specializing in COBOL transformation."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.4,
+            max_tokens=2000
+        )
+        
+        try:
+            suggestions_data = json.loads(response.choices[0].message.content)
+            return [ModernizationSuggestion(**s) for s in suggestions_data]
+        except:
+            # Fallback suggestions
+            return [
+                ModernizationSuggestion(
+                    category="architecture",
+                    priority="high",
+                    description="Extract core business logic into microservices",
+                    effort="months",
+                    risk="medium",
+                    approach="Use strangler fig pattern to gradually replace functionality"
+                )
+            ]
+    
+    def _identify_patterns(self, source_snippet: str) -> Dict:
+        """Identify common COBOL patterns and anti-patterns"""
+        
+        prompt = f"""
+        Identify patterns and anti-patterns in this COBOL code:
+        
+        ```cobol
+        {source_snippet[:1500]}
+        ```
+        
+        Look for:
+        1. Common COBOL patterns (file processing, batch operations, etc.)
+        2. Anti-patterns (goto abuse, deep nesting, etc.)
+        3. Performance bottlenecks
+        4. Security concerns
+        5. Data handling patterns
+        
+        Provide analysis in JSON format with:
+        - patterns: list of identified patterns with descriptions
+        - anti_patterns: list of problematic patterns
+        - recommendations: specific improvements
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a COBOL expert identifying code patterns."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.2,
+            max_tokens=1000
+        )
+        
+        try:
+            return json.loads(response.choices[0].message.content)
+        except:
+            return {"error": "Failed to parse pattern analysis"}
+    
+    def _format_data_items(self, data_items: List) -> str:
+        """Format data items for prompt"""
+        result = []
+        for item in data_items:
+            result.append(f"{item.level} {item.name} PIC {item.picture or 'X'}")
+        return "\n".join(result)
+    
+    def _format_procedures(self, procedures: Dict) -> str:
+        """Format procedures for prompt"""
+        result = []
+        for name, proc in list(procedures.items())[:10]:
+            result.append(f"- {name}: complexity={proc.complexity}, calls={len(proc.called_procedures)}")
+        return "\n".join(result)
+```
+
+### Step 4: Create Main Analyzer Application
+
+Create `analyzers/main_analyzer.py`:
+```python
+#!/usr/bin/env python3
+"""
+COBOL AI Analyzer - Main Application
+Analyzes COBOL programs and provides modernization insights
+"""
+
+import argparse
+import json
+import os
+from pathlib import Path
+from datetime import datetime
+import sys
+
+from cobol_parser import COBOLParser
+from cobol_metrics import MetricsCalculator
+from ai_analyzer import AIAnalyzer
+from report_generator import ReportGenerator
+
+def analyze_cobol_file(filepath: str, 
+                      copybook_dirs: List[str] = None,
+                      output_dir: str = "reports") -> Dict:
+    """Analyze a single COBOL file"""
+    
+    print(f"\n🔍 Analyzing: {filepath}")
+    
+    # Step 1: Parse COBOL
+    print("  📝 Parsing COBOL structure...")
+    parser = COBOLParser(copybook_dirs)
+    try:
+        program = parser.parse_file(filepath)
+        print(f"  ✅ Parsed program: {program.program_id}")
+    except Exception as e:
+        print(f"  ❌ Parse error: {e}")
+        return None
+    
+    # Step 2: Calculate metrics
+    print("  📊 Calculating metrics...")
+    calculator = MetricsCalculator()
+    metrics = calculator.analyze_file(filepath, program)
+    metrics_report = calculator.generate_report()
+    print(f"  ✅ Metrics calculated: {metrics.modernization_difficulty} difficulty")
+    
+    # Step 3: AI Analysis
+    print("  🤖 Running AI analysis...")
+    ai_analyzer = AIAnalyzer()
+    
+    # Read source snippet for AI
+    with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+        source_snippet = f.read()
+    
+    try:
+        ai_results = ai_analyzer.analyze_program(program, metrics, source_snippet)
+        print("  ✅ AI analysis complete")
+    except Exception as e:
+        print(f"  ⚠️ AI analysis error: {e}")
+        ai_results = {
+            "error": str(e),
+            "summary": "AI analysis failed",
+            "suggestions": []
+        }
+    
+    # Step 4: Generate report
+    print("  📄 Generating report...")
+    report_gen = ReportGenerator()
+    
+    analysis_results = {
+        "file": filepath,
+        "timestamp": datetime.now().isoformat(),
+        "program": {
+            "id": program.program_id,
+            "divisions": [d.value for d in program.divisions.keys()],
+            "procedures": len(program.procedures),
+            "data_items": len(program.data_items),
+            "copybooks": program.copybooks,
+            "external_calls": program.external_calls
+        },
+        "metrics": metrics_report,
+        "ai_analysis": ai_results
+    }
+    
+    # Save JSON report
+    output_path = Path(output_dir) / f"{program.program_id}_analysis.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(output_path, 'w') as f:
+        json.dump(analysis_results, f, indent=2, default=str)
+    
+    # Generate HTML report
+    html_path = Path(output_dir) / f"{program.program_id}_report.html"
+    report_gen.generate_html_report(analysis_results, html_path)
+    
+    # Generate Markdown report
+    md_path = Path(output_dir) / f"{program.program_id}_report.md"
+    report_gen.generate_markdown_report(analysis_results, md_path)
+    
+    print(f"  ✅ Reports saved to {output_dir}")
+    
+    return analysis_results
+
+def analyze_directory(directory: str, 
+                     pattern: str = "*.cbl",
+                     copybook_dirs: List[str] = None,
+                     output_dir: str = "reports") -> List[Dict]:
+    """Analyze all COBOL files in a directory"""
+    
+    results = []
+    cobol_files = list(Path(directory).glob(pattern))
+    
+    print(f"\n📁 Found {len(cobol_files)} COBOL files to analyze")
+    
+    for filepath in cobol_files:
+        result = analyze_cobol_file(str(filepath), copybook_dirs, output_dir)
+        if result:
+            results.append(result)
+    
+    # Generate summary report
+    if results:
+        print("\n📊 Generating summary report...")
+        report_gen = ReportGenerator()
+        summary_path = Path(output_dir) / "analysis_summary.html"
+        report_gen.generate_summary_report(results, summary_path)
+        print(f"✅ Summary report: {summary_path}")
+    
+    return results
+
+def main():
+    """Main entry point"""
+    parser = argparse.ArgumentParser(
+        description="AI-Powered COBOL Analyzer",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Analyze single file
+  python main_analyzer.py analyze-file PAYROLL.cbl
+  
+  # Analyze directory
+  python main_analyzer.py analyze-dir ./cobol-programs
+  
+  # With copybooks
+  python main_analyzer.py analyze-file PAYROLL.cbl --copybook-dir ./copybooks
+        """
+    )
+    
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
+    
+    # Analyze file command
+    file_parser = subparsers.add_parser('analyze-file', help='Analyze a single COBOL file')
+    file_parser.add_argument('file', help='COBOL file to analyze')
+    file_parser.add_argument('--copybook-dir', action='append', help='Copybook directories')
+    file_parser.add_argument('--output-dir', default='reports', help='Output directory')
+    
+    # Analyze directory command
+    dir_parser = subparsers.add_parser('analyze-dir', help='Analyze directory of COBOL files')
+    dir_parser.add_argument('directory', help='Directory containing COBOL files')
+    dir_parser.add_argument('--pattern', default='*.cbl', help='File pattern (default: *.cbl)')
+    dir_parser.add_argument('--copybook-dir', action='append', help='Copybook directories')
+    dir_parser.add_argument('--output-dir', default='reports', help='Output directory')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+    
+    # Check for API key
+    if not os.getenv("OPENAI_API_KEY"):
+        print("⚠️ Warning: OPENAI_API_KEY not set. AI analysis will be limited.")
+    
+    if args.command == 'analyze-file':
+        analyze_cobol_file(
+            args.file,
+            args.copybook_dir,
+            args.output_dir
+        )
+    elif args.command == 'analyze-dir':
+        analyze_directory(
+            args.directory,
+            args.pattern,
+            args.copybook_dir,
+            args.output_dir
+        )
+
+if __name__ == "__main__":
+    main()
+```
+
+### Step 5: Create Report Generator
+
+Create `analyzers/report_generator.py`:
+```python
+from pathlib import Path
+from typing import Dict, List
+import json
+from datetime import datetime
+
+class ReportGenerator:
+    """Generate analysis reports in various formats"""
+    
+    def generate_html_report(self, analysis: Dict, output_path: Path):
+        """Generate HTML report"""
+        html_template = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COBOL Analysis Report - {program_id}</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+        .header {{ background-color: #1E3A8A; color: white; padding: 20px; }}
+        .metric {{ background-color: #f0f0f0; padding: 10px; margin: 10px 0; }}
+        .high {{ color: #dc2626; }}
+        .medium {{ color: #f59e0b; }}
+        .low {{ color: #10b981; }}
+        .suggestion {{ border: 1px solid #ddd; padding: 15px; margin: 10px 0; }}
+        pre {{ background-color: #f5f5f5; padding: 10px; overflow-x: auto; }}
+        table {{ border-collapse: collapse; width: 100%; }}
+        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+        th {{ background-color: #4a5568; color: white; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>COBOL Analysis Report</h1>
+        <p>Program: {program_id} | Generated: {timestamp}</p>
+    </div>
+    
+    <h2>📊 Metrics Summary</h2>
+    <div class="metric">
+        <h3>Code Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Total Lines</td>
+                <td>{total_lines}</td>
+            </tr>
+            <tr>
+                <td>Code Lines</td>
+                <td>{code_lines}</td>
+            </tr>
+            <tr>
+                <td>Complexity</td>
+                <td>{complexity}</td>
+            </tr>
+            <tr>
+                <td>Maintainability Index</td>
+                <td>{maintainability}</td>
+            </tr>
+            <tr>
+                <td>Modernization Difficulty</td>
+                <td class="{difficulty_class}">{difficulty}</td>
+            </tr>
+        </table>
+    </div>
+    
+    <h2>🤖 AI Analysis</h2>
+    <div class="metric">
+        <h3>Summary</h3>
+        <p>{ai_summary}</p>
+    </div>
+    
+    <h2>💡 Modernization Suggestions</h2>
+    {suggestions_html}
+    
+    <h2>📋 Business Logic</h2>
+    <pre>{business_logic}</pre>
+    
+    <h2>📄 Generated Documentation</h2>
+    <div class="metric">
+        {documentation}
+    </div>
+</body>
+</html>
+        """
+        
+        # Extract data
+        metrics = analysis['metrics']
+        ai = analysis.get('ai_analysis', {})
+        
+        # Generate suggestions HTML
+        suggestions_html = ""
+        for suggestion in ai.get('suggestions', []):
+            priority_class = suggestion['priority'].lower()
+            suggestions_html += f"""
+            <div class="suggestion">
+                <h4>{suggestion['category'].title()} - <span class="{priority_class}">{suggestion['priority']} Priority</span></h4>
+                <p><strong>Description:</strong> {suggestion['description']}</p>
+                <p><strong>Effort:</strong> {suggestion['effort']} | <strong>Risk:</strong> {suggestion['risk']}</p>
+                <p><strong>Approach:</strong> {suggestion['approach']}</p>
+            </div>
+            """
+        
+        # Format HTML
+        html_content = html_template.format(
+            program_id=analysis['program']['id'],
+            timestamp=analysis['timestamp'],
+            total_lines=metrics['line_metrics']['total_lines'],
+            code_lines=metrics['line_metrics']['code_lines'],
+            complexity=metrics['complexity_metrics']['cyclomatic_complexity'],
+            maintainability=metrics['quality_metrics']['maintainability_index'],
+            difficulty=metrics['quality_metrics']['modernization_difficulty'],
+            difficulty_class=metrics['quality_metrics']['modernization_difficulty'].lower(),
+            ai_summary=ai.get('summary', 'No summary available'),
+            suggestions_html=suggestions_html,
+            business_logic=json.dumps(ai.get('business_logic', {}), indent=2),
+            documentation=ai.get('documentation', 'No documentation generated').replace('\n', '<br>')
+        )
+        
+        # Save report
+        output_path.write_text(html_content)
+    
+    def generate_markdown_report(self, analysis: Dict, output_path: Path):
+        """Generate Markdown report"""
+        md_template = """# COBOL Analysis Report: {program_id}
+
+Generated: {timestamp}
+
+## 📊 Metrics Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Lines | {total_lines} |
+| Code Lines | {code_lines} |
+| Complexity | {complexity} |
+| Maintainability Index | {maintainability} |
+| Risk Score | {risk_score} |
+| Modernization Difficulty | **{difficulty}** |
+
+## 🏗️ Program Structure
+
+- **Procedures**: {procedure_count}
+- **Data Items**: {data_items}
+- **External Calls**: {external_calls}
+- **Copybooks**: {copybooks}
+
+## 🤖 AI Analysis Summary
+
+{ai_summary}
+
+## 💡 Modernization Recommendations
+
+{recommendations}
+
+## 📋 Identified Business Logic
+
+```json
+{business_logic}
+```
+
+## 🔍 Pattern Analysis
+
+{patterns}
+
+## 📄 Generated Documentation
+
+{documentation}
+
+## 🎯 Next Steps
+
+1. Review the modernization suggestions
+2. Prioritize based on business value and risk
+3. Create detailed migration plan
+4. Begin with low-risk, high-value components
+5. Implement gradual migration using strangler fig pattern
+"""
+        
+        # Extract data
+        metrics = analysis['metrics']
+        program = analysis['program']
+        ai = analysis.get('ai_analysis', {})
+        
+        # Format recommendations
+        recommendations = ""
+        for i, suggestion in enumerate(ai.get('suggestions', []), 1):
+            recommendations += f"""
+### {i}. {suggestion['category'].title()} ({suggestion['priority']} Priority)
+
+**Description**: {suggestion['description']}
+
+**Effort**: {suggestion['effort']} | **Risk**: {suggestion['risk']}
+
+**Approach**: {suggestion['approach']}
+
+---
+"""
+        
+        # Format patterns
+        patterns = ""
+        pattern_data = ai.get('patterns', {})
+        if isinstance(pattern_data, dict) and 'patterns' in pattern_data:
+            patterns = "### Identified Patterns\n\n"
+            for pattern in pattern_data.get('patterns', []):
+                patterns += f"- {pattern}\n"
+        
+        # Format content
+        md_content = md_template.format(
+            program_id=program['id'],
+            timestamp=analysis['timestamp'],
+            total_lines=metrics['line_metrics']['total_lines'],
+            code_lines=metrics['line_metrics']['code_lines'],
+            complexity=metrics['complexity_metrics']['cyclomatic_complexity'],
+            maintainability=metrics['quality_metrics']['maintainability_index'],
+            risk_score=metrics['quality_metrics']['risk_score'],
+            difficulty=metrics['quality_metrics']['modernization_difficulty'],
+            procedure_count=program['procedures'],
+            data_items=program['data_items'],
+            external_calls=len(program['external_calls']),
+            copybooks=', '.join(program['copybooks']) or 'None',
+            ai_summary=ai.get('summary', 'No summary available'),
+            recommendations=recommendations,
+            business_logic=json.dumps(ai.get('business_logic', {}), indent=2),
+            patterns=patterns,
+            documentation=ai.get('documentation', 'No documentation generated')
+        )
+        
+        # Save report
+        output_path.write_text(md_content)
+    
+    def generate_summary_report(self, results: List[Dict], output_path: Path):
+        """Generate summary report for multiple files"""
+        # Implementation for portfolio summary
+        pass
+```
+
+## 🏃 Running the Exercise
+
+1. **Set up environment:**
+```bash
+cd cobol-ai-migration/analyzers
+pip install -r requirements.txt
+export OPENAI_API_KEY="your-api-key"
+```
+
+2. **Create a sample COBOL program:**
+```cobol
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CUSTOMER-PROCESS.
+       
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 CUSTOMER-RECORD.
+          05 CUST-ID         PIC 9(6).
+          05 CUST-NAME       PIC X(30).
+          05 CUST-BALANCE    PIC 9(7)V99.
+          05 CUST-STATUS     PIC X.
+             88 ACTIVE-CUST  VALUE 'A'.
+             88 INACTIVE-CUST VALUE 'I'.
+       
+       PROCEDURE DIVISION.
+       MAIN-PROCESS.
+           PERFORM READ-CUSTOMER
+           IF ACTIVE-CUST
+              PERFORM CALCULATE-DISCOUNT
+              PERFORM UPDATE-BALANCE
+           ELSE
+              PERFORM ARCHIVE-CUSTOMER
+           END-IF
+           STOP RUN.
+           
+       READ-CUSTOMER.
+           DISPLAY "Reading customer data...".
+           
+       CALCULATE-DISCOUNT.
+           IF CUST-BALANCE > 10000
+              COMPUTE CUST-BALANCE = CUST-BALANCE * 0.95
+           END-IF.
+           
+       UPDATE-BALANCE.
+           DISPLAY "Updating balance...".
+           
+       ARCHIVE-CUSTOMER.
+           DISPLAY "Archiving inactive customer...".
+```
+
+3. **Run the analyzer:**
+```bash
+# Analyze single file
+python main_analyzer.py analyze-file ../cobol-samples/programs/CUSTOMER-PROCESS.cbl
+
+# Analyze directory
+python main_analyzer.py analyze-dir ../cobol-samples/programs --output-dir analysis-reports
+```
+
+4. **View the results:**
+```bash
+# Open HTML report
+open reports/CUSTOMER-PROCESS_report.html
+
+# View JSON analysis
+cat reports/CUSTOMER-PROCESS_analysis.json | jq .
+```
+
+## 🎯 Validation
+
+Your analyzer should now:
+- ✅ Parse COBOL programs and extract structure
+- ✅ Calculate complexity and maintainability metrics
+- ✅ Use AI to understand business logic
+- ✅ Generate modernization suggestions
+- ✅ Identify patterns and anti-patterns
+- ✅ Create comprehensive reports
+- ✅ Provide actionable recommendations
+
+## 🚀 Bonus Challenges
+
+1. **Enhanced Pattern Detection:**
+   - Add more COBOL pattern recognition
+   - Identify specific anti-patterns
+   - Suggest refactoring opportunities
+
+2. **Dependency Visualization:**
+   - Create program dependency graphs
+   - Visualize data flow
+   - Generate architecture diagrams
+
+3. **Test Generation:**
+   - Generate test cases from COBOL logic
+   - Create regression test suites
+   - Validate business rules
+
+4. **Integration with IDE:**
+   - VS Code extension for real-time analysis
+   - IntelliSense for COBOL
+   - Inline modernization suggestions
+
+## 📚 Additional Resources
+
+- [COBOL Language Reference](https://www.ibm.com/docs/en/cobol-compiler)
+- [Legacy Modernization Patterns](https://martinfowler.com/articles/legacy-modernization.html)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [GnuCOBOL Manual](https://gnucobol.sourceforge.io/guides/GnuCOBOL%203.2%20Build%20Guide.pdf)
+
+## ⏭️ Next Exercise
+
+Ready to extract business rules? Move on to [Exercise 2: Business Rule Extraction](../exercise2-rule-extraction/) where you'll transform COBOL logic into modern rule engines!

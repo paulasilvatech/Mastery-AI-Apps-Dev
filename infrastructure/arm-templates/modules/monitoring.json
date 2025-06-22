@@ -37,6 +37,20 @@
         "description": "Unique suffix for resource names"
       }
     },
+    "adminEmail": {
+      "type": "string",
+      "defaultValue": "admin@workshop.com",
+      "metadata": {
+        "description": "Admin email for alerts"
+      }
+    },
+    "budgetThreshold": {
+      "type": "int",
+      "defaultValue": 100,
+      "metadata": {
+        "description": "Budget threshold in USD"
+      }
+    },
     "tags": {
       "type": "object",
       "defaultValue": {},
@@ -46,31 +60,33 @@
     }
   },
   "variables": {
-    "logAnalyticsWorkspaceName": "[concat('law-workshop-', parameters('environment'), '-', parameters('suffix'))]",
-    "applicationInsightsName": "[concat('ai-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "logAnalyticsName": "[concat('law-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "appInsightsName": "[concat('appi-workshop-', parameters('environment'), '-', parameters('suffix'))]",
     "actionGroupName": "[concat('ag-workshop-', parameters('environment'), '-', parameters('suffix'))]",
-    "budgetName": "[concat('budget-workshop-', parameters('environment'), '-', parameters('suffix'))]",
-    "retentionInDays": "[if(equals(parameters('environment'), 'prod'), 90, if(equals(parameters('environment'), 'staging'), 30, 7))]",
-    "dailyQuotaGb": "[if(equals(parameters('environment'), 'prod'), 10, if(equals(parameters('environment'), 'staging'), 5, 1))]",
-    "budgetAmount": "[if(equals(parameters('environment'), 'prod'), 1000, if(equals(parameters('environment'), 'staging'), 500, 100))]"
+    "dashboardName": "[concat('dash-workshop-module', parameters('moduleNumber'), '-', parameters('environment'))]",
+    "budgetName": "[concat('budget-workshop-module', parameters('moduleNumber'), '-', parameters('environment'))]",
+    "alertRuleName": "[concat('alert-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "workbookName": "[concat('workbook-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "dataRetentionDays": "[if(equals(parameters('environment'), 'prod'), 90, if(equals(parameters('environment'), 'staging'), 30, 7))]",
+    "dailyQuotaGb": "[if(equals(parameters('environment'), 'prod'), 10, if(equals(parameters('environment'), 'staging'), 5, 1))]"
   },
   "resources": [
     {
       "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2022-10-01",
-      "name": "[variables('logAnalyticsWorkspaceName')]",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('logAnalyticsName')]",
       "location": "[parameters('location')]",
       "properties": {
         "sku": {
           "name": "PerGB2018"
         },
-        "retentionInDays": "[variables('retentionInDays')]",
+        "retentionInDays": "[variables('dataRetentionDays')]",
+        "workspaceCapping": {
+          "dailyQuotaGb": "[variables('dailyQuotaGb')]"
+        },
         "features": {
           "enableLogAccessUsingOnlyResourcePermissions": true,
           "disableLocalAuth": false
-        },
-        "workspaceCapping": {
-          "dailyQuotaGb": "[variables('dailyQuotaGb')]"
         },
         "publicNetworkAccessForIngestion": "Enabled",
         "publicNetworkAccessForQuery": "Enabled"
@@ -80,57 +96,60 @@
     {
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
-      "name": "[variables('applicationInsightsName')]",
+      "name": "[variables('appInsightsName')]",
       "location": "[parameters('location')]",
       "kind": "web",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+      ],
       "properties": {
         "Application_Type": "web",
-        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "Flow_Type": "Redfield",
+        "Request_Source": "CustomDeployment",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]",
         "IngestionMode": "LogAnalytics",
         "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled",
-        "RetentionInDays": "[variables('retentionInDays')]",
-        "SamplingPercentage": "[if(equals(parameters('environment'), 'prod'), 100, 50)]"
+        "publicNetworkAccessForQuery": "Enabled"
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
-      ],
       "tags": "[parameters('tags')]"
     },
     {
       "type": "Microsoft.Insights/actionGroups",
       "apiVersion": "2023-01-01",
       "name": "[variables('actionGroupName')]",
-      "location": "Global",
+      "location": "global",
       "properties": {
-        "groupShortName": "[take(concat('workshop-', parameters('environment')), 12)]",
         "enabled": true,
+        "groupShortName": "[concat('Workshop', parameters('environment'))]",
         "emailReceivers": [
           {
-            "name": "workshop-admin",
-            "emailAddress": "workshop-admin@example.com",
+            "name": "WorkshopAdmin",
+            "emailAddress": "[parameters('adminEmail')]",
             "useCommonAlertSchema": true
           }
         ],
         "smsReceivers": [],
         "webhookReceivers": [],
-        "azureAppPushReceivers": [],
-        "azureFunctionReceivers": [],
-        "logicAppReceivers": [],
-        "automationRunbookReceivers": []
+        "armRoleReceivers": [
+          {
+            "name": "Contributor",
+            "roleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+            "useCommonAlertSchema": true
+          }
+        ]
       },
       "tags": "[parameters('tags')]"
     },
     {
       "type": "Microsoft.Insights/metricAlerts",
       "apiVersion": "2018-03-01",
-      "name": "[concat('High CPU Alert - ', parameters('environment'))]",
+      "name": "[concat(variables('alertRuleName'), '-HighCPU')]",
       "location": "global",
       "dependsOn": [
         "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
       ],
       "properties": {
-        "description": "Alert when CPU usage is high",
+        "description": "High CPU usage alert for workshop resources",
         "severity": 2,
         "enabled": true,
         "scopes": [
@@ -142,11 +161,11 @@
           "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
           "allOf": [
             {
-              "name": "High CPU",
-              "metricName": "Percentage CPU",
-              "metricNamespace": "Microsoft.Compute/virtualMachines",
-              "operator": "GreaterThan",
               "threshold": 80,
+              "name": "HighCPU",
+              "metricNamespace": "Microsoft.Compute/virtualMachines",
+              "metricName": "Percentage CPU",
+              "operator": "GreaterThan",
               "timeAggregation": "Average",
               "criterionType": "StaticThresholdCriterion"
             }
@@ -163,31 +182,30 @@
     {
       "type": "Microsoft.Insights/metricAlerts",
       "apiVersion": "2018-03-01",
-      "name": "[concat('Failed Requests Alert - ', parameters('environment'))]",
+      "name": "[concat(variables('alertRuleName'), '-HighMemory')]",
       "location": "global",
       "dependsOn": [
-        "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]",
-        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+        "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
       ],
       "properties": {
-        "description": "Alert when there are failed requests",
-        "severity": 1,
+        "description": "High memory usage alert for workshop resources",
+        "severity": 2,
         "enabled": true,
         "scopes": [
-          "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+          "[subscription().id]"
         ],
-        "evaluationFrequency": "PT1M",
-        "windowSize": "PT5M",
+        "evaluationFrequency": "PT5M",
+        "windowSize": "PT15M",
         "criteria": {
           "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
           "allOf": [
             {
-              "name": "Failed Requests",
-              "metricName": "requests/failed",
-              "metricNamespace": "Microsoft.Insights/components",
-              "operator": "GreaterThan",
-              "threshold": 5,
-              "timeAggregation": "Count",
+              "threshold": 85,
+              "name": "HighMemory",
+              "metricNamespace": "Microsoft.Compute/virtualMachines",
+              "metricName": "Available Memory Bytes",
+              "operator": "LessThan",
+              "timeAggregation": "Average",
               "criterionType": "StaticThresholdCriterion"
             }
           ]
@@ -201,170 +219,179 @@
       "tags": "[parameters('tags')]"
     },
     {
-      "type": "Microsoft.Insights/scheduledQueryRules",
-      "apiVersion": "2023-03-15-preview",
-      "name": "[concat('Custom Log Alert - ', parameters('environment'))]",
-      "location": "[parameters('location')]",
+      "type": "Microsoft.Insights/activityLogAlerts",
+      "apiVersion": "2020-10-01",
+      "name": "[concat(variables('alertRuleName'), '-ServiceHealth')]",
+      "location": "global",
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
         "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
       ],
       "properties": {
-        "displayName": "[concat('Custom Log Alert - ', parameters('environment'))]",
-        "description": "Alert based on custom log query",
-        "severity": 2,
         "enabled": true,
-        "evaluationFrequency": "PT5M",
+        "description": "Service health alert for workshop resources",
         "scopes": [
-          "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+          "[subscription().id]"
         ],
-        "targetResourceTypes": [
-          "Microsoft.OperationalInsights/workspaces"
-        ],
-        "windowSize": "PT5M",
-        "criteria": {
+        "condition": {
           "allOf": [
             {
-              "query": "AzureActivity | where ActivityStatus == \"Failed\" | summarize count() by bin(TimeGenerated, 5m)",
-              "timeAggregation": "Count",
-              "dimensions": [],
-              "operator": "GreaterThan",
-              "threshold": 0,
-              "failingPeriods": {
-                "numberOfEvaluationPeriods": 1,
-                "minFailingPeriodsToAlert": 1
-              }
+              "field": "category",
+              "equals": "ServiceHealth"
+            },
+            {
+              "field": "properties.incidentType",
+              "equals": "Incident"
             }
           ]
         },
         "actions": {
           "actionGroups": [
-            "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
+            {
+              "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
+            }
           ]
         }
       },
       "tags": "[parameters('tags')]"
     },
     {
-      "type": "Microsoft.Consumption/budgets",
-      "apiVersion": "2023-05-01",
-      "name": "[variables('budgetName')]",
+      "type": "Microsoft.Portal/dashboards",
+      "apiVersion": "2020-09-01-preview",
+      "name": "[variables('dashboardName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+      ],
       "properties": {
-        "timePeriod": {
-          "startDate": "[concat(utcNow('yyyy-MM'), '-01')]",
-          "endDate": "[concat(utcNow('yyyy'), '-12-31')]"
-        },
-        "timeGrain": "Monthly",
-        "amount": "[variables('budgetAmount')]",
-        "category": "Cost",
-        "notifications": {
-          "actual_GreaterThan_80_Percent": {
-            "enabled": true,
-            "operator": "GreaterThan",
-            "threshold": 80,
-            "contactEmails": [
-              "workshop-admin@example.com"
-            ],
-            "contactGroups": [
-              "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
-            ],
-            "thresholdType": "Actual"
-          },
-          "forecasted_GreaterThan_100_Percent": {
-            "enabled": true,
-            "operator": "GreaterThan",
-            "threshold": 100,
-            "contactEmails": [
-              "workshop-admin@example.com"
-            ],
-            "contactGroups": [
-              "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
-            ],
-            "thresholdType": "Forecasted"
+        "lenses": [
+          {
+            "order": 0,
+            "parts": [
+              {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "colSpan": 4,
+                  "rowSpan": 3
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "resourceGroup",
+                      "value": "[resourceGroup().name]"
+                    },
+                    {
+                      "name": "id",
+                      "value": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/CuratedBladePerformanceCountersPinnedPart"
+                }
+              },
+              {
+                "position": {
+                  "x": 4,
+                  "y": 0,
+                  "colSpan": 4,
+                  "rowSpan": 3
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "resourceGroup",
+                      "value": "[resourceGroup().name]"
+                    },
+                    {
+                      "name": "id",
+                      "value": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/CuratedBladeFailuresPinnedPart"
+                }
+              }
+            ]
+          }
+        ],
+        "metadata": {
+          "model": {
+            "timeRange": {
+              "value": {
+                "relative": {
+                  "duration": 24,
+                  "timeUnit": 1
+                }
+              },
+              "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+            }
           }
         }
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
-      ]
+      "tags": "[union(parameters('tags'), createObject('hidden-title', concat('Workshop Module ', parameters('moduleNumber'), ' Dashboard')))]"
     },
     {
-      "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
-      "apiVersion": "2020-08-01",
-      "name": "[concat(variables('logAnalyticsWorkspaceName'), '/Workshop Error Analysis')]",
+      "type": "Microsoft.Insights/workbooks",
+      "apiVersion": "2023-06-01",
+      "name": "[guid(resourceGroup().id, variables('workbookName'))]",
+      "location": "[parameters('location')]",
+      "kind": "shared",
       "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
       ],
       "properties": {
-        "category": "Workshop",
-        "displayName": "Workshop Error Analysis",
-        "query": "union * | where TimeGenerated > ago(1h) | where Level == \"Error\" or Level == \"Exception\" | summarize count() by bin(TimeGenerated, 5m), Level | render timechart",
-        "functionAlias": "WorkshopErrors",
-        "functionParameters": "startTime:datetime = ago(1h)",
-        "version": 2
-      }
-    },
-    {
-      "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
-      "apiVersion": "2020-08-01",
-      "name": "[concat(variables('logAnalyticsWorkspaceName'), '/Workshop Performance')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
-      ],
-      "properties": {
-        "category": "Workshop",
-        "displayName": "Workshop Performance Metrics",
-        "query": "Perf | where TimeGenerated > ago(1h) | where ObjectName == \"Processor\" and CounterName == \"% Processor Time\" | summarize avg(CounterValue) by bin(TimeGenerated, 5m) | render timechart",
-        "functionAlias": "WorkshopPerformance",
-        "functionParameters": "startTime:datetime = ago(1h)",
-        "version": 2
-      }
+        "displayName": "[variables('workbookName')]",
+        "serializedData": "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"## Workshop Monitoring Workbook\\n\\nThis workbook provides comprehensive monitoring for Module {moduleNumber} of the Mastery AI Workshop.\"},\"name\":\"text - 0\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"requests\\n| summarize RequestCount = count() by bin(timestamp, 5m)\\n| render timechart\",\"size\":0,\"title\":\"Request Rate\",\"timeContext\":{\"durationMs\":86400000},\"queryType\":0,\"resourceType\":\"microsoft.insights/components\"},\"name\":\"query - 1\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"requests\\n| summarize AvgDuration = avg(duration) by bin(timestamp, 5m)\\n| render timechart\",\"size\":0,\"title\":\"Average Response Time\",\"timeContext\":{\"durationMs\":86400000},\"queryType\":0,\"resourceType\":\"microsoft.insights/components\"},\"name\":\"query - 2\"}],\"styleSettings\":{},\"$schema\":\"https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json\"}",
+        "category": "workbook",
+        "sourceId": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      },
+      "tags": "[parameters('tags')]"
     }
   ],
   "outputs": {
     "logAnalyticsWorkspaceId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
     },
     "logAnalyticsWorkspaceName": {
       "type": "string",
-      "value": "[variables('logAnalyticsWorkspaceName')]"
+      "value": "[variables('logAnalyticsName')]"
     },
-    "logAnalyticsCustomerId": {
+    "appInsightsId": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))).customerId]"
+      "value": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
     },
-    "applicationInsightsId": {
+    "appInsightsName": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+      "value": "[variables('appInsightsName')]"
     },
-    "applicationInsightsName": {
+    "appInsightsInstrumentationKey": {
       "type": "string",
-      "value": "[variables('applicationInsightsName')]"
+      "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightsName'))).InstrumentationKey]"
     },
-    "applicationInsightsInstrumentationKey": {
+    "appInsightsConnectionString": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))).InstrumentationKey]"
-    },
-    "applicationInsightsConnectionString": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))).ConnectionString]"
+      "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightsName'))).ConnectionString]"
     },
     "actionGroupId": {
       "type": "string",
       "value": "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
     },
-    "budgetName": {
+    "actionGroupName": {
       "type": "string",
-      "value": "[variables('budgetName')]"
+      "value": "[variables('actionGroupName')]"
     },
-    "monitoringEndpoints": {
-      "type": "object",
-      "value": {
-        "logAnalytics": "[concat('https://portal.azure.com/#@', tenant().tenantId, '/resource', resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '/logs')]",
-        "applicationInsights": "[concat('https://portal.azure.com/#@', tenant().tenantId, '/resource', resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '/overview')]",
-        "costManagement": "[concat('https://portal.azure.com/#view/Microsoft_Azure_CostManagement/Menu/~/budgets')]"
-      }
+    "dashboardId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Portal/dashboards', variables('dashboardName'))]"
+    },
+    "workbookId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Insights/workbooks', guid(resourceGroup().id, variables('workbookName')))]"
+    },
+    "logAnalyticsWorkspaceKey": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName')), '2023-09-01').primarySharedKey]"
     }
   }
 }

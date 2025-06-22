@@ -731,8 +731,8 @@ Congratulations! You've built a professional CLI task manager with:
 ### What's Next?
 
 - Try the extension challenges
-- Move on to [Exercise 3](../../exercise3-hard/README.md) - Complete Application
-- Review the [best practices](../../best-practices.md) guide
+- Move on to [Exercise 3](module-01-exercise3-part1.md) - Complete Application
+- Review the [best practices](best-practices.md) guide
 
 ---
 

@@ -271,7 +271,7 @@ You've learned:
 4. How context quality affects suggestion quality
 
 **Next Steps:**
-- Continue to [Part 2](part2.md) to write more complex functions
+- Continue to [Part 2](module-01-exercise1-part2.md) to write more complex functions
 - Practice accepting and modifying suggestions
 - Experiment with different prompt styles
 

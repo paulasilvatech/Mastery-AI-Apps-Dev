@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# ========================================================================
-# Mastery AI Apps and Development Workshop - Quick Start Script
-# ========================================================================
-# Get started with the workshop in 5 minutes!
-# ========================================================================
+# Mastery AI Code Development Workshop - Quick Start Script
+# Get up and running in 5 minutes or less!
 
 set -e
 
@@ -13,433 +10,355 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Workshop variables
-WORKSHOP_NAME="Mastery AI Apps and Development Workshop"
-FIRST_MODULE="module-01"
-
-# Timer
+# Configuration
 START_TIME=$(date +%s)
+QUICK_MODE=true
 
-# Functions
-print_header() {
-    echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${BLUE}$1${NC}"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
-}
-
-print_step() {
-    echo -e "${CYAN}▶ $1${NC}"
+# Functions for colored output
+print_status() {
+    echo -e "${BLUE}[QUICK]${NC} $1"
 }
 
 print_success() {
-    echo -e "${GREEN}✓ $1${NC}"
-}
-
-print_error() {
-    echo -e "${RED}✗ $1${NC}"
+    echo -e "${GREEN}[✓]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠ $1${NC}"
+    echo -e "${YELLOW}[!]${NC} $1"
 }
 
-print_info() {
-    echo -e "${PURPLE}ℹ $1${NC}"
+print_error() {
+    echo -e "${RED}[✗]${NC} $1"
 }
 
-show_progress() {
-    local current=$1
-    local total=$2
-    local percent=$((current * 100 / total))
-    local filled=$((percent / 5))
-    
-    printf "\r["
-    printf "%${filled}s" | tr ' ' '█'
-    printf "%$((20 - filled))s" | tr ' ' '░'
-    printf "] %d%%" $percent
-    
-    if [[ $current -eq $total ]]; then
-        echo ""
-    fi
+print_step() {
+    echo -e "${CYAN}[STEP $1/5]${NC} $2"
 }
 
-check_critical_requirements() {
-    print_header "🚀 Quick Requirements Check"
+print_banner() {
+    echo -e "${CYAN}"
+    cat << 'EOF'
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║       🚀 5-Minute Quick Start - AI Workshop 🚀                  ║
+║                                                                  ║
+║      Get coding with AI in just a few minutes!                  ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+EOF
+    echo -e "${NC}"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to get elapsed time
+get_elapsed_time() {
+    local current_time=$(date +%s)
+    local elapsed=$((current_time - START_TIME))
+    echo "${elapsed}s"
+}
+
+# Quick prerequisites check
+quick_prereq_check() {
+    print_step 1 "Quick Prerequisites Check (30s)"
     
-    local requirements_met=true
+    local critical_tools=("git" "python3" "code")
+    local missing_tools=()
     
-    # Check Git
-    print_step "Checking Git..."
-    if command -v git &> /dev/null; then
-        print_success "Git installed"
-    else
-        print_error "Git not found - required for workshop"
-        requirements_met=false
-    fi
-    
-    # Check Python
-    print_step "Checking Python..."
-    if command -v python3 &> /dev/null; then
-        version=$(python3 --version | awk '{print $2}')
-        print_success "Python $version found"
-    else
-        print_warning "Python 3 not found - will need for exercises"
-    fi
-    
-    # Check VS Code
-    print_step "Checking VS Code..."
-    if command -v code &> /dev/null; then
-        print_success "VS Code installed"
-    else
-        print_warning "VS Code not found - recommended editor"
-    fi
-    
-    # Check GitHub CLI
-    print_step "Checking GitHub CLI..."
-    if command -v gh &> /dev/null; then
-        if gh auth status &> /dev/null; then
-            print_success "GitHub CLI authenticated"
+    for tool in "${critical_tools[@]}"; do
+        if command_exists "$tool"; then
+            print_success "$tool found"
         else
-            print_warning "GitHub CLI not authenticated - run 'gh auth login'"
+            missing_tools+=("$tool")
         fi
+    done
+    
+    if [ ${#missing_tools[@]} -gt 0 ]; then
+        print_error "Missing critical tools: ${missing_tools[*]}"
+        print_status "Please install these tools first:"
+        echo "• Git: https://git-scm.com/downloads"
+        echo "• Python 3.11+: https://python.org/downloads"
+        echo "• VS Code: https://code.visualstudio.com/download"
+        exit 1
+    fi
+    
+    # Check for GitHub Copilot in VS Code
+    if code --list-extensions | grep -q "github.copilot"; then
+        print_success "GitHub Copilot extension found"
     else
-        print_warning "GitHub CLI not found - useful for workshop"
+        print_warning "GitHub Copilot extension not found - install it after setup"
     fi
     
-    if [[ "$requirements_met" == "false" ]]; then
-        print_error "Critical requirements missing!"
-        print_info "Run ./scripts/setup-workshop.sh for complete setup"
-        exit 1
-    fi
+    print_success "Prerequisites check completed ($(get_elapsed_time))"
 }
 
-setup_first_module() {
-    print_header "📁 Setting Up Your First Module"
+# Minimal environment setup
+quick_env_setup() {
+    print_step 2 "Environment Setup (60s)"
     
-    # Navigate to first module
-    cd "modules/$FIRST_MODULE" 2>/dev/null || {
-        print_error "Cannot find modules directory"
-        print_info "Make sure you're in the workshop root directory"
-        exit 1
-    }
-    
-    print_success "Navigated to Module 1"
-    
-    # Create starter files if they don't exist
-    if [[ ! -f "hello_ai.py" ]]; then
-        print_step "Creating your first AI-powered Python file..."
-        
-        cat > hello_ai.py << 'EOF'
-#!/usr/bin/env python3
-"""
-Your first AI-powered code!
-Type comments to get GitHub Copilot suggestions.
-"""
-
-# TODO: Create a function that generates a personalized welcome message
-# Hint: Press Tab to accept Copilot's suggestion!
-
-
-# TODO: Create a function that returns the current date and time in a friendly format
-
-
-# TODO: Create a main function that uses both functions above
-
-
-if __name__ == "__main__":
-    # TODO: Call the main function
-    pass
-EOF
-        
-        print_success "Created hello_ai.py"
-    fi
-    
-    # Create a simple exercise
-    if [[ ! -f "exercise1.py" ]]; then
-        cat > exercise1.py << 'EOF'
-"""
-Exercise 1: AI-Assisted Calculator
-
-Use GitHub Copilot to help you create a simple calculator.
-Follow the TODOs and let Copilot assist you!
-"""
-
-# TODO: Create a Calculator class with methods for:
-# - add(a, b)
-# - subtract(a, b)  
-# - multiply(a, b)
-# - divide(a, b) - handle division by zero!
-
-
-# TODO: Create a function that takes user input and performs calculations
-
-
-# TODO: Add a main function with a simple menu
-
-
-if __name__ == "__main__":
-    print("Welcome to your AI-assisted calculator!")
-    # TODO: Run the calculator
-EOF
-        
-        print_success "Created exercise1.py"
-    fi
-}
-
-create_quick_reference() {
-    print_header "📚 Creating Quick Reference"
-    
-    cat > QUICK_REFERENCE.md << 'EOF'
-# Quick Reference Guide
-
-## 🎯 GitHub Copilot Shortcuts
-
-### VS Code
-- **Accept suggestion**: `Tab`
-- **Next suggestion**: `Alt + ]`
-- **Previous suggestion**: `Alt + [`
-- **Open Copilot**: `Ctrl + Shift + I` (Cmd on Mac)
-
-## 💡 Effective Copilot Prompts
-
-### For Functions
-```python
-# Create a function that validates email addresses using regex
-# It should return True for valid emails, False otherwise
-# Handle edge cases like missing @ or invalid domains
-```
-
-### For Classes
-```python
-# Create a User class with:
-# - Properties: name, email, age
-# - Method to validate email
-# - Method to check if user is adult (18+)
-# - String representation method
-```
-
-### For Error Handling
-```python
-# Add try-except blocks to handle:
-# - File not found errors
-# - Network connection errors
-# - Invalid input errors
-# Return meaningful error messages
-```
-
-## 🚀 Quick Commands
-
-```bash
-# Activate Python environment
-source .venv/bin/activate  # Linux/Mac
-.venv\Scripts\activate     # Windows
-
-# Run Python file
-python3 hello_ai.py
-
-# Open in VS Code
-code .
-
-# Check Copilot status
-gh copilot status
-```
-
-## 📋 Module Progress Tracker
-
-- [ ] Module 1: Introduction to AI-Powered Development
-- [ ] Module 2: GitHub Copilot Core Features
-- [ ] Module 3: Effective Prompting Techniques
-- [ ] Module 4: AI-Assisted Debugging and Testing
-- [ ] Module 5: Documentation and Code Quality
-
-## 🔗 Useful Links
-
-- [Workshop Repository](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev)
-- [GitHub Copilot Docs](https://docs.github.com/copilot)
-- [VS Code Shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
-
-## 💬 Getting Help
-
-1. Check module README files
-2. Review exercise solutions
-3. Consult troubleshooting guide
-4. Ask Copilot for help!
-
----
-Happy coding with AI! 🤖✨
-EOF
-    
-    print_success "Created QUICK_REFERENCE.md"
-}
-
-setup_vscode_workspace() {
-    print_header "⚙️ Configuring VS Code Workspace"
-    
-    # Create VS Code workspace settings
+    # Create minimal directory structure
+    mkdir -p workspace/{projects,templates,data}
     mkdir -p .vscode
+    print_success "Created workspace directories"
     
+    # Create Python virtual environment
+    if [ ! -d "venv" ]; then
+        print_status "Creating Python virtual environment..."
+        python3 -m venv venv
+        print_success "Virtual environment created"
+    else
+        print_success "Virtual environment already exists"
+    fi
+    
+    # Activate and install minimal packages
+    source venv/bin/activate
+    print_status "Installing essential packages..."
+    pip install --quiet --upgrade pip
+    pip install --quiet requests azure-identity python-dotenv
+    print_success "Essential packages installed"
+    
+    # Create minimal VS Code settings
     cat > .vscode/settings.json << 'EOF'
 {
     "github.copilot.enable": {
-        "*": true,
-        "yaml": true,
-        "plaintext": true,
-        "markdown": true
+        "*": true
     },
-    "editor.inlineSuggest.enabled": true,
-    "editor.suggestSelection": "first",
-    "python.defaultInterpreterPath": ".venv/bin/python",
-    "python.terminal.activateEnvironment": true,
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "files.autoSave": "onFocusChange",
-    "editor.formatOnSave": true,
-    "editor.wordWrap": "on",
-    "terminal.integrated.defaultProfile.osx": "bash",
-    "terminal.integrated.defaultProfile.linux": "bash",
-    "terminal.integrated.defaultProfile.windows": "PowerShell"
+    "python.defaultInterpreterPath": "./venv/bin/python",
+    "editor.formatOnSave": true
 }
 EOF
+    print_success "VS Code settings created"
     
-    # Create recommended extensions
-    cat > .vscode/extensions.json << 'EOF'
-{
-    "recommendations": [
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-toolsai.jupyter",
-        "esbenp.prettier-vscode"
-    ]
+    # Create .env template
+    cat > .env.template << 'EOF'
+# Workshop Configuration
+WORKSHOP_MODULE=1
+ENVIRONMENT=dev
+
+# Azure Configuration (fill these in)
+AZURE_SUBSCRIPTION_ID=your-subscription-id
+AZURE_TENANT_ID=your-tenant-id
+
+# GitHub Configuration (optional)
+GITHUB_TOKEN=your-github-token
+
+# OpenAI Configuration (for later modules)
+OPENAI_API_KEY=your-openai-key
+EOF
+    print_success "Environment template created"
+    
+    print_success "Environment setup completed ($(get_elapsed_time))"
 }
+
+# Download first module
+download_first_module() {
+    print_step 3 "First Module Setup (30s)"
+    
+    # Create Module 1 structure
+    mkdir -p modules/module-01-introduction/{exercises,resources}
+    
+    # Create a simple first exercise
+    cat > modules/module-01-introduction/exercises/hello_ai.py << 'EOF'
+"""
+Module 1 - Introduction to AI-Powered Development
+Your first AI-assisted code!
+
+Try these Copilot exercises:
+1. Type a comment describing what you want to do
+2. Press Tab to accept Copilot suggestions
+3. Experiment with different prompts
+"""
+
+# Exercise 1: Create a function that generates a personalized welcome message
+# Hint: Ask Copilot to create this function by typing a descriptive comment
+
+def welcome_to_workshop(name, experience_level="beginner"):
+    """
+    Generate a personalized welcome message for the workshop participant.
+    
+    Args:
+        name (str): Participant's name
+        experience_level (str): Their coding experience level
+    
+    Returns:
+        str: Personalized welcome message
+    """
+    # TODO: Let Copilot help you implement this function
+    pass
+
+# Exercise 2: Create a function to validate email addresses
+# Type: "def validate_email(email):" and let Copilot suggest the implementation
+
+# Exercise 3: Create a simple calculator function
+# Comment: "Create a calculator function that can add, subtract, multiply, and divide"
+
+if __name__ == "__main__":
+    # Test your functions here
+    print("Welcome to the AI Workshop!")
+    print("Edit this file and let Copilot help you code!")
+    
+    # Uncomment and test your functions:
+    # print(welcome_to_workshop("Your Name", "beginner"))
 EOF
     
-    print_success "VS Code workspace configured"
+    # Create module README
+    cat > modules/module-01-introduction/README.md << 'EOF'
+# Module 1: Introduction to AI-Powered Development
+
+## Objectives
+- Set up your AI development environment
+- Learn basic GitHub Copilot usage
+- Write your first AI-assisted code
+- Understand AI prompting principles
+
+## Quick Start
+1. Open `exercises/hello_ai.py` in VS Code
+2. Follow the comments and let Copilot help you
+3. Experiment with different prompts
+4. See how AI can accelerate your coding
+
+## Next Steps
+- Complete all exercises in this module
+- Read the full module documentation
+- Move to Module 2 when ready
+
+## Time: ~30 minutes
+EOF
+    
+    print_success "Module 1 setup completed"
+    print_success "First module ready ($(get_elapsed_time))"
 }
 
-show_tips() {
-    print_header "💡 Pro Tips for Getting Started"
+# Azure quick check
+quick_azure_check() {
+    print_step 4 "Azure Quick Check (30s)"
     
-    tips=(
-        "Press Tab to accept Copilot suggestions"
-        "Write descriptive comments to get better suggestions"
-        "Use Ctrl+Enter to see multiple suggestions"
-        "Break complex problems into smaller functions"
-        "Review Copilot suggestions before accepting"
-        "Use type hints for better Python suggestions"
-        "Experiment with different comment styles"
-        "Try pair programming with Copilot!"
-    )
+    if command_exists "az"; then
+        if az account show >/dev/null 2>&1; then
+            local subscription=$(az account show --query name -o tsv)
+            print_success "Azure CLI authenticated: $subscription"
+        else
+            print_warning "Azure CLI not authenticated (run 'az login' later)"
+        fi
+    else
+        print_warning "Azure CLI not installed (install later for cloud modules)"
+    fi
     
-    for i in "${!tips[@]}"; do
-        echo -e "${CYAN}$((i+1)).${NC} ${tips[$i]}"
-        sleep 0.3
-    done
+    print_success "Azure check completed ($(get_elapsed_time))"
 }
 
+# Final setup and instructions
 final_setup() {
-    print_header "🎉 Final Steps"
+    print_step 5 "Final Setup & Next Steps (30s)"
     
-    # Calculate elapsed time
-    END_TIME=$(date +%s)
-    ELAPSED=$((END_TIME - START_TIME))
-    MINUTES=$((ELAPSED / 60))
-    SECONDS=$((ELAPSED % 60))
+    # Create quick reference
+    cat > QUICK_REFERENCE.md << 'EOF'
+# Quick Reference - AI Workshop
+
+## Getting Started
+1. **Activate Python environment**: `source venv/bin/activate`
+2. **Open VS Code**: `code .`
+3. **Start with Module 1**: `code modules/module-01-introduction/exercises/hello_ai.py`
+
+## Essential Commands
+- **Validate setup**: `./scripts/validate-prerequisites.sh`
+- **Full setup**: `./scripts/setup-workshop.sh`
+- **Clean up Azure**: `./scripts/cleanup-resources.sh`
+
+## GitHub Copilot Tips
+- Type descriptive comments for better suggestions
+- Use `Ctrl+Space` to trigger suggestions manually
+- Press `Tab` to accept, `Esc` to reject
+- Try `Ctrl+Shift+P` → "GitHub Copilot: Open Chat"
+
+## Next Steps
+1. Complete Module 1 exercises
+2. Install missing tools (see PREREQUISITES.md)
+3. Set up Azure account (for modules 12+)
+4. Configure GitHub Copilot if needed
+
+## Need Help?
+- Check TROUBLESHOOTING.md
+- Read FAQ.md
+- Visit GitHub Discussions
+EOF
     
-    echo -e "${GREEN}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║                                                              ║${NC}"
-    echo -e "${GREEN}║            🎊 Quick Start Complete! 🎊                       ║${NC}"
-    echo -e "${GREEN}║                                                              ║${NC}"
-    echo -e "${GREEN}║         Time taken: ${MINUTES}m ${SECONDS}s                              ║${NC}"
-    echo -e "${GREEN}║                                                              ║${NC}"
-    echo -e "${GREEN}╚══════════════════════════════════════════════════════════════╝${NC}"
+    # Create simple .gitignore
+    cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# VS Code
+.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+EOF
     
-    echo -e "\n${PURPLE}📂 Your workshop structure:${NC}"
-    echo "mastery-ai-apps-dev/"
-    echo "├── modules/"
-    echo "│   ├── module-01/ ${GREEN}← You are here${NC}"
-    echo "│   │   ├── hello_ai.py"
-    echo "│   │   └── exercise1.py"
-    echo "│   └── ... (29 more modules)"
-    echo "├── scripts/"
-    echo "├── QUICK_REFERENCE.md"
-    echo "└── README.md"
-    
-    echo -e "\n${YELLOW}🚀 Next Steps:${NC}"
-    echo "1. Open VS Code: ${CYAN}code .${NC}"
-    echo "2. Open hello_ai.py and start coding with Copilot!"
-    echo "3. Try the exercises in exercise1.py"
-    echo "4. Check QUICK_REFERENCE.md for tips"
-    
-    echo -e "\n${GREEN}Happy learning with AI! 🤖✨${NC}"
+    print_success "Quick reference created"
+    print_success "Final setup completed ($(get_elapsed_time))"
 }
 
-interactive_mode() {
-    clear
-    echo -e "${BLUE}"
-    echo "╔══════════════════════════════════════════════════════════════╗"
-    echo "║                                                              ║"
-    echo "║   🚀 Mastery AI Apps and Development Workshop               ║"
-    echo "║              5-Minute Quick Start                            ║"
-    echo "║                                                              ║"
-    echo "╚══════════════════════════════════════════════════════════════╝"
-    echo -e "${NC}"
+# Show success message and next steps
+show_success() {
+    local total_time=$(get_elapsed_time)
     
-    echo -e "${CYAN}Welcome! Let's get you started with AI-powered development in 5 minutes.${NC}\n"
-    
-    read -p "Press Enter to begin the quick setup... "
-    
-    # Run setup steps with progress
-    local steps=5
-    local current=0
-    
-    echo -e "\n${YELLOW}Starting quick setup...${NC}\n"
-    
-    # Step 1
-    ((current++))
-    show_progress $current $steps
-    check_critical_requirements
-    
-    # Step 2
-    ((current++))
-    show_progress $current $steps
-    setup_first_module
-    
-    # Step 3
-    ((current++))
-    show_progress $current $steps
-    create_quick_reference
-    
-    # Step 4
-    ((current++))
-    show_progress $current $steps
-    setup_vscode_workspace
-    
-    # Step 5
-    ((current++))
-    show_progress $current $steps
-    show_tips
-    
-    # Final
-    final_setup
+    echo
+    print_success "🎉 Quick start completed in $total_time! 🎉"
+    echo
+    print_status "You're ready to start coding with AI!"
+    echo
+    echo -e "${CYAN}Next Steps:${NC}"
+    echo "1. 📖 Open VS Code: ${GREEN}code .${NC}"
+    echo "2. 🤖 Start coding: ${GREEN}code modules/module-01-introduction/exercises/hello_ai.py${NC}"
+    echo "3. 🚀 Activate Python: ${GREEN}source venv/bin/activate${NC}"
+    echo "4. 📚 Read: ${GREEN}QUICK_REFERENCE.md${NC}"
+    echo
+    echo -e "${YELLOW}Pro Tips:${NC}"
+    echo "• Type comments describing what you want → Press Tab"
+    echo "• Use Ctrl+Shift+P → 'GitHub Copilot: Open Chat'"
+    echo "• Experiment with different prompting styles"
+    echo
+    echo -e "${BLUE}When you're ready for more:${NC}"
+    echo "• Run full setup: ${GREEN}./scripts/setup-workshop.sh${NC}"
+    echo "• Validate everything: ${GREEN}./scripts/validate-prerequisites.sh${NC}"
+    echo "• Read complete docs: ${GREEN}README.md${NC}"
+    echo
+    print_success "Happy coding with AI! 🤖✨"
 }
 
 # Main execution
 main() {
-    # Check if we're in the right directory
-    if [[ ! -f "README.md" ]] || [[ ! -d "modules" ]]; then
-        print_error "Please run this script from the workshop root directory"
-        exit 1
-    fi
+    print_banner
     
-    # Run interactive setup
-    interactive_mode
+    print_status "Starting 5-minute quick setup..."
+    print_status "Perfect for getting a taste of AI-powered development!"
+    echo
+    
+    quick_prereq_check
+    quick_env_setup
+    download_first_module
+    quick_azure_check
+    final_setup
+    
+    show_success
 }
 
+# Error handling
+trap 'print_error "Quick start failed at step $current_step. See TROUBLESHOOTING.md for help."' ERR
+
 # Run main function
-main
+main "$@"

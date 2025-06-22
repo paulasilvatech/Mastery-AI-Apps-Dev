@@ -1,127 +1,174 @@
-# 📋 ARM Templates (Legacy Support)
+# 📋 ARM Templates
 
-This directory contains Azure Resource Manager (ARM) templates for legacy support. While we recommend using Bicep or Terraform for new deployments, these templates are provided for organizations that require ARM template compatibility.
-
-## ⚠️ Important Note
-
-ARM templates are considered legacy. For new projects, please use:
-- **Bicep** (recommended): See `/infrastructure/bicep/`
-- **Terraform**: See `/infrastructure/terraform/`
+This directory contains Azure Resource Manager (ARM) templates for legacy support. While the workshop primarily uses Bicep (the newer, more concise syntax), these ARM templates are provided for environments that require JSON-based ARM templates.
 
 ## 📁 Structure
 
 ```
 arm-templates/
-├── azuredeploy.json           # Main deployment template
-├── azuredeploy.parameters.json # Parameter file template
-├── modules/                   # Nested templates
-│   ├── ai-services.json      # AI services template
-│   ├── compute.json          # Compute resources
-│   ├── networking.json       # Network infrastructure
-│   └── storage.json          # Storage resources
-└── examples/                  # Example deployments
+├── README.md              # This file
+├── azuredeploy.json       # Main deployment template
+├── parameters/            # Parameter files for different environments
+│   ├── dev.parameters.json
+│   ├── staging.parameters.json
+│   └── prod.parameters.json
+└── modules/              # Reusable ARM template modules
+    ├── storage.json
+    ├── compute.json
+    └── ai-services.json
+```
+
+## 🔄 Conversion from Bicep
+
+The ARM templates in this directory are automatically generated from the Bicep templates using:
+
+```bash
+# Convert a single Bicep file to ARM
+az bicep build --file ../bicep/main.bicep --outfile azuredeploy.json
+
+# Convert all Bicep modules
+for file in ../bicep/modules/*.bicep; do
+    basename=$(basename "$file" .bicep)
+    az bicep build --file "$file" --outfile "modules/${basename}.json"
+done
 ```
 
 ## 🚀 Deployment
 
 ### Using Azure CLI
-```bash
-# Create resource group
-az group create --name rg-workshop-dev --location eastus
 
-# Deploy template
+```bash
+# Deploy to a resource group
 az deployment group create \
-  --resource-group rg-workshop-dev \
-  --template-file azuredeploy.json \
-  --parameters @azuredeploy.parameters.json
+    --resource-group rg-workshop-dev \
+    --template-file azuredeploy.json \
+    --parameters @parameters/dev.parameters.json
+
+# Deploy at subscription level
+az deployment sub create \
+    --location eastus \
+    --template-file azuredeploy.json \
+    --parameters @parameters/dev.parameters.json
 ```
 
 ### Using PowerShell
+
 ```powershell
-# Create resource group
-New-AzResourceGroup -Name "rg-workshop-dev" -Location "East US"
-
-# Deploy template
+# Deploy to a resource group
 New-AzResourceGroupDeployment `
-  -ResourceGroupName "rg-workshop-dev" `
-  -TemplateFile "azuredeploy.json" `
-  -TemplateParameterFile "azuredeploy.parameters.json"
+    -ResourceGroupName "rg-workshop-dev" `
+    -TemplateFile "azuredeploy.json" `
+    -TemplateParameterFile "parameters/dev.parameters.json"
+
+# Deploy at subscription level
+New-AzSubscriptionDeployment `
+    -Location "eastus" `
+    -TemplateFile "azuredeploy.json" `
+    -TemplateParameterFile "parameters/dev.parameters.json"
 ```
 
-## 🔄 Migration to Bicep
-
-To convert these ARM templates to Bicep:
-
-```bash
-# Install Bicep CLI
-az bicep install
-
-# Decompile ARM template to Bicep
-az bicep decompile --file azuredeploy.json
-```
-
-## 📊 Template Components
+## 📝 Template Structure
 
 ### Main Template (azuredeploy.json)
-Orchestrates the deployment of all workshop resources:
-- Resource naming conventions
-- Dependency management
-- Output values for application configuration
 
-### AI Services Module
-Deploys:
-- Azure OpenAI Service
-- Azure Cognitive Search
-- Cosmos DB
-- Application Insights
+The main template orchestrates the deployment of all resources:
 
-### Compute Module
-Provisions:
-- Azure Kubernetes Service (AKS)
-- Azure Functions
-- Container Instances
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        // Parameter definitions
+    },
+    "variables": {
+        // Variable definitions
+    },
+    "resources": [
+        // Resource definitions
+    ],
+    "outputs": {
+        // Output definitions
+    }
+}
+```
 
-### Networking Module
-Creates:
-- Virtual Networks
-- Subnets
-- Network Security Groups
-- Private Endpoints
+### Parameter Files
 
-### Storage Module
-Sets up:
-- Storage Accounts
-- Blob Containers
-- File Shares
-- Table Storage
+Parameter files allow you to deploy the same template to different environments:
 
-## 🏷️ Parameter Files
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environment": {
+            "value": "dev"
+        },
+        "location": {
+            "value": "eastus"
+        }
+    }
+}
+```
 
-Create environment-specific parameter files:
-- `azuredeploy.parameters.dev.json`
-- `azuredeploy.parameters.staging.json`
-- `azuredeploy.parameters.prod.json`
+## 🔍 Validation
 
-## 🔒 Security Considerations
+Before deploying, validate your templates:
 
-1. Never commit parameter files with secrets
-2. Use Key Vault references for sensitive values
-3. Enable diagnostic logging
-4. Implement proper RBAC
+```bash
+# Validate at resource group level
+az deployment group validate \
+    --resource-group rg-workshop-dev \
+    --template-file azuredeploy.json \
+    --parameters @parameters/dev.parameters.json
 
-## 🆘 Common Issues
+# What-if deployment (preview changes)
+az deployment group what-if \
+    --resource-group rg-workshop-dev \
+    --template-file azuredeploy.json \
+    --parameters @parameters/dev.parameters.json
+```
 
-### Template Size Limits
-ARM templates have a 4MB limit. Use linked templates for large deployments.
+## 🏷️ Tags
 
-### Circular Dependencies
-Ensure proper dependency ordering using `dependsOn` properties.
+All resources deployed through these templates include standard tags:
 
-### API Version Compatibility
-Always use the latest stable API versions for resources.
+- `Environment`: dev/staging/prod
+- `Module`: Module number (1-30)
+- `Workshop`: Mastery AI Code Development
+- `ManagedBy`: ARM
+- `CostCenter`: Training
+
+## ⚠️ Important Notes
+
+1. **Bicep is Preferred**: These ARM templates are provided for compatibility only. Use Bicep templates when possible.
+
+2. **Auto-Generation**: Don't manually edit the generated ARM templates. Make changes in the Bicep source files and regenerate.
+
+3. **Version Control**: Both Bicep source and generated ARM templates are version controlled for transparency.
+
+4. **Complexity**: ARM templates are more verbose than Bicep. For complex scenarios, the JSON can become difficult to manage.
 
 ## 📚 Resources
 
 - [ARM Template Documentation](https://docs.microsoft.com/azure/azure-resource-manager/templates/)
-- [Template Reference](https://docs.microsoft.com/azure/templates/)
+- [ARM Template Reference](https://docs.microsoft.com/azure/templates/)
+- [Template Functions](https://docs.microsoft.com/azure/azure-resource-manager/templates/template-functions)
 - [Best Practices](https://docs.microsoft.com/azure/azure-resource-manager/templates/best-practices)
+
+## 🔄 Migration Path
+
+If you're currently using ARM templates and want to migrate to Bicep:
+
+1. Use the decompile command:
+   ```bash
+   az bicep decompile --file azuredeploy.json
+   ```
+
+2. Review and refactor the generated Bicep file
+
+3. Test thoroughly before replacing ARM templates
+
+---
+
+**Note**: For new deployments, please use the Bicep templates in the `../bicep` directory. These ARM templates are maintained for backward compatibility only.

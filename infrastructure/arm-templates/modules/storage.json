@@ -1,0 +1,325 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "Storage module for Mastery AI Workshop - provides storage services for all modules"
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location for all resources"
+      }
+    },
+    "environment": {
+      "type": "string",
+      "allowedValues": [
+        "dev",
+        "staging",
+        "prod"
+      ],
+      "metadata": {
+        "description": "Environment name"
+      }
+    },
+    "moduleNumber": {
+      "type": "int",
+      "minValue": 1,
+      "maxValue": 30,
+      "metadata": {
+        "description": "Module number (1-30)"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "maxLength": 8,
+      "metadata": {
+        "description": "Unique suffix for resource names"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to resources"
+      }
+    }
+  },
+  "variables": {
+    "storageAccountName": "[concat('st', parameters('moduleNumber'), parameters('environment'), parameters('suffix'))]",
+    "fileShareName": "workshop-files",
+    "containerNames": [
+      "code-samples",
+      "data-files",
+      "uploads",
+      "backups",
+      "logs"
+    ],
+    "storageAccountSku": "[if(equals(parameters('environment'), 'prod'), 'Standard_GRS', if(equals(parameters('environment'), 'staging'), 'Standard_LRS', 'Standard_LRS'))]",
+    "accessTier": "[if(equals(parameters('environment'), 'prod'), 'Hot', 'Cool')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('storageAccountSku')]"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "[variables('accessTier')]",
+        "minimumTlsVersion": "TLS1_2",
+        "supportsHttpsTrafficOnly": true,
+        "allowBlobPublicAccess": false,
+        "allowSharedKeyAccess": true,
+        "defaultToOAuthAuthentication": false,
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "bypass": "AzureServices"
+        },
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": [
+            {
+              "allowedOrigins": [
+                "*"
+              ],
+              "allowedMethods": [
+                "DELETE",
+                "GET",
+                "HEAD",
+                "MERGE",
+                "POST",
+                "OPTIONS",
+                "PUT",
+                "PATCH"
+              ],
+              "maxAgeInSeconds": 3600,
+              "exposedHeaders": [
+                "*"
+              ],
+              "allowedHeaders": [
+                "*"
+              ]
+            }
+          ]
+        },
+        "deleteRetentionPolicy": {
+          "enabled": true,
+          "days": "[if(equals(parameters('environment'), 'prod'), 30, 7)]"
+        },
+        "containerDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": "[if(equals(parameters('environment'), 'prod'), 30, 7)]"
+        },
+        "versioning": {
+          "enabled": "[if(equals(parameters('environment'), 'prod'), true, false)]"
+        },
+        "changeFeed": {
+          "enabled": "[if(equals(parameters('environment'), 'prod'), true, false)]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "shareDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": "[if(equals(parameters('environment'), 'prod'), 30, 7)]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default/', variables('containerNames')[copyIndex()])]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]"
+      ],
+      "copy": {
+        "name": "containerLoop",
+        "count": "[length(variables('containerNames'))]"
+      },
+      "properties": {
+        "publicAccess": "None",
+        "metadata": {
+          "purpose": "workshop-storage",
+          "module": "[string(parameters('moduleNumber'))]",
+          "environment": "[parameters('environment')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default/', variables('fileShareName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', variables('storageAccountName'), 'default')]"
+      ],
+      "properties": {
+        "shareQuota": "[if(equals(parameters('environment'), 'prod'), 1024, 100)]",
+        "enabledProtocols": "SMB",
+        "metadata": {
+          "purpose": "workshop-shared-files",
+          "module": "[string(parameters('moduleNumber'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/queueServices",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": [
+            {
+              "allowedOrigins": [
+                "*"
+              ],
+              "allowedMethods": [
+                "DELETE",
+                "GET",
+                "HEAD",
+                "MERGE",
+                "POST",
+                "OPTIONS",
+                "PUT"
+              ],
+              "maxAgeInSeconds": 3600,
+              "exposedHeaders": [
+                "*"
+              ],
+              "allowedHeaders": [
+                "*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default/workshop-tasks')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/queueServices', variables('storageAccountName'), 'default')]"
+      ],
+      "properties": {
+        "metadata": {
+          "purpose": "workshop-task-queue",
+          "module": "[string(parameters('moduleNumber'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": [
+            {
+              "allowedOrigins": [
+                "*"
+              ],
+              "allowedMethods": [
+                "DELETE",
+                "GET",
+                "HEAD",
+                "MERGE",
+                "POST",
+                "OPTIONS",
+                "PUT"
+              ],
+              "maxAgeInSeconds": 3600,
+              "exposedHeaders": [
+                "*"
+              ],
+              "allowedHeaders": [
+                "*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2023-01-01",
+      "name": "[concat(variables('storageAccountName'), '/default/workshopdata')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', variables('storageAccountName'), 'default')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "storageAccountName": {
+      "type": "string",
+      "value": "[variables('storageAccountName')]"
+    },
+    "storageAccountId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+    },
+    "primaryEndpoints": {
+      "type": "object",
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))).primaryEndpoints]"
+    },
+    "primaryAccessKey": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-01-01').keys[0].value]"
+    },
+    "connectionString": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-01-01').keys[0].value, ';EndpointSuffix=core.windows.net')]"
+    },
+    "containerNames": {
+      "type": "array",
+      "value": "[variables('containerNames')]"
+    },
+    "fileShareName": {
+      "type": "string",
+      "value": "[variables('fileShareName')]"
+    },
+    "storageAccountSku": {
+      "type": "string",
+      "value": "[variables('storageAccountSku')]"
+    }
+  }
+}

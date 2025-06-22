@@ -242,4 +242,4 @@ After mastering the basics:
 
 🎉 **Welcome to the future of coding!** This module starts your transformation into an AI-powered developer. Embrace the technology, but remember: Copilot is your assistant, not your replacement. Understanding the code you write remains paramount.
 
-Ready to begin? Head to [Exercise 1](exercises/exercise1-easy/README.md) and let's write some AI-powered code!
+Ready to begin? Head to [Exercise 1](module-01-exercise1-part1.md) and let's write some AI-powered code!

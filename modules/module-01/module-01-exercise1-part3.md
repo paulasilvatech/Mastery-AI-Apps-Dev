@@ -515,9 +515,9 @@ Try these additional challenges:
 
 ### What's Next?
 
-- Review the [best practices](../../best-practices.md) document
-- Try the independent [project](../../project/README.md)
-- Move on to [Exercise 2](../../exercise2-medium/README.md)
+- Review the [best practices](best-practices.md) document
+- Try the independent [project](project-readme.md)
+- Move on to [Exercise 2](module-01-exercise2-part1.md)
 
 ---
 

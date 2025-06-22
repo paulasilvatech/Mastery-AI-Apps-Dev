@@ -1,0 +1,100 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "projectName": {
+      "value": "masteryai"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "openAiConfig": {
+      "value": {
+        "sku": "S0",
+        "deployments": [
+          {
+            "name": "gpt-4",
+            "model": "gpt-4",
+            "version": "0613",
+            "capacity": 10
+          },
+          {
+            "name": "gpt-35-turbo",
+            "model": "gpt-35-turbo",
+            "version": "0613",
+            "capacity": 20
+          },
+          {
+            "name": "text-embedding-ada-002",
+            "model": "text-embedding-ada-002",
+            "version": "2",
+            "capacity": 10
+          }
+        ]
+      }
+    },
+    "searchServiceConfig": {
+      "value": {
+        "sku": "basic",
+        "replicaCount": 1,
+        "partitionCount": 1
+      }
+    },
+    "cosmosDbConfig": {
+      "value": {
+        "offerType": "Standard",
+        "consistencyLevel": "Session",
+        "enableServerless": true,
+        "enableVectorSearch": true
+      }
+    },
+    "storageConfig": {
+      "value": {
+        "sku": "Standard_LRS",
+        "containerNames": [
+          "data",
+          "models",
+          "logs"
+        ]
+      }
+    },
+    "appServicePlanConfig": {
+      "value": {
+        "sku": "B1",
+        "capacity": 1
+      }
+    },
+    "monitoringConfig": {
+      "value": {
+        "retentionInDays": 30,
+        "enableAlerts": true
+      }
+    },
+    "networkingConfig": {
+      "value": {
+        "vnetAddressPrefix": "10.0.0.0/16",
+        "subnetAddressPrefix": "10.0.1.0/24",
+        "enablePrivateEndpoints": false
+      }
+    },
+    "securityConfig": {
+      "value": {
+        "enableKeyVault": true,
+        "enableManagedIdentity": true,
+        "allowedIpRanges": []
+      }
+    },
+    "tags": {
+      "value": {
+        "Project": "MasteryAIWorkshop",
+        "Environment": "Development",
+        "ManagedBy": "Bicep",
+        "CostCenter": "Training",
+        "AutoShutdown": "true"
+      }
+    }
+  }
+}

@@ -432,7 +432,7 @@ You've successfully:
 - `task stats` - View statistics
 - `task clear` - Clean up completed tasks
 
-**Next**: Continue to [Part 3](part3.md) where we'll add advanced features and testing!
+**Next**: Continue to [Part 3](module-01-exercise2-part3.md) where we'll add advanced features and testing!
 
 ---
 

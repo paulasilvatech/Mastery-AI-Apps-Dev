@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# ========================================================================
-# Mastery AI Apps and Development Workshop - Azure Resource Cleanup
-# ========================================================================
-# This script helps clean up Azure resources created during the workshop
-# ========================================================================
+# Mastery AI Code Development Workshop - Cleanup Resources Script
+# This script helps clean up Azure resources to avoid unnecessary costs
 
 set -e
 
@@ -15,390 +12,428 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Default values
-RESOURCE_PREFIX="mastery-ai-workshop"
+# Configuration
+CLEANUP_LOG="cleanup-$(date +%Y%m%d%H%M%S).log"
 DRY_RUN=false
-MODULE=""
-ALL_MODULES=false
+FORCE=false
+MODULE_NUMBER=""
+ENVIRONMENT=""
 
-# Functions
-print_header() {
-    echo -e "\n${BLUE}========================================${NC}"
-    echo -e "${BLUE}$1${NC}"
-    echo -e "${BLUE}========================================${NC}\n"
+# Functions for colored output
+print_status() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] INFO: $1" >> "$CLEANUP_LOG"
 }
 
 print_success() {
-    echo -e "${GREEN}✓ $1${NC}"
-}
-
-print_error() {
-    echo -e "${RED}✗ $1${NC}"
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] SUCCESS: $1" >> "$CLEANUP_LOG"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠ $1${NC}"
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARNING: $1" >> "$CLEANUP_LOG"
 }
 
-print_info() {
-    echo -e "${BLUE}ℹ $1${NC}"
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1" >> "$CLEANUP_LOG"
 }
 
-usage() {
-    cat << EOF
-Usage: $0 [OPTIONS]
-
-Clean up Azure resources created during the Mastery AI Apps Development Workshop.
-
-OPTIONS:
-    -m, --module NUMBER     Clean resources for specific module (1-30)
-    -a, --all              Clean all workshop resources
-    -p, --prefix PREFIX    Resource prefix (default: mastery-ai-workshop)
-    -g, --resource-group   Specific resource group to clean
-    -d, --dry-run          Show what would be deleted without deleting
-    -y, --yes              Skip confirmation prompts
-    -h, --help             Show this help message
-
-EXAMPLES:
-    # Clean resources from module 5
-    $0 --module 5
-
-    # Clean all workshop resources (dry run)
-    $0 --all --dry-run
-
-    # Clean specific resource group
-    $0 --resource-group my-workshop-rg
-
-    # Clean with custom prefix
-    $0 --prefix myworkshop --module 10
-
-EOF
-    exit 1
-}
-
-check_azure_cli() {
-    if ! command -v az &> /dev/null; then
-        print_error "Azure CLI is not installed"
-        print_info "Please install Azure CLI: https://docs.microsoft.com/cli/azure/install-azure-cli"
-        exit 1
-    fi
-}
-
-check_azure_login() {
-    print_info "Checking Azure authentication..."
-    
-    if ! az account show &> /dev/null; then
-        print_error "Not logged in to Azure"
-        print_info "Please run: az login"
-        exit 1
-    fi
-    
-    SUBSCRIPTION=$(az account show --query name -o tsv)
-    SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-    print_success "Using subscription: $SUBSCRIPTION"
-}
-
-get_module_resources() {
-    local module_num=$1
-    local prefix=$2
-    
-    # Define resource patterns for each module
-    case $module_num in
-        1|2|3|4|5)
-            # Fundamentals - minimal resources
-            echo "${prefix}-module${module_num}-*"
-            ;;
-        6|7|8|9|10)
-            # Intermediate - web apps, databases
-            echo "${prefix}-module${module_num}-*"
-            echo "${prefix}-webapp-${module_num}"
-            echo "${prefix}-sql-${module_num}"
-            ;;
-        11|12|13|14|15)
-            # Advanced - containers, AKS
-            echo "${prefix}-module${module_num}-*"
-            echo "${prefix}-aks-${module_num}"
-            echo "${prefix}-acr-${module_num}"
-            ;;
-        16|17|18|19|20)
-            # Enterprise - full infrastructure
-            echo "${prefix}-module${module_num}-*"
-            echo "${prefix}-vnet-${module_num}"
-            echo "${prefix}-kv-${module_num}"
-            ;;
-        21|22|23|24|25)
-            # AI Agents - AI services
-            echo "${prefix}-module${module_num}-*"
-            echo "${prefix}-openai-${module_num}"
-            echo "${prefix}-search-${module_num}"
-            ;;
-        26|27|28|29|30)
-            # Mastery - complex resources
-            echo "${prefix}-module${module_num}-*"
-            echo "${prefix}-enterprise-${module_num}"
-            ;;
-        *)
-            echo "${prefix}-module${module_num}-*"
-            ;;
-    esac
-}
-
-list_resource_groups() {
-    local pattern=$1
-    
-    if [[ -z "$pattern" ]]; then
-        pattern="$RESOURCE_PREFIX"
-    fi
-    
-    az group list --query "[?contains(name, '$pattern')].name" -o tsv
-}
-
-list_resources_in_group() {
-    local rg=$1
-    az resource list --resource-group "$rg" --query "[].{Name:name, Type:type}" -o table
-}
-
-delete_resource_group() {
-    local rg=$1
-    
-    if [[ "$DRY_RUN" == "true" ]]; then
-        print_warning "[DRY RUN] Would delete resource group: $rg"
-        list_resources_in_group "$rg"
-    else
-        print_info "Deleting resource group: $rg"
-        az group delete --name "$rg" --yes --no-wait
-        print_success "Delete initiated for: $rg"
-    fi
-}
-
-clean_module_resources() {
-    local module_num=$1
-    
-    print_header "Cleaning Module $module_num Resources"
-    
-    # Get resource patterns for this module
-    local patterns=$(get_module_resources "$module_num" "$RESOURCE_PREFIX")
-    
-    # Find matching resource groups
-    local found_groups=()
-    for pattern in $patterns; do
-        while IFS= read -r group; do
-            if [[ ! " ${found_groups[@]} " =~ " ${group} " ]]; then
-                found_groups+=("$group")
-            fi
-        done < <(list_resource_groups "$pattern")
-    done
-    
-    if [[ ${#found_groups[@]} -eq 0 ]]; then
-        print_info "No resources found for module $module_num"
-        return
-    fi
-    
-    print_info "Found ${#found_groups[@]} resource group(s) for module $module_num:"
-    for group in "${found_groups[@]}"; do
-        echo "  - $group"
-    done
-    
-    # Delete each group
-    for group in "${found_groups[@]}"; do
-        delete_resource_group "$group"
-    done
-}
-
-clean_all_resources() {
-    print_header "Cleaning All Workshop Resources"
-    
-    local all_groups=($(list_resource_groups "$RESOURCE_PREFIX"))
-    
-    if [[ ${#all_groups[@]} -eq 0 ]]; then
-        print_info "No workshop resources found"
-        return
-    fi
-    
-    print_warning "Found ${#all_groups[@]} resource group(s) to clean:"
-    for group in "${all_groups[@]}"; do
-        echo "  - $group"
-    done
-    
-    if [[ "$YES_FLAG" != "true" ]] && [[ "$DRY_RUN" != "true" ]]; then
-        read -p "Are you sure you want to delete all these resources? (y/N): " confirm
-        if [[ "$confirm" != "y" ]] && [[ "$confirm" != "Y" ]]; then
-            print_warning "Cleanup cancelled"
-            exit 0
-        fi
-    fi
-    
-    # Delete all groups
-    for group in "${all_groups[@]}"; do
-        delete_resource_group "$group"
-    done
-}
-
-clean_specific_group() {
-    local rg=$1
-    
-    print_header "Cleaning Resource Group: $rg"
-    
-    # Check if group exists
-    if ! az group exists --name "$rg" &> /dev/null; then
-        print_error "Resource group '$rg' does not exist"
-        exit 1
-    fi
-    
-    # Show resources in the group
-    print_info "Resources in group:"
-    list_resources_in_group "$rg"
-    
-    if [[ "$YES_FLAG" != "true" ]] && [[ "$DRY_RUN" != "true" ]]; then
-        read -p "Delete this resource group? (y/N): " confirm
-        if [[ "$confirm" != "y" ]] && [[ "$confirm" != "Y" ]]; then
-            print_warning "Cleanup cancelled"
-            exit 0
-        fi
-    fi
-    
-    delete_resource_group "$rg"
-}
-
-check_deletions() {
-    print_header "Checking Deletion Status"
-    
-    # Get all workshop-related groups
-    local remaining_groups=($(list_resource_groups "$RESOURCE_PREFIX"))
-    
-    if [[ ${#remaining_groups[@]} -eq 0 ]]; then
-        print_success "All workshop resources have been cleaned up!"
-    else
-        print_warning "The following resource groups are still being deleted:"
-        for group in "${remaining_groups[@]}"; do
-            local state=$(az group show --name "$group" --query properties.provisioningState -o tsv 2>/dev/null || echo "Unknown")
-            echo "  - $group (State: $state)"
-        done
-        print_info "Deletion can take several minutes. Check again later with: $0 --check"
-    fi
-}
-
-cleanup_other_resources() {
-    print_header "Cleaning Other Resources"
-    
-    # Clean up Key Vault soft-deleted vaults
-    print_info "Checking for soft-deleted Key Vaults..."
-    local deleted_vaults=$(az keyvault list-deleted --query "[?contains(name, '$RESOURCE_PREFIX')].name" -o tsv)
-    
-    if [[ -n "$deleted_vaults" ]]; then
-        print_warning "Found soft-deleted Key Vaults:"
-        echo "$deleted_vaults"
-        
-        if [[ "$DRY_RUN" != "true" ]]; then
-            for vault in $deleted_vaults; do
-                print_info "Purging Key Vault: $vault"
-                az keyvault purge --name "$vault" --no-wait
-            done
-        fi
-    fi
-    
-    # Clean up orphaned disks
-    print_info "Checking for orphaned managed disks..."
-    local orphaned_disks=$(az disk list --query "[?contains(name, '$RESOURCE_PREFIX') && diskState=='Unattached'].name" -o tsv)
-    
-    if [[ -n "$orphaned_disks" ]]; then
-        print_warning "Found orphaned disks:"
-        echo "$orphaned_disks"
-        
-        if [[ "$DRY_RUN" != "true" ]]; then
-            for disk in $orphaned_disks; do
-                local rg=$(az disk show --name "$disk" --query resourceGroup -o tsv)
-                print_info "Deleting disk: $disk"
-                az disk delete --name "$disk" --resource-group "$rg" --yes --no-wait
-            done
-        fi
-    fi
-}
-
-main() {
-    clear
+print_banner() {
     echo -e "${BLUE}"
-    echo "╔══════════════════════════════════════════════════════════════╗"
-    echo "║                                                              ║"
-    echo "║   Mastery AI Apps and Development Workshop                  ║"
-    echo "║              Azure Resource Cleanup                          ║"
-    echo "║                                                              ║"
-    echo "╚══════════════════════════════════════════════════════════════╝"
+    cat << 'EOF'
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║         🧹 Workshop Resources Cleanup Tool 🧹                   ║
+║                                                                  ║
+║    Safely remove Azure resources to avoid unwanted costs        ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+EOF
     echo -e "${NC}"
-    
-    # Check Azure CLI
-    check_azure_cli
-    check_azure_login
-    
-    # Process based on options
-    if [[ -n "$SPECIFIC_RG" ]]; then
-        clean_specific_group "$SPECIFIC_RG"
-    elif [[ "$CHECK_FLAG" == "true" ]]; then
-        check_deletions
-    elif [[ "$ALL_MODULES" == "true" ]]; then
-        clean_all_resources
-        cleanup_other_resources
-    elif [[ -n "$MODULE" ]]; then
-        clean_module_resources "$MODULE"
-    else
-        print_error "No action specified. Use --help for usage information."
-        exit 1
-    fi
-    
-    if [[ "$DRY_RUN" == "true" ]]; then
-        print_warning "This was a dry run. No resources were actually deleted."
-        print_info "Remove --dry-run flag to perform actual cleanup."
-    else
-        print_success "Cleanup process initiated!"
-        print_info "Note: Resource deletion happens asynchronously and may take several minutes."
-        print_info "Run '$0 --check' to verify completion."
-    fi
+}
+
+# Show usage
+show_usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -m, --module NUMBER    Clean up specific module (1-30)"
+    echo "  -e, --environment ENV  Clean up specific environment (dev/staging/prod)"
+    echo "  -a, --all             Clean up all workshop resources"
+    echo "  -d, --dry-run         Show what would be deleted without deleting"
+    echo "  -f, --force           Skip confirmation prompts"
+    echo "  -h, --help            Show this help message"
+    echo
+    echo "Examples:"
+    echo "  $0 --module 5 --environment dev     # Clean up Module 5 dev resources"
+    echo "  $0 --environment staging --dry-run  # Preview staging cleanup"
+    echo "  $0 --all --force                    # Clean up everything without prompts"
+    echo
 }
 
 # Parse command line arguments
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        -m|--module)
-            MODULE="$2"
-            if [[ ! "$MODULE" =~ ^[0-9]+$ ]] || [[ $MODULE -lt 1 ]] || [[ $MODULE -gt 30 ]]; then
-                print_error "Invalid module number: $MODULE (must be 1-30)"
+parse_arguments() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -m|--module)
+                MODULE_NUMBER="$2"
+                shift 2
+                ;;
+            -e|--environment)
+                ENVIRONMENT="$2"
+                shift 2
+                ;;
+            -a|--all)
+                MODULE_NUMBER="all"
+                shift
+                ;;
+            -d|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -f|--force)
+                FORCE=true
+                shift
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            *)
+                print_error "Unknown option: $1"
+                show_usage
                 exit 1
-            fi
-            shift 2
-            ;;
-        -a|--all)
-            ALL_MODULES=true
-            shift
-            ;;
-        -p|--prefix)
-            RESOURCE_PREFIX="$2"
-            shift 2
-            ;;
-        -g|--resource-group)
-            SPECIFIC_RG="$2"
-            shift 2
-            ;;
-        -d|--dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-        -y|--yes)
-            YES_FLAG=true
-            shift
-            ;;
-        --check)
-            CHECK_FLAG=true
-            shift
-            ;;
-        -h|--help)
-            usage
-            ;;
-        *)
-            print_error "Unknown option: $1"
-            usage
-            ;;
-    esac
-done
+                ;;
+        esac
+    done
+}
 
-# Run main function
-main
+# Check Azure authentication
+check_azure_auth() {
+    print_status "Checking Azure authentication..."
+    
+    if ! az account show >/dev/null 2>&1; then
+        print_error "Not logged into Azure. Please run: az login"
+        exit 1
+    fi
+    
+    local subscription=$(az account show --query name -o tsv)
+    local subscription_id=$(az account show --query id -o tsv)
+    print_success "Authenticated with subscription: $subscription ($subscription_id)"
+}
+
+# Find workshop resource groups
+find_resource_groups() {
+    print_status "Finding workshop resource groups..."
+    
+    local rg_pattern="rg-workshop"
+    
+    if [ "$MODULE_NUMBER" != "all" ] && [ -n "$MODULE_NUMBER" ]; then
+        rg_pattern="${rg_pattern}-module${MODULE_NUMBER}"
+    fi
+    
+    if [ -n "$ENVIRONMENT" ]; then
+        rg_pattern="${rg_pattern}-${ENVIRONMENT}"
+    fi
+    
+    local resource_groups=$(az group list --query "[?starts_with(name, '${rg_pattern}')].{Name:name, Location:location, State:properties.provisioningState}" -o table --output tsv)
+    
+    if [ -z "$resource_groups" ]; then
+        print_warning "No resource groups found matching pattern: ${rg_pattern}*"
+        return 1
+    fi
+    
+    echo "$resource_groups"
+    return 0
+}
+
+# Get resource group details and costs
+get_resource_group_details() {
+    local rg_name=$1
+    
+    print_status "Analyzing resource group: $rg_name"
+    
+    # Get resources in the group
+    local resources=$(az resource list -g "$rg_name" --query "[].{Name:name, Type:type, Location:location}" -o table 2>/dev/null || echo "")
+    local resource_count=$(az resource list -g "$rg_name" --query "length([])" -o tsv 2>/dev/null || echo "0")
+    
+    # Get tags
+    local tags=$(az group show -n "$rg_name" --query "tags" -o json 2>/dev/null || echo "{}")
+    
+    echo "  Resources: $resource_count"
+    echo "  Tags: $tags"
+    
+    if [ "$resource_count" -gt 0 ]; then
+        echo "  Resource Types:"
+        az resource list -g "$rg_name" --query "[].type" -o tsv | sort | uniq -c | while read count type; do
+            echo "    $count x $type"
+        done
+    fi
+    echo
+}
+
+# Calculate estimated costs
+calculate_costs() {
+    local rg_name=$1
+    
+    print_status "Estimating costs for resource group: $rg_name"
+    
+    # Get cost data (requires Cost Management API access)
+    local cost_data=$(az consumption usage list --billing-period-name $(date +%Y%m) --resource-group "$rg_name" --query "[].{pretaxCost:pretaxCost, currency:currency}" -o json 2>/dev/null || echo "[]")
+    
+    if [ "$cost_data" != "[]" ] && [ -n "$cost_data" ]; then
+        local total_cost=$(echo "$cost_data" | jq -r 'map(.pretaxCost | tonumber) | add' 2>/dev/null || echo "0")
+        local currency=$(echo "$cost_data" | jq -r '.[0].currency // "USD"' 2>/dev/null || echo "USD")
+        print_status "Estimated current month cost: $total_cost $currency"
+    else
+        print_warning "Cost data not available for $rg_name"
+    fi
+}
+
+# Check for protected resources
+check_protected_resources() {
+    local rg_name=$1
+    
+    print_status "Checking for protected resources in: $rg_name"
+    
+    local protected_found=false
+    
+    # Check for locks
+    local locks=$(az lock list --resource-group "$rg_name" --query "length([])" -o tsv 2>/dev/null || echo "0")
+    if [ "$locks" -gt 0 ]; then
+        print_warning "Found $locks resource lock(s) in $rg_name"
+        protected_found=true
+    fi
+    
+    # Check for backup items
+    local backup_items=$(az backup item list --vault-name "*" --resource-group "$rg_name" --query "length([])" -o tsv 2>/dev/null || echo "0")
+    if [ "$backup_items" -gt 0 ]; then
+        print_warning "Found $backup_items backup item(s) in $rg_name"
+        protected_found=true
+    fi
+    
+    # Check for resources with specific tags that indicate production
+    local prod_resources=$(az resource list -g "$rg_name" --query "[?tags.Environment=='prod' || tags.environment=='prod' || tags.Critical=='true'].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$prod_resources" ]; then
+        print_warning "Found production or critical resources in $rg_name:"
+        echo "$prod_resources" | while read resource; do
+            echo "  - $resource"
+        done
+        protected_found=true
+    fi
+    
+    if [ "$protected_found" = true ]; then
+        return 1
+    fi
+    return 0
+}
+
+# Stop running resources
+stop_running_resources() {
+    local rg_name=$1
+    
+    if [ "$DRY_RUN" = true ]; then
+        print_status "[DRY RUN] Would stop running resources in: $rg_name"
+        return
+    fi
+    
+    print_status "Stopping running resources in: $rg_name"
+    
+    # Stop Virtual Machines
+    local vms=$(az vm list -g "$rg_name" --query "[?powerState=='VM running'].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$vms" ]; then
+        echo "$vms" | while read vm; do
+            print_status "Stopping VM: $vm"
+            az vm stop -n "$vm" -g "$rg_name" --no-wait
+        done
+    fi
+    
+    # Scale down AKS clusters
+    local aks_clusters=$(az aks list -g "$rg_name" --query "[].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$aks_clusters" ]; then
+        echo "$aks_clusters" | while read cluster; do
+            print_status "Scaling down AKS cluster: $cluster"
+            az aks scale -n "$cluster" -g "$rg_name" --node-count 0 --no-wait
+        done
+    fi
+    
+    # Stop App Services
+    local webapps=$(az webapp list -g "$rg_name" --query "[].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$webapps" ]; then
+        echo "$webapps" | while read webapp; do
+            print_status "Stopping Web App: $webapp"
+            az webapp stop -n "$webapp" -g "$rg_name"
+        done
+    fi
+    
+    # Stop Function Apps
+    local functionapps=$(az functionapp list -g "$rg_name" --query "[].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$functionapps" ]; then
+        echo "$functionapps" | while read functionapp; do
+            print_status "Stopping Function App: $functionapp"
+            az functionapp stop -n "$functionapp" -g "$rg_name"
+        done
+    fi
+}
+
+# Delete resource group
+delete_resource_group() {
+    local rg_name=$1
+    
+    if [ "$DRY_RUN" = true ]; then
+        print_status "[DRY RUN] Would delete resource group: $rg_name"
+        return
+    fi
+    
+    print_status "Deleting resource group: $rg_name"
+    
+    # Remove locks first
+    local locks=$(az lock list --resource-group "$rg_name" --query "[].name" -o tsv 2>/dev/null || echo "")
+    if [ -n "$locks" ]; then
+        echo "$locks" | while read lock; do
+            print_status "Removing lock: $lock"
+            az lock delete --name "$lock" --resource-group "$rg_name"
+        done
+    fi
+    
+    # Delete the resource group
+    az group delete --name "$rg_name" --yes --no-wait
+    print_success "Initiated deletion of resource group: $rg_name"
+}
+
+# Clean up orphaned resources
+cleanup_orphaned_resources() {
+    print_status "Checking for orphaned workshop resources..."
+    
+    if [ "$DRY_RUN" = true ]; then
+        print_status "[DRY RUN] Would check for orphaned resources"
+        return
+    fi
+    
+    # Clean up orphaned disks
+    local orphaned_disks=$(az disk list --query "[?managedBy==null && starts_with(name, 'workshop')].{Name:name, ResourceGroup:resourceGroup}" -o tsv 2>/dev/null || echo "")
+    if [ -n "$orphaned_disks" ]; then
+        echo "$orphaned_disks" | while read disk rg; do
+            print_status "Deleting orphaned disk: $disk"
+            az disk delete --name "$disk" --resource-group "$rg" --yes --no-wait
+        done
+    fi
+    
+    # Clean up orphaned NICs
+    local orphaned_nics=$(az network nic list --query "[?virtualMachine==null && starts_with(name, 'workshop')].{Name:name, ResourceGroup:resourceGroup}" -o tsv 2>/dev/null || echo "")
+    if [ -n "$orphaned_nics" ]; then
+        echo "$orphaned_nics" | while read nic rg; do
+            print_status "Deleting orphaned NIC: $nic"
+            az network nic delete --name "$nic" --resource-group "$rg" --no-wait
+        done
+    fi
+    
+    # Clean up orphaned public IPs
+    local orphaned_ips=$(az network public-ip list --query "[?ipConfiguration==null && starts_with(name, 'workshop')].{Name:name, ResourceGroup:resourceGroup}" -o tsv 2>/dev/null || echo "")
+    if [ -n "$orphaned_ips" ]; then
+        echo "$orphaned_ips" | while read ip rg; do
+            print_status "Deleting orphaned public IP: $ip"
+            az network public-ip delete --name "$ip" --resource-group "$rg" --no-wait
+        done
+    fi
+}
+
+# Main cleanup function
+perform_cleanup() {
+    local resource_groups=$(find_resource_groups)
+    
+    if [ $? -ne 0 ]; then
+        print_warning "No resources found to clean up"
+        return 0
+    fi
+    
+    echo "Found workshop resource groups:"
+    echo "$resource_groups" | while read rg location state; do
+        echo "  - $rg ($location) [$state]"
+    done
+    echo
+    
+    # Get detailed information for each resource group
+    echo "$resource_groups" | while read rg location state; do
+        get_resource_group_details "$rg"
+        calculate_costs "$rg"
+    done
+    
+    # Confirmation prompt
+    if [ "$FORCE" != true ] && [ "$DRY_RUN" != true ]; then
+        echo
+        read -p "Are you sure you want to delete these resource groups? (yes/no): " -r
+        if [[ ! $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
+            print_status "Cleanup cancelled by user"
+            exit 0
+        fi
+    fi
+    
+    # Process each resource group
+    echo "$resource_groups" | while read rg location state; do
+        echo
+        print_status "Processing resource group: $rg"
+        
+        # Check for protected resources
+        if ! check_protected_resources "$rg"; then
+            if [ "$FORCE" != true ]; then
+                read -p "Resource group $rg has protected resources. Continue? (y/N): " -n 1 -r
+                echo
+                if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                    print_status "Skipping $rg"
+                    continue
+                fi
+            fi
+        fi
+        
+        # Stop running resources first to save costs
+        stop_running_resources "$rg"
+        
+        # Delete the resource group
+        delete_resource_group "$rg"
+    done
+    
+    # Clean up orphaned resources
+    cleanup_orphaned_resources
+}
+
+# Generate cleanup report
+generate_report() {
+    print_status "Cleanup completed. Log file: $CLEANUP_LOG"
+    
+    if [ "$DRY_RUN" = true ]; then
+        print_success "Dry run completed successfully. No resources were deleted."
+    else
+        print_success "Resource cleanup initiated. Check Azure portal for deletion progress."
+        print_warning "Note: Resource deletion may take several minutes to complete."
+    fi
+    
+    echo
+    print_status "Useful commands to check status:"
+    echo "• Check running deletions: az group list --query \"[?properties.provisioningState=='Deleting']\""
+    echo "• List remaining workshop resources: az resource list --query \"[?contains(name, 'workshop')]\""
+    echo "• Check costs: az consumption usage list --billing-period-name \$(date +%Y%m)"
+    echo
+}
+
+# Main execution
+main() {
+    parse_arguments "$@"
+    
+    print_banner
+    print_status "Starting workshop cleanup process..."
+    print_status "Log file: $CLEANUP_LOG"
+    
+    if [ "$DRY_RUN" = true ]; then
+        print_warning "DRY RUN MODE - No resources will be deleted"
+    fi
+    
+    check_azure_auth
+    perform_cleanup
+    generate_report
+}
+
+# Run main function with all arguments
+main "$@"

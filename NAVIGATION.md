@@ -164,5 +164,3 @@ Track your progress through the workshop:
 🎉 **Welcome to your AI development mastery journey!** 
 
 Remember: The goal is not just to complete modules, but to gain practical, production-ready skills that transform your career.
-
-Need help? Check our [Support Channels](SUPPORT.md) or open an issue.

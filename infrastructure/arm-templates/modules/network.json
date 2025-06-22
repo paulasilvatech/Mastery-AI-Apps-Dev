@@ -1,0 +1,520 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "Network module for Mastery AI Workshop - provides comprehensive networking infrastructure"
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location for all resources"
+      }
+    },
+    "environment": {
+      "type": "string",
+      "allowedValues": [
+        "dev",
+        "staging",
+        "prod"
+      ],
+      "metadata": {
+        "description": "Environment name"
+      }
+    },
+    "moduleNumber": {
+      "type": "int",
+      "minValue": 1,
+      "maxValue": 30,
+      "metadata": {
+        "description": "Module number (1-30)"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "maxLength": 8,
+      "metadata": {
+        "description": "Unique suffix for resource names"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "Address prefix for the virtual network"
+      }
+    },
+    "enableDdosProtection": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Enable DDoS protection (additional cost)"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to resources"
+      }
+    }
+  },
+  "variables": {
+    "vnetName": "[concat('vnet-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "nsgName": "[concat('nsg-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "publicIpName": "[concat('pip-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "bastionName": "[concat('bas-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "natGatewayName": "[concat('nat-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "routeTableName": "[concat('rt-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "applicationGatewayName": "[concat('agw-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "loadBalancerName": "[concat('lb-workshop-', parameters('environment'), '-', parameters('suffix'))]",
+    "subnets": [
+      {
+        "name": "snet-frontend",
+        "addressPrefix": "10.0.1.0/24",
+        "purpose": "Frontend applications and load balancers"
+      },
+      {
+        "name": "snet-backend",
+        "addressPrefix": "10.0.2.0/24",
+        "purpose": "Backend services and APIs"
+      },
+      {
+        "name": "snet-data",
+        "addressPrefix": "10.0.3.0/24",
+        "purpose": "Database and storage services"
+      },
+      {
+        "name": "snet-ai",
+        "addressPrefix": "10.0.4.0/24",
+        "purpose": "AI services and machine learning workloads"
+      },
+      {
+        "name": "snet-management",
+        "addressPrefix": "10.0.5.0/24",
+        "purpose": "Management and monitoring tools"
+      },
+      {
+        "name": "AzureBastionSubnet",
+        "addressPrefix": "10.0.10.0/26",
+        "purpose": "Azure Bastion secure access"
+      },
+      {
+        "name": "GatewaySubnet",
+        "addressPrefix": "10.0.11.0/27",
+        "purpose": "VPN and ExpressRoute gateways"
+      }
+    ],
+    "enableBastion": "[if(equals(parameters('environment'), 'prod'), true, false)]",
+    "publicIpSku": "[if(equals(parameters('environment'), 'prod'), 'Standard', 'Basic')]",
+    "ddosProtectionPlanName": "[concat('ddos-workshop-', parameters('environment'), '-', parameters('suffix'))]"
+  },
+  "resources": [
+    {
+      "condition": "[parameters('enableDdosProtection')]",
+      "type": "Microsoft.Network/ddosProtectionPlans",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('ddosProtectionPlanName')]",
+      "location": "[parameters('location')]",
+      "properties": {},
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('nsgName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowHTTPS",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHTTP",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1010,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowSSH",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1020,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowRDP",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1030,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowApplicationPorts",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8000-8999",
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1040,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DenyAllInbound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 4096,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('routeTableName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "DefaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "Internet"
+            }
+          }
+        ],
+        "disableBgpRoutePropagation": false
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('vnetName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]",
+        "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "dhcpOptions": {
+          "dnsServers": []
+        },
+        "subnets": "[variables('subnets')]",
+        "enableDdosProtection": "[parameters('enableDdosProtection')]",
+        "ddosProtectionPlan": "[if(parameters('enableDdosProtection'), createObject('id', resourceId('Microsoft.Network/ddosProtectionPlans', variables('ddosProtectionPlanName'))), json('null'))]"
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-06-01",
+      "name": "[concat(variables('vnetName'), '/', variables('subnets')[copyIndex()].name)]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+      ],
+      "copy": {
+        "name": "subnetLoop",
+        "count": "[length(variables('subnets'))]"
+      },
+      "properties": {
+        "addressPrefix": "[variables('subnets')[copyIndex()].addressPrefix]",
+        "networkSecurityGroup": "[if(not(equals(variables('subnets')[copyIndex()].name, 'AzureBastionSubnet')), createObject('id', resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))), json('null'))]",
+        "routeTable": "[if(not(or(equals(variables('subnets')[copyIndex()].name, 'AzureBastionSubnet'), equals(variables('subnets')[copyIndex()].name, 'GatewaySubnet'))), createObject('id', resourceId('Microsoft.Network/routeTables', variables('routeTableName'))), json('null'))]",
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled"
+      }
+    },
+    {
+      "condition": "[variables('enableBastion')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-06-01",
+      "name": "[concat(variables('publicIpName'), '-bastion')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAddressVersion": "IPv4",
+        "publicIPAllocationMethod": "Static",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "[concat('workshop-bastion-', parameters('environment'), '-', parameters('suffix'))]"
+        }
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "condition": "[variables('enableBastion')]",
+      "type": "Microsoft.Network/bastionHosts",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('bastionName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-bastion'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+      ],
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "IpConf",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), 'AzureBastionSubnet')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-bastion'))]"
+              }
+            }
+          }
+        ],
+        "enableTunneling": true,
+        "enableIpConnect": true,
+        "enableShareableLink": false
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-06-01",
+      "name": "[concat(variables('publicIpName'), '-nat')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('publicIpSku')]"
+      },
+      "properties": {
+        "publicIPAddressVersion": "IPv4",
+        "publicIPAllocationMethod": "Static",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "[concat('workshop-nat-', parameters('environment'), '-', parameters('suffix'))]"
+        }
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/natGateways",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('natGatewayName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-nat'))]"
+      ],
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "idleTimeoutInMinutes": 4,
+        "publicIpAddresses": [
+          {
+            "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-nat'))]"
+          }
+        ]
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-06-01",
+      "name": "[concat(variables('publicIpName'), '-lb')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('publicIpSku')]"
+      },
+      "properties": {
+        "publicIPAddressVersion": "IPv4",
+        "publicIPAllocationMethod": "Static",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "[concat('workshop-lb-', parameters('environment'), '-', parameters('suffix'))]"
+        }
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2023-06-01",
+      "name": "[variables('loadBalancerName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-lb'))]"
+      ],
+      "sku": {
+        "name": "[variables('publicIpSku')]"
+      },
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "LoadBalancerFrontEnd",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-lb'))]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "BackendPool"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "HTTPRule",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/BackendPool')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/HTTPProbe')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 80,
+              "backendPort": 80,
+              "idleTimeoutInMinutes": 4
+            }
+          }
+        ],
+        "probes": [
+          {
+            "name": "HTTPProbe",
+            "properties": {
+              "protocol": "Http",
+              "port": 80,
+              "requestPath": "/health",
+              "intervalInSeconds": 15,
+              "numberOfProbes": 2
+            }
+          }
+        ]
+      },
+      "tags": "[parameters('tags')]"
+    }
+  ],
+  "outputs": {
+    "vnetId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+    },
+    "vnetName": {
+      "type": "string",
+      "value": "[variables('vnetName')]"
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "value": "[parameters('vnetAddressPrefix')]"
+    },
+    "subnetIds": {
+      "type": "array",
+      "copy": {
+        "count": "[length(variables('subnets'))]",
+        "input": {
+          "name": "[variables('subnets')[copyIndex()].name]",
+          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnets')[copyIndex()].name)]",
+          "addressPrefix": "[variables('subnets')[copyIndex()].addressPrefix]",
+          "purpose": "[variables('subnets')[copyIndex()].purpose]"
+        }
+      }
+    },
+    "nsgId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+    },
+    "nsgName": {
+      "type": "string",
+      "value": "[variables('nsgName')]"
+    },
+    "bastionHostId": {
+      "type": "string",
+      "value": "[if(variables('enableBastion'), resourceId('Microsoft.Network/bastionHosts', variables('bastionName')), '')]"
+    },
+    "bastionHostName": {
+      "type": "string",
+      "value": "[if(variables('enableBastion'), variables('bastionName'), '')]"
+    },
+    "loadBalancerId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName'))]"
+    },
+    "loadBalancerName": {
+      "type": "string",
+      "value": "[variables('loadBalancerName')]"
+    },
+    "publicIpAddresses": {
+      "type": "array",
+      "value": [
+        {
+          "name": "[concat(variables('publicIpName'), '-nat')]",
+          "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-nat'))]",
+          "ipAddress": "[reference(resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-nat'))).ipAddress]",
+          "fqdn": "[reference(resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-nat'))).dnsSettings.fqdn]"
+        },
+        {
+          "name": "[concat(variables('publicIpName'), '-lb')]",
+          "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-lb'))]",
+          "ipAddress": "[reference(resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-lb'))).ipAddress]",
+          "fqdn": "[reference(resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), '-lb'))).dnsSettings.fqdn]"
+        }
+      ]
+    },
+    "natGatewayId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/natGateways', variables('natGatewayName'))]"
+    },
+    "routeTableId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+    }
+  }
+}

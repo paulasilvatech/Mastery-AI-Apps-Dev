@@ -61,9 +61,63 @@ Get started with the workshop in just 5 minutes!
 .\scripts\quick-start.ps1
 ```
 
+#### 4. **quick-verify.sh**
+Fast verification script to check if you're ready to start.
+
+**Features:**
+- Checks workshop directory structure
+- Verifies key tool availability
+- Tests GitHub Copilot status
+- Quick system readiness check
+- Provides immediate go/no-go feedback
+
+**Usage:**
+```bash
+./scripts/quick-verify.sh
+```
+
+### Diagnostic & Validation Scripts
+
+#### 5. **diagnostic.sh**
+Comprehensive system diagnostic report generator.
+
+**Features:**
+- Complete system information
+- Development tools inventory
+- Version checking for all tools
+- Network connectivity tests
+- Azure and GitHub authentication status
+- Workshop structure validation
+- Performance recommendations
+
+**Usage:**
+```bash
+./scripts/diagnostic.sh
+```
+
+#### 6. **check-module.sh**
+Module-specific validation and checking tool.
+
+**Features:**
+- Validates module structure
+- Checks required files and directories
+- Verifies exercise completeness
+- Track-specific validation
+- Dependencies checking
+- Content analysis
+
+**Usage:**
+```bash
+# Check specific module
+./scripts/check-module.sh 5
+
+# Check current module (if in module directory)
+../../scripts/check-module.sh 10
+```
+
 ### Management Scripts
 
-#### 4. **cleanup-resources.sh**
+#### 7. **cleanup-resources.sh**
 Safely clean up Azure resources created during the workshop.
 
 **Features:**
@@ -89,7 +143,7 @@ Safely clean up Azure resources created during the workshop.
 ./scripts/cleanup-resources.sh --check
 ```
 
-#### 5. **backup-progress.sh**
+#### 8. **backup-progress.sh**
 Backup your workshop progress and solutions.
 
 **Features:**
@@ -117,7 +171,7 @@ Backup your workshop progress and solutions.
 
 ### Organization Scripts
 
-#### 6. **organize-modules.sh**
+#### 9. **organize-modules.sh**
 Creates standard directory structure for all modules.
 
 **Features:**
@@ -132,7 +186,7 @@ Creates standard directory structure for all modules.
 ./scripts/organize-modules.sh
 ```
 
-#### 7. **enhance-navigation.sh**
+#### 10. **enhance-navigation.sh**
 Adds comprehensive navigation to all workshop documents.
 
 **Features:**
@@ -147,7 +201,7 @@ Adds comprehensive navigation to all workshop documents.
 ./scripts/enhance-navigation.sh
 ```
 
-#### 8. **reorganize-files.sh**
+#### 11. **reorganize-files.sh**
 Moves existing module files to the new organized structure.
 
 **Features:**
@@ -162,7 +216,7 @@ Moves existing module files to the new organized structure.
 ./scripts/reorganize-files.sh
 ```
 
-#### 9. **create-navigation-links.sh**
+#### 12. **create-navigation-links.sh**
 Creates comprehensive navigation links between all documents.
 
 **Features:**
@@ -175,6 +229,22 @@ Creates comprehensive navigation links between all documents.
 **Usage:**
 ```bash
 ./scripts/create-navigation-links.sh
+```
+
+### Utility Scripts
+
+#### 13. **make-scripts-executable.sh**
+Makes all workshop scripts executable with proper permissions.
+
+**Features:**
+- Sets execute permissions on all shell scripts
+- Handles PowerShell scripts for Git
+- Makes Python scripts executable
+- Reports on all processed scripts
+
+**Usage:**
+```bash
+./scripts/make-scripts-executable.sh
 ```
 
 ## 🔧 Script Requirements
@@ -194,6 +264,8 @@ Creates comprehensive navigation links between all documents.
 ### Making Scripts Executable (Linux/macOS)
 ```bash
 chmod +x scripts/*.sh
+# Or use the utility script
+./scripts/make-scripts-executable.sh
 ```
 
 ### Running Scripts from Any Directory
@@ -214,19 +286,23 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ## 🎯 Script Workflow
 
 ### For Initial Setup
-1. **setup-workshop.sh** - Install and configure everything
-2. **validate-prerequisites.sh** - Verify setup was successful
-3. **organize-modules.sh** - Create module structure
-4. **quick-start.sh** - Get your first AI code running
+1. **make-scripts-executable.sh** - Ensure all scripts can run
+2. **setup-workshop.sh** - Install and configure everything
+3. **validate-prerequisites.sh** - Verify setup was successful
+4. **quick-verify.sh** - Quick readiness check
+5. **quick-start.sh** - Get your first AI code running
 
 ### For Daily Use
-1. **backup-progress.sh** - Save your work regularly
-2. **cleanup-resources.sh** - Clean up after each module
+1. **check-module.sh** - Verify module structure before starting
+2. **diagnostic.sh** - Check system status if issues arise
+3. **backup-progress.sh** - Save your work regularly
+4. **cleanup-resources.sh** - Clean up after each module
 
 ### For Workshop Maintenance
-1. **reorganize-files.sh** - Reorganize existing files
-2. **enhance-navigation.sh** - Add navigation features
-3. **create-navigation-links.sh** - Verify and fix links
+1. **organize-modules.sh** - Initial module organization
+2. **reorganize-files.sh** - Reorganize existing files
+3. **enhance-navigation.sh** - Add navigation features
+4. **create-navigation-links.sh** - Verify and fix links
 
 ## 🐛 Troubleshooting
 
@@ -236,6 +312,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```bash
 # Make script executable
 chmod +x scripts/script-name.sh
+
+# Or run the utility
+./scripts/make-scripts-executable.sh
 
 # Run with proper permissions
 sudo ./scripts/setup-workshop.sh  # Only if needed
@@ -266,12 +345,16 @@ ls scripts/
 | setup-workshop | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
 | validate-prerequisites | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | quick-start | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| quick-verify | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| diagnostic | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| check-module | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | cleanup-resources | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | backup-progress | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
 | organize-modules | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | enhance-navigation | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | reorganize-files | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | create-navigation-links | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| make-scripts-executable | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ## 🔄 Updating Scripts
 
@@ -279,7 +362,7 @@ Scripts are maintained as part of the workshop. To get the latest versions:
 
 ```bash
 git pull origin main
-chmod +x scripts/*.sh  # Re-apply execute permissions
+./scripts/make-scripts-executable.sh  # Re-apply execute permissions
 ```
 
 ## 🤝 Contributing

@@ -898,7 +898,7 @@ You've successfully:
 - Async database configuration
 - Settings management with environment variables
 
-**Next**: Continue to [Part 2](part2.md) where we'll implement authentication, API endpoints, and the web interface!
+**Next**: Continue to [Part 2](module-01-exercise3-part2.md) where we'll implement authentication, API endpoints, and the web interface!
 
 ---
 

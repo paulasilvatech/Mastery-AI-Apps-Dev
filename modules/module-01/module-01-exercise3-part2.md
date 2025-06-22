@@ -1796,7 +1796,7 @@ You've successfully:
 - Responsive UI with Tailwind CSS
 - Interactive features with Alpine.js
 
-**Next**: Continue to [Part 3](part3.md) where we'll add deployment configuration, monitoring, and production optimization!
+**Next**: Continue to [Part 3](module-01-exercise2-part3.md) where we'll add deployment configuration, monitoring, and production optimization!
 
 ---
 

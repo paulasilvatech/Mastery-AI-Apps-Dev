@@ -1985,6 +1985,6 @@ Congratulations! You've built a complete, production-ready task management syste
 - Deploy your application to a cloud provider
 - Add custom features to make it unique
 - Share your work and get feedback
-- Move on to Module 02 for advanced Copilot features
+- Move on to [Module 02](modules/modules-02/README.md) for advanced Copilot features
 
 Remember: This application is a portfolio piece. Customize it, deploy it, and showcase your AI-powered development skills!

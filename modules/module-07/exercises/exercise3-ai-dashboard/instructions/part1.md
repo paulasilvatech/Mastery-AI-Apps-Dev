@@ -48,9 +48,9 @@ graph TB
     end
     
     subgraph Data
-        Redis[(Redis)]
-        Postgres[(PostgreSQL)]
-        TimeSeries[(InfluxDB)]
+        Redis[Redis]
+        Postgres[PostgreSQL]
+        TimeSeries[InfluxDB]
     end
     
     subgraph External

@@ -69,10 +69,10 @@ graph TB
         AI[AI Module]
     end
     
-    subgraph Data Layer
-        PG[(PostgreSQL)]
-        Redis[(Redis Cache)]
-        ES[(Elasticsearch)]
+    subgraph "Data Layer"
+        PG[PostgreSQL]
+        Redis[Redis Cache]
+        ES[Elasticsearch]
         S3[S3 Storage]
     end
     

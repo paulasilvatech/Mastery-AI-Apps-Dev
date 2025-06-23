@@ -193,8 +193,8 @@ graph TB
         end
         
         subgraph Data
-            PG[(PostgreSQL)]
-            REDIS[(Redis Cache)]
+            PG[PostgreSQL]
+            REDIS[Redis Cache]
             BLOB[Blob Storage]
         end
         

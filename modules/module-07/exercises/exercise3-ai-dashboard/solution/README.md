@@ -37,38 +37,38 @@ This is the complete implementation of an enterprise-grade AI-powered analytics 
 
 ```mermaid
 graph TB
-    subgraph Client Layer
+    subgraph "Client Layer"
         React[React Dashboard]
         PWA[PWA Support]
         WS[WebSocket Client]
     end
     
-    subgraph API Gateway
+    subgraph "API Gateway"
         NGINX[NGINX]
         LB[Load Balancer]
     end
     
-    subgraph Application Layer
+    subgraph "Application Layer"
         FastAPI1[FastAPI Instance 1]
         FastAPI2[FastAPI Instance 2]
         FastAPI3[FastAPI Instance N]
         Celery[Celery Workers]
     end
     
-    subgraph Data Layer
-        PG[(PostgreSQL)]
-        TS[(TimescaleDB)]
-        Redis[(Redis)]
-        ES[(Elasticsearch)]
+    subgraph "Data Layer"
+        PG[PostgreSQL]
+        TS[TimescaleDB]
+        Redis[Redis]
+        ES[Elasticsearch]
     end
     
-    subgraph AI Services
+    subgraph "AI Services"
         OpenAI[OpenAI API]
         Custom[Custom ML Models]
         Prophet[Prophet Forecasting]
     end
     
-    subgraph Monitoring
+    subgraph "Monitoring"
         Prom[Prometheus]
         Grafana[Grafana]
         Sentry[Sentry]
@@ -86,8 +86,13 @@ graph TB
     FastAPI1 --> Redis
     FastAPI1 --> ES
     
-    Celery --> AI Services
-    FastAPI1 --> Monitoring
+    Celery --> OpenAI
+    Celery --> Custom
+    Celery --> Prophet
+    
+    FastAPI1 --> Prom
+    FastAPI1 --> Grafana
+    FastAPI1 --> Sentry
 ```
 
 ## 🚀 Quick Start

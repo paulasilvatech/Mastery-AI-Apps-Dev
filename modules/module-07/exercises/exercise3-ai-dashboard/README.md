@@ -112,7 +112,7 @@ graph TB
         API[FastAPI Server]
         WSServer[WebSocket Server]
         Queue[Message Queue]
-        DB[(Time Series DB)]
+        DB[Time Series DB]
     end
     
     subgraph Agents

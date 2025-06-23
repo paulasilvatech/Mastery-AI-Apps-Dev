@@ -47,7 +47,7 @@ graph TB
     end
     
     subgraph Storage
-        DB[(PostgreSQL)]
+        DB[PostgreSQL]
         S3[File Storage]
     end
     

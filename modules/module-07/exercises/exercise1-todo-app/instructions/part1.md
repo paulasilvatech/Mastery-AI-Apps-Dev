@@ -40,7 +40,7 @@ graph TB
     subgraph Backend
         FastAPI[FastAPI Server]
         Models[SQLAlchemy Models]
-        DB[(SQLite Database)]
+        DB[SQLite Database]
     end
     
     UI --> State

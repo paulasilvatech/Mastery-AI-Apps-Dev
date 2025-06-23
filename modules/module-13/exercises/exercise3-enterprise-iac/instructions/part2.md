@@ -911,7 +911,11 @@ You've mastered Infrastructure as Code with GitOps! This advanced knowledge prep
 - Building self-healing systems
 - Leading DevOps transformations
 
-**Next Module**: [Module 14: CI/CD with GitHub Actions](../../module-14-cicd-github-actions/)
+## ⏭️ Next Steps
+
+- Return to [Exercise 3 Overview](../README.md)
+- Complete [Module 13 Validation](../../../scripts/validate-module-13.sh)
+- Continue to [Module 14: CI/CD with GitHub Actions](../../../../module-14/)
 
 ---
 

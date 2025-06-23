@@ -136,6 +136,7 @@ Throughout this module, you'll use GitHub Copilot to:
 2. Complete the self-assessment
 3. Share your project in discussions
 4. Proceed to Module 8 (API Development)
+5. Consider Module 13 (Infrastructure as Code) to automate your deployments
 
 ## 📊 Success Metrics
 

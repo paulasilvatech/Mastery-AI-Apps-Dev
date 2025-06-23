@@ -35,16 +35,24 @@ module-13/
 ├── scripts/                  # Module utilities
 │   ├── setup-module.sh      # Environment setup
 │   ├── cleanup-resources.sh # Resource cleanup
-│   └── validate-deployment.sh # Deployment validation
+│   ├── validate-deployment.sh # Deployment validation
+│   ├── check-prerequisites-script.sh # Prerequisites check
+│   └── validate-module-13.sh # Complete module validation
 ├── exercises/               # Hands-on exercises
 │   ├── exercise1-bicep-basics/    # ⭐ Easy
 │   ├── exercise2-gitops-automation/ # ⭐⭐ Medium
 │   └── exercise3-enterprise-iac/    # ⭐⭐⭐ Hard
 ├── best-practices.md        # Production patterns
 ├── troubleshooting.md       # Common issues
+├── deployment-guide.md      # Detailed deployment guide
+├── architecture-guide.md    # IaC architecture patterns
 └── resources/               # Additional materials
-    ├── templates/          # Reusable templates
+    ├── templates/          # Reusable Bicep modules
+    │   ├── webapp.bicep
+    │   ├── monitoring.bicep
+    │   └── keyvault.bicep
     └── workflows/          # GitHub Actions workflows
+        └── bicep-deployment.yml
 ```
 
 ## 🎓 Exercises

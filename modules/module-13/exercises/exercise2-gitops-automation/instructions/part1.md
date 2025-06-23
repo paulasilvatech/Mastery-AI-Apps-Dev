@@ -594,3 +594,15 @@ output "app_insights_key" {
   sensitive = true
 }
 ```
+
+## ✅ Checkpoint
+
+You've completed Part 1! You should now have:
+- [ ] GitHub repository with proper structure
+- [ ] Azure backend storage configured
+- [ ] Basic Terraform modules created
+- [ ] Provider configuration set up
+
+## ⏭️ Next Steps
+
+Continue to [Part 2: Multi-Environment Pipeline](./part2.md) to implement the complete GitOps workflow with GitHub Actions.

@@ -258,7 +258,7 @@ if __name__ == "__main__":
 ## 📞 Getting Help
 
 If you encounter setup issues:
-1. Check the [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md) guide
+1. Check the [troubleshooting.md](./troubleshooting.md) guide
 2. Search existing GitHub Issues
 3. Post in Module 07 Discussions
 4. Tag instructors with @mention

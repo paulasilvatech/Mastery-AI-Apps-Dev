@@ -606,7 +606,8 @@ Congratulations! You've successfully:
 
 ## ⏭️ Next Steps
 
-Ready for the ultimate challenge? Move on to [Exercise 3: Complete GitOps Pipeline](../exercise3-gitops-pipeline/)
+- Return to [Exercise 2 Overview](../README.md)
+- Continue to [Exercise 3: Enterprise Infrastructure](../../exercise3-enterprise-iac/)
 
 ---
 

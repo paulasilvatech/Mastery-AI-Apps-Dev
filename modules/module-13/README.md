@@ -234,12 +234,281 @@ After completing exercises:
 ./scripts/cleanup-resources.sh --all
 ```
 
-## 📚 Additional Resources
+## 📚 Resources
 
-- [Azure Bicep Documentation](https://docs.microsoft.com/azure/azure-resource-manager/bicep/)
-- [GitHub Actions for Azure](https://docs.github.com/actions/deployment/deploying-to-azure)
-- [Azure Architecture Center](https://docs.microsoft.com/azure/architecture/)
-- [IaC Best Practices](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/considerations/infrastructure-as-code)
+### Official Documentation
+- 📖 **Microsoft Azure**
+  - [Azure Bicep Documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/)
+  - [Azure Resource Manager](https://learn.microsoft.com/en-us/azure/azure-resource-manager/)
+  - [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/)
+  - [Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)
+  - [Azure Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/)
+
+- 🚀 **GitHub Resources**
+  - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+  - [GitHub Actions for Azure](https://github.com/Azure/actions)
+  - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
+  - [GitHub Security Best Practices](https://docs.github.com/en/actions/security-guides)
+
+### Learning Resources
+- 🎓 **Courses & Tutorials**
+  - [Microsoft Learn - Bicep](https://learn.microsoft.com/en-us/training/paths/fundamentals-bicep/)
+  - [Azure Bicep - Zero to Hero](https://github.com/Azure/bicep/blob/main/docs/tutorial/01-simple-template.md)
+  - [GitHub Actions - Getting Started](https://learn.microsoft.com/en-us/training/modules/introduction-to-github-actions/)
+  - [Infrastructure as Code on Azure](https://learn.microsoft.com/en-us/training/paths/bicep-azure-pipelines/)
+
+- 📹 **Video Resources**
+  - [Azure Bicep Tutorial Series](https://www.youtube.com/playlist?list=PLeh9xH-kbPPY9aXCmZfvh1l3lYn3R4PLu)
+  - [GitHub Actions Tutorial](https://www.youtube.com/watch?v=R8_veQiYBjI)
+  - [Azure Friday - Bicep](https://learn.microsoft.com/en-us/shows/azure-friday/learn-everything-about-the-next-generation-of-arm-templates)
+
+### Tools & Extensions
+- 🛠️ **VS Code Extensions**
+  - [Bicep](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep)
+  - [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)
+  - [Azure Resource Manager Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)
+  - [GitHub Actions](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions)
+  - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+
+- 🔧 **Command Line Tools**
+  - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+  - [GitHub CLI](https://cli.github.com/)
+  - [Bicep CLI](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
+  - [Azure PowerShell](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell)
+
+### Community & Support
+- 💬 **Forums & Communities**
+  - [Azure Bicep GitHub](https://github.com/Azure/bicep)
+  - [Microsoft Q&A - Bicep](https://learn.microsoft.com/en-us/answers/tags/434/azure-bicep)
+  - [Stack Overflow - Azure Bicep](https://stackoverflow.com/questions/tagged/azure-bicep)
+  - [Reddit - r/AZURE](https://www.reddit.com/r/AZURE/)
+  - [Azure Community](https://azure.microsoft.com/en-us/community/)
+
+- 🤝 **User Groups**
+  - [Azure User Groups](https://www.meetup.com/topics/azure/)
+  - [GitHub Community Forum](https://github.com/community)
+  - [Azure DevOps Community](https://dev.azure.com/community/)
+
+### Templates & Examples
+- 📦 **Bicep Samples**
+  - [Azure Quickstart Templates](https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts)
+  - [Bicep Examples](https://github.com/Azure/bicep/tree/main/docs/examples)
+  - [Azure Verified Modules](https://aka.ms/avm)
+  - [Common Azure Resource Types](https://learn.microsoft.com/en-us/azure/templates/)
+
+- 🔄 **GitHub Actions Workflows**
+  - [Starter Workflows](https://github.com/actions/starter-workflows)
+  - [Azure Login Action](https://github.com/Azure/login)
+  - [Azure CLI Action](https://github.com/Azure/cli)
+  - [Deploy to Azure Web App](https://github.com/Azure/webapps-deploy)
+
+### Best Practices & Patterns
+- 📋 **Guidelines**
+  - [Bicep Best Practices](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/best-practices)
+  - [GitHub Actions Best Practices](https://docs.github.com/en/actions/guides/best-practices-for-github-actions)
+  - [Azure Naming Conventions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
+  - [Azure Tagging Strategy](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging)
+
+## 🛠️ Setup
+
+### System Requirements
+- **Operating System**: Windows 10/11, macOS 10.15+, or Linux (Ubuntu 20.04+)
+- **Azure Subscription**: Free tier is sufficient for learning
+- **GitHub Account**: Free account with Actions enabled
+- **Hardware**: 4GB RAM minimum, 8GB recommended
+
+### Step 1: Install Azure CLI
+
+```bash
+# Windows (using winget)
+winget install Microsoft.AzureCLI
+
+# macOS (using Homebrew)
+brew update && brew install azure-cli
+
+# Linux (Ubuntu/Debian)
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# Verify installation
+az --version
+```
+
+### Step 2: Install Bicep
+
+```bash
+# Install Bicep CLI (included with Azure CLI)
+az bicep install
+
+# Verify installation
+az bicep version
+
+# Upgrade to latest version
+az bicep upgrade
+```
+
+### Step 3: Configure Azure Account
+
+```bash
+# Login to Azure
+az login
+
+# Set default subscription
+az account list --output table
+az account set --subscription "YOUR-SUBSCRIPTION-ID"
+
+# Verify current subscription
+az account show --output table
+```
+
+### Step 4: Install VS Code Extensions
+
+```bash
+# Install required extensions
+code --install-extension ms-azuretools.vscode-bicep
+code --install-extension ms-vscode.azure-account
+code --install-extension GitHub.vscode-github-actions
+code --install-extension redhat.vscode-yaml
+
+# Optional but recommended
+code --install-extension ms-azuretools.vscode-azureresourcegroups
+code --install-extension ms-azuretools.vscode-azurestorage
+```
+
+### Step 5: Configure GitHub
+
+1. **Create GitHub Account** (if needed)
+   - Go to [github.com](https://github.com)
+   - Sign up for free account
+
+2. **Generate Personal Access Token**
+   ```bash
+   # You'll need this for GitHub CLI
+   # Go to: Settings > Developer settings > Personal access tokens
+   # Create token with 'repo' and 'workflow' scopes
+   ```
+
+3. **Install GitHub CLI**
+   ```bash
+   # Windows
+   winget install GitHub.cli
+
+   # macOS
+   brew install gh
+
+   # Linux
+   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+   sudo apt update && sudo apt install gh
+
+   # Authenticate
+   gh auth login
+   ```
+
+### Step 6: Create Service Principal
+
+```bash
+# Create service principal for GitHub Actions
+az ad sp create-for-rbac --name "github-actions-sp" \
+  --role contributor \
+  --scopes /subscriptions/YOUR-SUBSCRIPTION-ID \
+  --sdk-auth
+
+# Save the JSON output for GitHub Secrets:
+# - AZURE_CLIENT_ID
+# - AZURE_CLIENT_SECRET  
+# - AZURE_SUBSCRIPTION_ID
+# - AZURE_TENANT_ID
+```
+
+### Step 7: Validate Setup
+
+```bash
+# Run validation script
+cd module-13
+./scripts/check-prerequisites-script.sh
+
+# Expected output:
+# ✅ Azure CLI installed
+# ✅ Bicep CLI installed
+# ✅ VS Code extensions installed
+# ✅ GitHub CLI authenticated
+# ✅ Azure subscription active
+# ✅ All prerequisites met!
+```
+
+### Quick Test
+
+Create a simple Bicep file to test your setup:
+
+```bash
+# Create test file
+cat > test.bicep << EOF
+param location string = resourceGroup().location
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: 'test\${uniqueString(resourceGroup().id)}'
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}
+
+output storageAccountName string = storageAccount.name
+EOF
+
+# Validate the template
+az bicep build --file test.bicep
+
+# Deploy (optional)
+az group create --name test-rg --location eastus
+az deployment group create --resource-group test-rg --template-file test.bicep
+
+# Clean up
+az group delete --name test-rg --yes --no-wait
+rm test.bicep
+```
+
+### Troubleshooting Common Setup Issues
+
+1. **Azure CLI not found**
+   ```bash
+   # Add to PATH on Windows
+   setx PATH "%PATH%;C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin"
+   
+   # Restart terminal after installation
+   ```
+
+2. **Bicep not installing**
+   ```bash
+   # Manual installation
+   curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+   chmod +x ./bicep
+   sudo mv ./bicep /usr/local/bin/bicep
+   ```
+
+3. **VS Code extensions not loading**
+   - Restart VS Code
+   - Check proxy settings if behind corporate firewall
+   - Install manually from VSIX files
+
+4. **GitHub Actions permission errors**
+   - Ensure service principal has correct role
+   - Check repository settings allow Actions
+   - Verify secrets are properly set
+
+### 🎉 Setup Complete!
+
+You're now ready to start Module 13! Begin with the first exercise:
+
+```bash
+cd exercises/exercise1-bicep-basics
+code .
+```
+
+---
+
+💡 **Pro Tip**: Keep the [Azure Bicep Playground](https://bicepdemo.z22.web.core.windows.net/) open in a browser tab for quick syntax testing!
 
 ## 🎊 Completion
 
@@ -254,16 +523,5 @@ Congratulations on completing Module 13! You've gained essential IaC skills:
 ---
 
 💡 **Remember**: Infrastructure as Code is not just about automation—it's about reliability, repeatability, and collaboration. Keep your templates simple, modular, and well-documented!
-## 📝 Exercises
 
-- [exercise1-bicep-basics](exercises/exercise1-bicep-basics/README.md)
-- [exercise2-gitops-automation](exercises/exercise2-gitops-automation/README.md)
-- [exercise3-enterprise-iac](exercises/exercise3-enterprise-iac/README.md)
 
-## 📚 Resources
-
-[Content to be added]
-
-## 🛠️ Setup
-
-[Content to be added]

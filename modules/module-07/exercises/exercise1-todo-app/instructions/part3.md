@@ -355,7 +355,7 @@ You've successfully built your first AI-powered full-stack application! This fou
 ### Next Steps
 - Review the solution code in `solution/` directory
 - Compare your implementation with best practices
-- Proceed to [Exercise 2: Blog Platform](../exercise2-blog-platform/README.md)
+- Proceed to [Exercise 2: Blog Platform](modules/module-07/exercises/exercise2-blog-platform/README.md)
 
 ## 🆘 Troubleshooting
 

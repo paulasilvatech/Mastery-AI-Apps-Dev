@@ -418,9 +418,9 @@ code .
 
 ### Workshop Resources
 - **[Scripts Documentation](scripts/README.md)**: All workshop automation scripts
-- **[Module Documentation](modules/docs/)**: Deep dive guides
-- **[Code Templates](modules/templates/)**: Reusable starter code
-- **[Best Practices](docs/best-practices.md)**: Industry standards
+- **[Module Documentation](modules/)**: Deep dive guides
+- **[Code Templates](modules/)**: Reusable starter code
+- **[Best Practices](modules/)**: Industry standards
 
 ### External Resources
 - [GitHub Copilot Documentation](https://docs.github.com/copilot)
@@ -434,12 +434,12 @@ code .
 
 ### Getting Help
 1. Check module-specific troubleshooting guides
-2. Review [FAQ](docs/FAQ.md)
+2. Review [FAQ](FAQ.md)
 3. Search [GitHub Issues](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/issues)
 4. Join [GitHub Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions)
 
 ### Contributing
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please check the modules documentation and scripts for examples.
 
 ---
 

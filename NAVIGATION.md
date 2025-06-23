@@ -84,13 +84,13 @@ Prove your mastery with comprehensive challenges.
 3. 🎯 Start with [Module 01](modules/module-01/)
 
 ### For Experienced Developers
-1. 📋 Take the [Skills Assessment](scripts/assess-skills.sh)
-2. 🔍 Review [Architecture Decisions](docs/architecture-decisions.md)
+1. 📋 Take the [Skills Assessment](scripts/diagnostic.sh)
+2. 🔍 Review [Architecture Decisions](modules/)
 3. 🚀 Jump to your recommended track
 
 ### For Teams
-1. 👥 Review [Team Learning Guide](docs/team-learning.md)
-2. 📊 Set up [Progress Tracking](docs/monitoring-setup.md)
+1. 👥 Review [Team Learning Guide](modules/)
+2. 📊 Set up [Progress Tracking](scripts/)
 3. 🎯 Customize learning paths
 
 ## 📊 Progress Tracking
@@ -99,10 +99,10 @@ Track your progress through the workshop:
 
 ```bash
 # Check your progress
-./scripts/check-progress.sh
+./scripts/diagnostic.sh
 
 # Generate progress report
-./scripts/generate-report.sh --format=html
+./scripts/module-completion-report.py --format=html
 ```
 
 ## 🛠️ Useful Scripts

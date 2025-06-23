@@ -121,7 +121,7 @@ However, instructions are written for VS Code.
 - Use Git commits to track your work
 
 ### Q: Can I contribute to the workshop?
-**A:** Yes! We welcome contributions. See CONTRIBUTING.md for guidelines. You can:
+**A:** Yes! We welcome contributions. See the repository README for guidelines. You can:
 - Report issues
 - Suggest improvements
 - Add examples

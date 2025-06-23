@@ -609,6 +609,17 @@ Congratulations! You've successfully:
 - Return to [Exercise 2 Overview](../README.md)
 - Continue to [Exercise 3: Enterprise Infrastructure](../../exercise3-enterprise-iac/)
 
+
 ---
 
-*Remember: Good Terraform code is modular, reusable, and environment-agnostic!*
+## 🔗 Navigation
+
+[← Previous: Part 1](part1.md) | [🏠 Module Home](../../../README.md) | [Next Exercise →](../../exercise3-enterprise-iac/README.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

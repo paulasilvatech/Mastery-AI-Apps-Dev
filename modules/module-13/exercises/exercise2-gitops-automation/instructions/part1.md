@@ -606,3 +606,17 @@ You've completed Part 1! You should now have:
 ## ⏭️ Next Steps
 
 Continue to [Part 2: Multi-Environment Pipeline](./part2.md) to implement the complete GitOps workflow with GitHub Actions.
+
+---
+
+## 🔗 Navigation
+
+[← Back to Exercise](../README.md) | [🏠 Module Home](../../../README.md) | [Next: Part 2 →](part2.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

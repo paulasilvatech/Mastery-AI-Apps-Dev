@@ -1,0 +1,63 @@
+# validate-infrastructure.yml - Infrastructure validation workflow
+
+name: Validate Infrastructure
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'infrastructure/**'
+      - 'policies/**'
+
+env:
+  TERRAFORM_VERSION: '1.6.0'
+  # TODO: Add more tool versions
+
+jobs:
+  validate-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # TODO: Setup Terraform
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v3
+      
+      # TODO: Format check
+      
+      # TODO: Initialize Terraform
+      
+      # TODO: Validate configuration
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # TODO: Setup Checkov
+      
+      # TODO: Run security scan
+      
+      # TODO: Upload results
+
+  policy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # TODO: Setup OPA
+      
+      # TODO: Run policy validation
+      
+      # TODO: Generate policy report
+
+  cost-estimation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # TODO: Setup Infracost
+      
+      # TODO: Generate cost breakdown
+      
+      # TODO: Post cost estimate as PR comment 

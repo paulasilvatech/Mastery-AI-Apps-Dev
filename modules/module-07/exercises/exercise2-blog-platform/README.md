@@ -1,101 +1,44 @@
-# Exercise 2: Blog Platform with AI Features (⭐⭐ Medium)
+# exercise2-blog-platform
 
-## Overview
+## 📋 Overview
 
-In this exercise, you'll build a full-featured blog platform with AI-powered content assistance. This intermediate exercise introduces authentication, rich text editing, and more complex state management patterns.
+This exercise focuses on [DESCRIPTION].
 
-## Learning Objectives
+## 🎯 Learning Objectives
 
-- Implement user authentication with JWT tokens
-- Build a rich text editor with AI assistance
-- Create a comment system with moderation
-- Apply SEO optimization techniques
-- Handle image uploads and management
+- Objective 1
+- Objective 2
+- Objective 3
 
-## Instructions
-
-The complete instructions for this exercise are divided into parts:
-
-1. **Part 1**: [Authentication and Backend Setup](./instructions/part1.md)
-2. **Part 2**: [Blog Post Management](./instructions/part2.md)
-3. **Part 3**: [Comments and AI Features](./instructions/part3.md)
-
-## Project Structure
+## 📁 Structure
 
 ```
 exercise2-blog-platform/
-├── README.md          # This file
-├── instructions/      # Step-by-step guides
-│   ├── part1.md      # Auth & backend setup
-│   ├── part2.md      # Blog functionality
-│   └── part3.md      # Comments & AI
-├── starter/          # Starting code templates
-│   ├── backend/
-│   └── frontend/
-├── solution/         # Complete working solution
-│   ├── backend/
-│   └── frontend/
-└── tests/           # Validation tests
-    ├── backend/
-    └── frontend/
+├── instructions/
+│   ├── part1.md
+│   └── part2.md
+├── starter/
+│   └── ...
+├── solution/
+│   └── ...
+└── tests/
+    └── ...
 ```
 
-## Prerequisites
+## 🚀 Getting Started
 
-- Completed Exercise 1 or equivalent experience
-- Understanding of authentication concepts
-- Basic knowledge of rich text editing
-- GitHub Copilot enabled in VS Code
+1. Review the [prerequisites](../../prerequisites.md)
+2. Set up your environment using [setup instructions](../../README.md#setup)
+3. Start with [Part 1](instructions/part1.md)
 
-## Quick Start
+## 📊 Success Criteria
 
-```bash
-# Navigate to exercise directory
-cd exercises/exercise2-blog-platform
+- [ ] All tests pass
+- [ ] Code follows best practices
+- [ ] Solution is properly documented
 
-# Run setup script
-./setup.sh
+## 🤝 Need Help?
 
-# Start development
-code .
-```
-
-## Duration
-
-**Expected Time**: 45-60 minutes
-- Setup & Auth: 20 minutes
-- Blog Features: 20 minutes
-- Comments & AI: 20 minutes
-
-## Key Features
-
-- **User Management**
-  - Registration with email verification
-  - JWT-based authentication
-  - User profiles with avatars
-
-- **Blog Posts**
-  - Rich text editor (Markdown/WYSIWYG)
-  - AI-powered content suggestions
-  - Draft and publish states
-  - Categories and tags
-
-- **Comments System**
-  - Nested comments support
-  - AI-powered moderation
-  - Real-time updates
-
-- **SEO & Performance**
-  - Meta tags management
-  - Server-side rendering ready
-  - Image optimization
-  - Caching strategies
-
-## Success Criteria
-
-- [ ] Users can register and login securely
-- [ ] Authors can create, edit, and delete posts
-- [ ] Rich text editor works with AI suggestions
-- [ ] Comments system supports threading
-- [ ] SEO meta tags are properly generated
-- [ ] All tests pass successfully
+- Check the [Troubleshooting Guide](../../troubleshooting.md)
+- Review the [Module Resources](../../README.md#resources)
+- Look at the [Solution Code](solution/) after attempting

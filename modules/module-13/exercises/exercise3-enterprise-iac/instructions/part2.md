@@ -915,8 +915,19 @@ You've mastered Infrastructure as Code with GitOps! This advanced knowledge prep
 
 - Return to [Exercise 3 Overview](../README.md)
 - Complete [Module 13 Validation](../../../scripts/validate-module-13.sh)
-- Continue to [Module 14: CI/CD with GitHub Actions](../../../../module-14/)
+- Continue to [Module 14: CI/CD with GitHub Actions](../../../module-14/)
+
 
 ---
 
-*Remember: The best infrastructure is invisible, automated, and self-healing. You've just built the foundation for that!*
+## 🔗 Navigation
+
+[← Previous: Part 1](part1.md) | [🏠 Module Home](../../../README.md) | [Back to Module →](../../../README.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

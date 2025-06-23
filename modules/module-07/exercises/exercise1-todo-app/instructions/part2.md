@@ -492,3 +492,18 @@ Before proceeding to the main app component, verify:
 ## ⏭️ Next Steps
 
 Proceed to [Part 3](./part3.md)
+
+
+---
+
+## 🔗 Navigation
+
+[← Previous: Part 1](part1.md) | [🏠 Module Home](../../../README.md) | [Next: Part 3 →](part3.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

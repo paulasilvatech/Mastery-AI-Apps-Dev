@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appServicePlanName": {
+      "value": "asp-bicep-prod"
+    },
+    "webAppName": {
+      "value": "webapp-bicep-prod"
+    },
+    "sku": {
+      "value": "P1v2"
+    },
+    "environment": {
+      "value": "prod"
+    },
+    "enableApplicationInsights": {
+      "value": true
+    }
+  }
+} 

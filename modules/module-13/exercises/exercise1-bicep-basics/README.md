@@ -1,41 +1,44 @@
-# Exercise 1: Bicep Basics
+# exercise1-bicep-basics
 
-## Overview
-Learn the fundamentals of Azure Bicep by creating your first Infrastructure as Code template to deploy a web application infrastructure.
+## 📋 Overview
 
-## Structure
+This exercise focuses on [DESCRIPTION].
+
+## 🎯 Learning Objectives
+
+- Objective 1
+- Objective 2
+- Objective 3
+
+## 📁 Structure
+
 ```
 exercise1-bicep-basics/
 ├── instructions/
-│   ├── part1.md        # Basic concepts and initial deployment
-│   └── part2.md        # Advanced features and best practices
+│   ├── part1.md
+│   └── part2.md
 ├── starter/
-│   └── main.bicep      # Starting template with TODOs
+│   └── ...
 ├── solution/
-│   ├── main.bicep      # Complete solution
-│   ├── deploy.sh       # Deployment script
-│   ├── parameters.dev.json
-│   ├── parameters.prod.json
-│   └── README.md       # Solution documentation
-└── tests/              # Validation tests
+│   └── ...
+└── tests/
+    └── ...
 ```
 
-## Quick Start
-1. Navigate to the `starter/` directory
-2. Open `main.bicep` in VS Code
-3. Follow the instructions in `instructions/part1.md`
-4. Complete the TODOs in the starter template
-5. Deploy and test your solution
+## 🚀 Getting Started
 
-## Learning Objectives
-- ✅ Understand Bicep syntax and structure
-- ✅ Create parameterized templates
-- ✅ Deploy Azure resources declaratively
-- ✅ Implement environment-specific configurations
-- ✅ Apply IaC best practices
+1. Review the [prerequisites](../../prerequisites.md)
+2. Set up your environment using [setup instructions](../../README.md#🛠️-setup)
+3. Start with [Part 1](instructions/part1.md)
 
-## Time Required
-30-45 minutes
+## 📊 Success Criteria
 
-## Difficulty
-⭐ Easy - Perfect for beginners to Infrastructure as Code
+- [ ] All tests pass
+- [ ] Code follows best practices
+- [ ] Solution is properly documented
+
+## 🤝 Need Help?
+
+- Check the [Troubleshooting Guide](../../troubleshooting.md)
+- Review the [Module Resources](../../README.md#resources)
+- Look at the [Solution Code](solution/) after attempting

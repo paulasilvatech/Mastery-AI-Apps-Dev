@@ -381,3 +381,18 @@ npm run dev
 - Ensure all imports have proper types
 
 For more help, see the module troubleshooting guide or post in discussions.
+
+
+---
+
+## 🔗 Navigation
+
+[← Previous: Part 2](part2.md) | [🏠 Module Home](../../../README.md) | [Next Exercise →](../../exercise2-blog-platform/README.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

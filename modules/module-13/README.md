@@ -254,3 +254,16 @@ Congratulations on completing Module 13! You've gained essential IaC skills:
 ---
 
 💡 **Remember**: Infrastructure as Code is not just about automation—it's about reliability, repeatability, and collaboration. Keep your templates simple, modular, and well-documented!
+## 📝 Exercises
+
+- [exercise1-bicep-basics](exercises/exercise1-bicep-basics/README.md)
+- [exercise2-gitops-automation](exercises/exercise2-gitops-automation/README.md)
+- [exercise3-enterprise-iac](exercises/exercise3-enterprise-iac/README.md)
+
+## 📚 Resources
+
+[Content to be added]
+
+## 🛠️ Setup
+
+[Content to be added]

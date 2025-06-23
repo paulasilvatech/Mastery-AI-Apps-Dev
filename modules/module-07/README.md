@@ -199,3 +199,17 @@ You've mastered this module when you can:
 Remember: The goal is not just to complete the exercises, but to understand how AI can transform your web development workflow. Take time to experiment with different prompts and explore Copilot's suggestions.
 
 **Happy coding! 🚀**
+
+## 📝 Exercises
+
+- [exercise1-todo-app](exercises/exercise1-todo-app/README.md)
+- [exercise2-blog-platform](exercises/exercise2-blog-platform/README.md)
+- [exercise3-ai-dashboard](exercises/exercise3-ai-dashboard/README.md)
+
+## 📚 Resources
+
+[Content to be added]
+
+## 🛠️ Setup
+
+[Content to be added]

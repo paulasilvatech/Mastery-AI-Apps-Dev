@@ -285,3 +285,17 @@ You've learned:
 - ✅ Testing and validation approaches
 
 Continue to Exercise 2 for GitOps integration!
+
+---
+
+## 🔗 Navigation
+
+[← Previous: Part 1](part1.md) | [🏠 Module Home](../../../README.md) | [Next Exercise →](../../exercise2-gitops-automation/README.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

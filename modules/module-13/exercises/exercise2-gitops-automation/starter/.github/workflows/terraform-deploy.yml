@@ -1,0 +1,45 @@
+# terraform-deploy.yml - GitHub Actions workflow for Terraform deployment
+
+name: 'Terraform Deploy'
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+# TODO: Configure environment variables
+env:
+  TF_VERSION: '1.6.0'
+  
+jobs:
+  terraform:
+    name: 'Terraform Plan and Apply'
+    runs-on: ubuntu-latest
+    
+    # TODO: Add environment configuration
+    # environment:
+    #   name: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    # TODO: Add Azure login step
+    # - name: 'Azure Login'
+    #   uses: azure/login@v1
+    #   with:
+    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    # TODO: Setup Terraform
+    # - name: Setup Terraform
+    #   uses: hashicorp/setup-terraform@v3
+    #   with:
+    #     terraform_version: ${{ env.TF_VERSION }}
+    
+    # TODO: Terraform Init
+    # TODO: Terraform Plan
+    # TODO: Terraform Apply (only on main branch) 

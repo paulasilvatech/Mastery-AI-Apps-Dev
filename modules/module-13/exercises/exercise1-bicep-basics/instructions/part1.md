@@ -193,3 +193,17 @@ Continue to Part 2 for more advanced features including:
 - Modules and reusability
 - Parameter files
 - Complex dependencies
+
+---
+
+## 🔗 Navigation
+
+[← Back to Exercise](../README.md) | [🏠 Module Home](../../../README.md) | [Next: Part 2 →](part2.md)
+
+## 📚 Quick Links
+
+- [Prerequisites](../../../prerequisites.md)
+- [Module Resources](../../../README.md#resources)
+- [Troubleshooting Guide](../../../troubleshooting.md)
+- [Solution Code](../solution/)
+

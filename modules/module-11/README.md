@@ -151,3 +151,9 @@ After completing this module, you're ready for:
 ---
 
 **Remember**: Microservices are not about technology, they're about business capabilities and team autonomy. Use AI to handle the complexity while you focus on the design!
+
+## 📝 Exercises
+
+- [exercise1-microservices](exercises/exercise1-microservices/README.md)
+- [exercise2-monitoring](exercises/exercise2-monitoring/README.md)
+- [exercise3-testing](exercises/exercise3-testing/README.md)

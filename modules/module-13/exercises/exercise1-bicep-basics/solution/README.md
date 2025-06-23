@@ -1,108 +1,176 @@
 # Exercise 1: Bicep Basics - Complete Solution
 
-## Overview
+This is the complete solution for Exercise 1 of Module 13, demonstrating Azure Bicep fundamentals.
 
-This solution demonstrates a production-ready Bicep template for deploying an Azure Web App with App Service Plan and Application Insights.
+## 📁 Project Structure
 
-## Features Implemented
-
-### 1. Parameterization
-- All resource names are parameterized with sensible defaults
-- SKU selection with allowed values for validation
-- Environment tagging (dev/staging/prod)
-- Runtime stack configuration
-
-### 2. Best Practices
-- Unique naming using `uniqueString()` function
-- Consistent tagging across all resources
-- HTTPS-only enforcement
-- Conditional deployment of Application Insights
-- Proper output values for integration
-
-### 3. Security
-- HTTPS enforced by default
-- No hardcoded secrets
-- Secure connection strings
-
-## Files
-
-- `main.bicep` - Main template file
-- `deploy.sh` - Deployment script with parameters
-- `parameters.dev.json` - Development environment parameters
-- `parameters.prod.json` - Production environment parameters
-
-## Deployment
-
-### Using the deployment script:
-```bash
-# Default deployment (dev environment, F1 SKU)
-./deploy.sh
-
-# Production deployment
-./deploy.sh -e prod -s P1v2
-
-# Custom resource group and location
-./deploy.sh -g my-rg -l westus2
+```
+solution/
+├── main.bicep               # Complete Bicep template
+├── modules/                 # Reusable Bicep modules
+│   ├── appService.bicep    # App Service module
+│   └── monitoring.bicep    # Application Insights module
+├── parameters/              # Environment-specific parameters
+│   ├── dev.parameters.json
+│   ├── staging.parameters.json
+│   └── prod.parameters.json
+├── scripts/                 # Deployment scripts
+│   ├── deploy.sh           # Main deployment script
+│   └── cleanup.sh          # Resource cleanup script
+└── README.md               # This file
 ```
 
-### Manual deployment:
+## 🏗️ Architecture
+
+The solution deploys:
+- **App Service Plan**: Hosting environment for web applications
+- **Web App**: Linux-based web application with Python runtime
+- **Application Insights**: Optional monitoring and telemetry
+- **Resource Tags**: Consistent tagging strategy
+
+## ✨ Features Demonstrated
+
+### 1. **Parameters**
+- String parameters with descriptions
+- Parameters with default values
+- Allowed values using decorators
+- Boolean parameters for conditional deployments
+
+### 2. **Variables**
+- Complex object variables
+- String interpolation
+- Computed values
+
+### 3. **Resources**
+- App Service Plan with configurable SKU
+- Web App with Linux runtime
+- Conditional Application Insights deployment
+- Resource dependencies
+
+### 4. **Modules**
+- Reusable Bicep modules
+- Module parameters and outputs
+- Module composition
+
+### 5. **Outputs**
+- Resource properties
+- Computed URLs
+- Conditional outputs
+
+## 🚀 Deployment
+
+### Quick Deploy
+
+```bash
+# Deploy to dev environment
+./scripts/deploy.sh dev
+
+# Deploy to staging
+./scripts/deploy.sh staging
+
+# Deploy to production
+./scripts/deploy.sh prod
+```
+
+### Manual Deployment
+
 ```bash
 # Create resource group
-az group create --name rg-module13 --location eastus
+az group create \
+  --name rg-bicep-exercise1 \
+  --location eastus2
 
-# Deploy with dev parameters
+# Deploy with parameters file
 az deployment group create \
-  --resource-group rg-module13 \
+  --resource-group rg-bicep-exercise1 \
   --template-file main.bicep \
-  --parameters @parameters.dev.json
-
-# Deploy with inline parameters
-az deployment group create \
-  --resource-group rg-module13 \
-  --template-file main.bicep \
-  --parameters sku=S1 environment=staging
+  --parameters @parameters/dev.parameters.json
 ```
 
-## Validation
+### What-If Deployment
 
-1. **Check deployment outputs:**
-   ```bash
-   az deployment group show \
-     --resource-group rg-module13 \
-     --name main \
-     --query properties.outputs
-   ```
+```bash
+# Preview changes before deploying
+az deployment group what-if \
+  --resource-group rg-bicep-exercise1 \
+  --template-file main.bicep \
+  --parameters @parameters/dev.parameters.json
+```
 
-2. **Verify resources:**
-   ```bash
-   az resource list \
-     --resource-group rg-module13 \
-     --output table
-   ```
+## 📋 Parameters
 
-3. **Test the web app:**
-   - Navigate to the output URL
-   - Should see default Azure App Service page
-   - Check Application Insights for telemetry
+| Parameter | Description | Default | Allowed Values |
+|-----------|-------------|---------|----------------|
+| appServicePlanName | Name of the App Service Plan | Generated | - |
+| webAppName | Name of the Web App | Generated | - |
+| location | Azure region | Resource Group location | - |
+| sku | App Service Plan SKU | F1 | F1, B1, B2, S1, S2, S3, P1v2, P2v2, P3v2 |
+| linuxFxVersion | Runtime stack | PYTHON\|3.11 | - |
+| enableApplicationInsights | Deploy App Insights | true | true/false |
+| environment | Environment name | dev | dev, staging, prod |
 
-## Key Learning Points
+## 🏷️ Tagging Strategy
 
-1. **Parameterization**: Makes templates reusable across environments
-2. **Conditions**: Use `if()` for optional resources
-3. **Functions**: `uniqueString()` ensures unique names
-4. **Outputs**: Essential for automation and integration
-5. **Tags**: Critical for cost management and organization
+All resources are tagged with:
+- **Environment**: dev/staging/prod
+- **ManagedBy**: Bicep
+- **Module**: 13
+- **Exercise**: 1
+- **CostCenter**: Based on environment
+- **Owner**: Based on environment
 
-## Common Issues
+## 🧪 Testing
 
-1. **SKU Conflicts**: Free tier (F1) limited to one per subscription/region
-2. **Naming Conflicts**: Use `uniqueString()` to avoid collisions
-3. **Region Availability**: Not all SKUs available in all regions
+### Validate Template
 
-## Next Steps
+```bash
+# Build and validate
+az bicep build --file main.bicep
 
-- Add custom domain configuration
-- Implement deployment slots for blue-green deployments
-- Add Azure Key Vault integration for secrets
-- Configure auto-scaling rules
-- Implement monitoring alerts
+# Validate deployment
+az deployment group validate \
+  --resource-group rg-bicep-exercise1 \
+  --template-file main.bicep
+```
+
+### Test Application
+
+After deployment:
+1. Get the web app URL from outputs
+2. Navigate to the URL in a browser
+3. Verify the default page loads
+4. Check Application Insights data (if enabled)
+
+## 🧹 Cleanup
+
+```bash
+# Delete all resources
+./scripts/cleanup.sh
+
+# Or manually delete resource group
+az group delete --name rg-bicep-exercise1 --yes
+```
+
+## 📚 Key Learnings
+
+1. **Bicep Syntax**: Clean, readable infrastructure as code
+2. **Parameters**: Making templates reusable
+3. **Conditions**: Deploying resources based on parameters
+4. **Modules**: Creating reusable components
+5. **Best Practices**: Naming, tagging, and organization
+
+## 🔄 Enhancements
+
+This solution can be extended with:
+- Custom domain configuration
+- SSL certificates
+- Deployment slots
+- Auto-scaling rules
+- Advanced monitoring alerts
+- CI/CD integration
+
+## 📖 Additional Resources
+
+- [Bicep Documentation](https://docs.microsoft.com/azure/azure-resource-manager/bicep/)
+- [Bicep Learning Path](https://docs.microsoft.com/learn/paths/bicep-deploy/)
+- [Bicep GitHub Repository](https://github.com/Azure/bicep)

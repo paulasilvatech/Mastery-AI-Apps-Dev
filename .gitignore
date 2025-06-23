@@ -1,0 +1,78 @@
+# Local tools and templates - DO NOT COMMIT
+templates/
+template/
+
+# Reports and temporary files
+*-report.txt
+*-report-*.txt
+standardization-report.txt
+navigation-report.txt
+link-validation-report.txt
+complete-standardization-report-*.txt
+final-validation-*.txt
+fix-remaining-*.sh
+fix-remaining-*.md
+
+# Backup directories
+*_backup_*/
+*_backup_*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Docker
+docker-compose.override.yml
+
+# Test coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Build artifacts
+build/
+dist/
+*.egg-info/ 

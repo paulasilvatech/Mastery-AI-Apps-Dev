@@ -355,3 +355,7 @@ Before proceeding to the frontend, ensure:
 - [ ] All endpoints return expected responses
 
 If any issues, check `troubleshooting.md` or review the steps above.
+
+## ⏭️ Next Steps
+
+Proceed to [Part 2](./part2.md)

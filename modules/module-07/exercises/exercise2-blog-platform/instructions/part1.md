@@ -525,3 +525,8 @@ Before proceeding to API endpoints, ensure:
 - [ ] Configuration is properly set up
 
 Continue to Part 2 for API implementation...
+
+
+## ⏭️ Next Steps
+
+Proceed to [Part 2](./part2.md)

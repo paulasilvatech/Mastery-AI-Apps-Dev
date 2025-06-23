@@ -1,0 +1,120 @@
+#!/bin/bash
+
+echo "🚀 Setting up Module 07 environment..."
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Update system packages
+echo -e "${BLUE}📦 Updating system packages...${NC}"
+sudo apt-get update -qq
+
+# Install Python dependencies globally
+echo -e "${BLUE}🐍 Installing Python packages...${NC}"
+pip install --upgrade pip
+pip install fastapi uvicorn sqlalchemy python-dotenv openai
+pip install python-multipart cloudinary httpx
+pip install black pylint pytest
+
+# Create virtual environments for each exercise
+echo -e "${BLUE}🔧 Creating Python environments...${NC}"
+for exercise in exercise-1-todo exercise-2-notes exercise-3-recipes; do
+    if [ -d "exercises/$exercise/starter/backend" ]; then
+        cd "exercises/$exercise/starter/backend"
+        python -m venv venv
+        cd - > /dev/null
+    fi
+done
+
+# Install global npm packages
+echo -e "${BLUE}📦 Installing Node.js packages...${NC}"
+npm install -g create-vite
+npm install -g npm-check-updates
+
+# Pre-install dependencies for faster startup
+echo -e "${BLUE}⚡ Pre-installing exercise dependencies...${NC}"
+
+# Exercise 1 - Todo App
+if [ -d "exercises/exercise-1-todo/starter/frontend" ]; then
+    cd exercises/exercise-1-todo/starter/frontend
+    npm install
+    cd - > /dev/null
+fi
+
+# Exercise 2 - Notes App
+if [ -d "exercises/exercise-2-notes/starter/frontend" ]; then
+    cd exercises/exercise-2-notes/starter/frontend
+    npm install
+    cd - > /dev/null
+fi
+
+# Exercise 3 - Recipes App
+if [ -d "exercises/exercise-3-recipes/starter/frontend" ]; then
+    cd exercises/exercise-3-recipes/starter/frontend
+    npm install
+    cd - > /dev/null
+fi
+
+# Create .env template files
+echo -e "${BLUE}📝 Creating environment templates...${NC}"
+
+# Exercise 3 .env template
+if [ -d "exercises/exercise-3-recipes/starter/backend" ]; then
+    cat > exercises/exercise-3-recipes/starter/backend/.env.example << EOF
+# OpenAI API Configuration
+OPENAI_API_KEY=your-api-key-here
+
+# Cloudinary Configuration (optional)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Application Settings
+DEBUG=True
+SECRET_KEY=your-secret-key-here
+EOF
+fi
+
+# Create a welcome message
+cat > WELCOME.md << EOF
+# 🎉 Welcome to Module 07!
+
+Your Codespace is ready! Here's how to get started:
+
+## 🚀 Quick Start
+
+1. **Exercise 1 - Todo App**
+   \`\`\`bash
+   cd exercises/exercise-1-todo/starter
+   # Follow the README.md
+   \`\`\`
+
+2. **Exercise 2 - Notes App**
+   \`\`\`bash
+   cd exercises/exercise-2-notes/starter
+   # Follow the README.md
+   \`\`\`
+
+3. **Exercise 3 - Recipe AI**
+   \`\`\`bash
+   cd exercises/exercise-3-recipes/starter
+   # Add your OpenAI API key to backend/.env
+   # Follow the README.md
+   \`\`\`
+
+## 💡 Tips
+
+- Use split terminals for frontend/backend
+- Check PORTS tab for URLs
+- Copilot is already active!
+
+Happy coding! 🚀
+EOF
+
+echo -e "${GREEN}✅ Setup complete!${NC}"
+echo -e "${GREEN}📖 Check WELCOME.md for next steps${NC}"
+echo ""
+echo "Your development environment is ready!"
+echo "GitHub Copilot is active and waiting to help you code!"

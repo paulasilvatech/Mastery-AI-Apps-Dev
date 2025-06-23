@@ -1,0 +1,77 @@
+{
+  "name": "Module 07 - Web Applications with AI",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "PKief.material-icon-theme",
+        "oderwat.indent-rainbow",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.python"
+        },
+        "tailwindCSS.includeLanguages": {
+          "javascript": "javascript",
+          "javascriptreact": "javascriptreact"
+        }
+      }
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  
+  "forwardPorts": [3000, 5173, 8000, 8080],
+  
+  "portsAttributes": {
+    "3000": {
+      "label": "Frontend (Alternative)",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Vite Frontend",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "FastAPI Backend",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Alternative Backend",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "PYTHONPATH": "/workspaces/${localWorkspaceFolderBasename}"
+  }
+}

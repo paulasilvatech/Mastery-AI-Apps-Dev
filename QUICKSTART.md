@@ -30,13 +30,17 @@ code .
 ```
 
 ## 5️⃣ Write Your First AI-Assisted Code
-1. Open `hello_ai.py` in VS Code
+1. Open `exercises/exercise1-easy/starter/hello_ai.py` in VS Code
 2. Type this comment:
    ```python
    # Create a function that generates a personalized welcome message
    ```
 3. Press `Tab` to accept Copilot's suggestion
-4. Run the code: `python hello_ai.py`
+4. Run the code: 
+   ```bash
+   cd exercises/exercise1-easy/starter
+   python hello_ai.py
+   ```
 
 ## 🎉 Congratulations!
 You've just written your first AI-assisted code! Continue with the full Module 1 exercises.
@@ -58,12 +62,18 @@ The quick start script created:
 
 ```
 modules/module-01/
-├── hello_ai.py         # Your first AI file
-├── exercise1.py        # First exercise
-├── QUICK_REFERENCE.md  # Handy tips
-└── .vscode/           # VS Code config
-    ├── settings.json
-    └── extensions.json
+├── exercises/
+│   ├── exercise1-easy/
+│   │   ├── starter/
+│   │   │   └── hello_ai.py     # Your first AI file
+│   │   ├── solution/
+│   │   │   └── hello_ai.py     # Complete solution
+│   │   └── README.md           # Exercise instructions
+│   ├── exercise2-medium/       # More challenges await
+│   └── exercise3-hard/         # Advanced exercises
+├── README.md                   # Module overview
+├── prerequisites.md            # What you need
+└── best-practices.md          # Pro tips
 ```
 
 ## 🚀 Alternative: Complete Setup
@@ -97,160 +107,6 @@ Ready to become an AI development master? Let's go! 🚀
 ---
 
 **[Continue to Module 1 →](modules/module-01/README.md)**
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
-
----
-
-## 🔗 Quick Navigation
-
-<div align="center">
-
-| Documentation | Getting Started | Resources |
-|:-------------:|:---------------:|:---------:|
-| [📚 Modules](modules/README.md) | [🚀 Quick Start](QUICKSTART.md) | [🛠️ Scripts](scripts/README.md) |
-| [📋 Prerequisites](PREREQUISITES.md) | [❓ FAQ](FAQ.md) | [📝 Prompt Guide](PROMPT-GUIDE.md) |
-| [🔧 Troubleshooting](TROUBLESHOOTING.md) | [🔄 GitOps Guide](GITOPS-GUIDE.md) | [💬 Discussions](https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/discussions) |
-
-</div>
-
-### 🎯 Start Your Journey
-
-<div align="center">
-
-[**🚀 Begin Module 01 - Introduction to AI-Powered Development**](modules/module-01/README.md)
-
-</div>
 
 ---
 

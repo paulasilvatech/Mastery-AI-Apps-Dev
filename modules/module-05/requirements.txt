@@ -1,0 +1,33 @@
+# Requirements for Module 05 - Documentation and Code Quality
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# Code Quality & Linting
+black>=23.12.0
+flake8>=6.1.0
+isort>=5.13.0
+mypy>=1.7.0
+pylint>=3.0.0
+
+# Documentation
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0
+sphinx-autodoc-typehints>=1.25.0
+
+# Code Analysis
+radon>=6.0.0  # Code complexity metrics
+bandit>=1.7.0  # Security linting
+
+# Development Tools
+ipython>=8.18.0
+ipdb>=0.13.0
+
+# Type Checking
+types-requests>=2.31.0
+
+# For the exercises
+requests>=2.31.0
+python-dotenv>=1.0.0

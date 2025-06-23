@@ -659,3 +659,8 @@ Before proceeding to the main application, verify:
 - [ ] Permissions are properly enforced
 
 Continue to Part 3 for main application setup...
+
+
+## ⏭️ Next Steps
+
+Proceed to [Part 3](./part3.md)

@@ -29,19 +29,18 @@ var logAnalyticsName = 'log-${appName}-${environment}'
 var uniqueSuffix = substring(uniqueString(resourceGroup().id), 0, 6)
 
 // Tags for all resources
-var tags = {
+var baseTags = {
   Environment: environment
   Application: appName
   ManagedBy: 'Bicep'
   Module: 'Module-13'
-  CreatedDate: utcNow('yyyy-MM-dd')
 }
 
 // Log Analytics Workspace (needed for enhanced monitoring)
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsName
   location: location
-  tags: tags
+  tags: baseTags
   properties: {
     sku: {
       name: 'PerGB2018'
@@ -54,7 +53,7 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
   name: appServicePlanName
   location: location
-  tags: tags
+  tags: baseTags
   sku: {
     name: environment == 'prod' ? 'P1v3' : 'B1'
     tier: environment == 'prod' ? 'PremiumV3' : 'Basic'
@@ -70,7 +69,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
-  tags: tags
+  tags: baseTags
   kind: 'web'
   properties: {
     Application_Type: 'web'
@@ -83,7 +82,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: '${storageAccountName}${uniqueSuffix}'
   location: location
-  tags: tags
+  tags: baseTags
   sku: {
     name: 'Standard_LRS'
   }
@@ -114,7 +113,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: '${keyVaultName}-${uniqueSuffix}'
   location: location
-  tags: tags
+  tags: baseTags
   properties: {
     sku: {
       family: 'A'
@@ -135,7 +134,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
 resource webApp 'Microsoft.Web/sites@2023-01-01' = {
   name: webAppName
   location: location
-  tags: tags
+  tags: baseTags
   identity: {
     type: 'SystemAssigned'
   }
@@ -180,7 +179,7 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2023-01-01' = if (environment ==
   parent: webApp
   name: 'staging'
   location: location
-  tags: tags
+  tags: baseTags
   identity: {
     type: 'SystemAssigned'
   }
@@ -215,7 +214,7 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2023-01-01' = if (environment ==
 resource autoScaleSettings 'Microsoft.Insights/autoscalesettings@2022-10-01' = if (environment == 'prod') {
   name: 'autoscale-${webAppName}'
   location: location
-  tags: tags
+  tags: baseTags
   properties: {
     targetResourceUri: appServicePlan.id
     enabled: true

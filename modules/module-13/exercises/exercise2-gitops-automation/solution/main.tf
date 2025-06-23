@@ -82,16 +82,17 @@ module "network" {
 module "webapp" {
   source = "./modules/webapp"
   
-  resource_group_name    = azurerm_resource_group.main.name
-  location               = azurerm_resource_group.main.location
-  environment            = var.environment
-  app_name               = var.project_name
-  app_service_plan_sku   = var.app_service_plan_sku
-  subnet_id              = module.network.subnet_web_id
-  key_vault_id           = azurerm_key_vault.main.id
-  enable_staging_slot    = var.environment == "prod" ? true : false
-  enable_autoscale       = var.environment == "prod" ? true : false
-  tags                   = local.tags
+  resource_group_name        = azurerm_resource_group.main.name
+  location                   = azurerm_resource_group.main.location
+  environment                = var.environment
+  app_name                   = var.project_name
+  app_service_plan_sku       = var.app_service_plan_sku
+  subnet_id                  = module.network.subnet_web_id
+  key_vault_id               = azurerm_key_vault.main.id
+  database_connection_string = module.database.connection_string
+  enable_staging_slot        = var.environment == "prod" ? true : false
+  enable_autoscale           = var.environment == "prod" ? true : false
+  tags                       = local.tags
 }
 
 # Database Module

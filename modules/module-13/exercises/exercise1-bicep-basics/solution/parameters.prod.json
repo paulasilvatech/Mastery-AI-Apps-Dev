@@ -2,20 +2,8 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appServicePlanName": {
-      "value": "asp-module13-prod"
-    },
-    "webAppName": {
-      "value": "webapp-module13-prod"
-    },
-    "sku": {
-      "value": "P1v2"
-    },
-    "linuxFxVersion": {
-      "value": "PYTHON|3.11"
-    },
-    "enableApplicationInsights": {
-      "value": true
+    "appName": {
+      "value": "module13"
     },
     "environment": {
       "value": "prod"

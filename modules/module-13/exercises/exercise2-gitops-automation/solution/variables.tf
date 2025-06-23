@@ -58,6 +58,12 @@ variable "admin_username" {
   sensitive   = true
 }
 
+variable "additional_tags" {
+  description = "Additional tags to apply to resources"
+  type        = map(string)
+  default     = {}
+}
+
 locals {
   tags = merge(
     {
@@ -76,10 +82,4 @@ locals {
   
   # Naming convention
   resource_prefix = "${var.project_name}-${var.environment}"
-}
-
-variable "additional_tags" {
-  description = "Additional tags to apply to resources"
-  type        = map(string)
-  default     = {}
 } 

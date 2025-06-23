@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": {
+      "value": "workshop13"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "skuName": {
+      "value": "F1"
+    },
+    "sqlAdminUsername": {
+      "value": "sqladmin"
+    },
+    "databaseSku": {
+      "value": "Basic"
+    }
+  }
+}

@@ -1,1 +1,0 @@
-# Exercise 1 - Easy: Hello AI

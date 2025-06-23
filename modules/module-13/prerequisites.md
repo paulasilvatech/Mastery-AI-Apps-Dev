@@ -278,3 +278,247 @@ You're ready for Module 13 when:
 - [ ] You understand basic IaC concepts
 
 **Next Step**: Once prerequisites are met, start with [Exercise 1: Bicep Basics](./exercises/exercise1-bicep-basics/)
+
+## 🚀 GitHub Codespaces (Recommended)
+
+The fastest way to get started with Infrastructure as Code is using GitHub Codespaces, which provides a pre-configured cloud development environment.
+
+### Option 1: Using GitHub Codespaces
+
+1. **Fork the Repository**
+   - Navigate to the main course repository
+   - Click the "Fork" button (top-right corner)
+   - This creates a complete copy in your GitHub account
+   - Note: You cannot fork individual directories, only entire repositories
+
+2. **Create a Codespace**
+   - In your forked repository, click the green "Code" button
+   - Select the "Codespaces" tab
+   - Click "Create codespace on main"
+   - Choose machine type: **4-core** (recommended for better performance)
+   - Wait 2-3 minutes for setup
+
+3. **Navigate to Module 13**
+   ```bash
+   cd modules/module-13
+   ```
+
+4. **Pre-installed Tools** ✅
+   - Azure CLI with Bicep
+   - GitHub CLI
+   - Terraform
+   - VS Code with all extensions
+   - Docker
+   - Python & Node.js
+
+### Option 2: Local Development
+
+If you prefer local development or need to work offline:
+
+## 📋 System Requirements
+
+- **Operating System**: Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)
+- **RAM**: 4GB minimum (8GB recommended)
+- **Disk Space**: 5GB free
+- **Internet**: Required for Azure operations
+
+## 🛠️ Required Software
+
+### 1. Azure CLI (includes Bicep)
+```bash
+# Windows (winget)
+winget install Microsoft.AzureCLI
+
+# macOS
+brew update && brew install azure-cli
+
+# Linux
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# Verify
+az --version
+az bicep version
+```
+
+### 2. GitHub CLI
+```bash
+# Installation varies by platform
+# See: https://cli.github.com/
+
+# Verify
+gh --version
+```
+
+### 3. Visual Studio Code
+Download from [code.visualstudio.com](https://code.visualstudio.com/)
+
+Required extensions:
+- Azure Bicep
+- GitHub Actions
+- YAML
+- Azure Account
+
+### 4. Git
+```bash
+git --version  # Should be 2.x or higher
+```
+
+## 🔑 Account Requirements
+
+### GitHub Account
+- Free account is sufficient
+- Enable GitHub Actions in your fork
+- Personal Access Token (for GitHub CLI)
+
+### Azure Account
+- Free tier works for all exercises
+- Student accounts get $100 credit
+- Create at [azure.microsoft.com/free](https://azure.microsoft.com/free)
+
+## ⚡ Quick Start with Codespaces
+
+### First Time Setup
+
+1. **Fork & Create Codespace**
+   ```bash
+   # After forking, create codespace as described above
+   # All tools are pre-installed!
+   ```
+
+2. **Configure Azure**
+   ```bash
+   # Login to Azure
+   az login --use-device-code
+   
+   # Set subscription (if you have multiple)
+   az account list --output table
+   az account set --subscription "YOUR-SUBSCRIPTION-NAME"
+   ```
+
+3. **Configure GitHub**
+   ```bash
+   # Should already be authenticated in Codespaces
+   gh auth status
+   ```
+
+4. **Validate Setup**
+   ```bash
+   cd modules/module-13
+   ./scripts/check-prerequisites-script.sh
+   ```
+
+## 💰 Cost Management
+
+### GitHub Codespaces
+- **Free tier**: 60 hours/month
+- **Storage**: 15 GB/month free
+- **Tips**:
+  - Stop codespaces when not in use
+  - Delete old codespaces
+  - Use 2-core machines when possible
+
+### Azure Resources
+- **Free tier**: $200 credit for 30 days
+- **Exercise costs**: < $5 total if cleaned up
+- **Important**: Always run cleanup scripts!
+
+## 🏃‍♂️ Workflow in Codespaces
+
+### Development Flow
+```bash
+# 1. Create feature branch
+git checkout -b module13-exercise1
+
+# 2. Work on exercises
+cd exercises/exercise1-bicep-basics
+code starter/main.bicep
+
+# 3. Test deployments
+./scripts/deploy.sh
+
+# 4. Commit and push
+git add .
+git commit -m "Complete exercise 1"
+git push origin module13-exercise1
+
+# 5. Clean up Azure resources
+./scripts/cleanup.sh
+```
+
+### Working with Your Fork
+- Your fork contains the entire course
+- Focus only on `modules/module-13/`
+- Create PRs to your own fork for practice
+- Keep your fork synced with upstream
+
+## 🔧 Codespaces Configuration
+
+### Recommended Settings
+```json
+{
+  "github.codespaces.defaultMachineType": "standardLinux32gb",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true
+}
+```
+
+### Prebuild Configuration
+For faster startup, enable prebuilds:
+1. Go to repository settings
+2. Navigate to Codespaces
+3. Enable prebuilds for main branch
+
+## 🐛 Troubleshooting
+
+### Codespaces Issues
+| Problem | Solution |
+|---------|----------|
+| Won't start | Check quota/billing |
+| Slow performance | Upgrade machine type |
+| Extensions missing | Rebuild container |
+| Can't push code | Check repository permissions |
+
+### Azure Issues
+| Problem | Solution |
+|---------|----------|
+| Login fails | Use `--use-device-code` flag |
+| No subscription | Check free tier activation |
+| Deployment fails | Verify region availability |
+| Permission denied | Check RBAC assignments |
+
+## 📚 Pre-Module Learning
+
+### Required Knowledge
+- ✅ Basic cloud concepts
+- ✅ Git version control
+- ✅ YAML syntax basics
+- ✅ Command line comfort
+
+### Helpful Resources
+- [Azure Fundamentals](https://learn.microsoft.com/training/paths/azure-fundamentals/)
+- [Introduction to Bicep](https://learn.microsoft.com/training/modules/introduction-to-infrastructure-as-code-using-bicep/)
+- [GitHub Actions Basics](https://docs.github.com/actions/learn-github-actions)
+
+## ✅ Validation Checklist
+
+Before starting exercises, ensure:
+
+- [ ] Codespace is running (or local setup complete)
+- [ ] Azure CLI logged in
+- [ ] Bicep CLI installed
+- [ ] GitHub authenticated
+- [ ] Validation script passes
+- [ ] You understand the fork workflow
+
+## 🎯 Ready to Start?
+
+Once setup is complete:
+
+1. Read the [Module Overview](README.md)
+2. Start with [Exercise 1](exercises/exercise1-bicep-basics/README.md)
+3. Use Copilot to accelerate your learning!
+
+---
+
+💡 **Pro Tip**: Codespaces is the fastest way to start. You'll be coding in under 5 minutes!

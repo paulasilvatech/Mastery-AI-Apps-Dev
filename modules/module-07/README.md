@@ -16,11 +16,15 @@ By the end of this module, you will be able to:
 
 ### Prerequisites
 
+✅ GitHub account (for forking the repository)  
+✅ GitHub Codespaces access (60 hours free/month) **[RECOMMENDED]**  
+OR  
+✅ Local setup with:  
+   - Node.js 18+ and Python 3.9+  
+   - Docker Desktop  
+   - VS Code with GitHub Copilot  
 ✅ Completed Modules 1-6 or equivalent experience  
-✅ Basic understanding of HTML, CSS, and JavaScript  
-✅ Python web framework knowledge (FastAPI basics)  
-✅ GitHub Copilot configured and working  
-✅ Docker installed (for deployment exercise)  
+✅ Basic HTML, CSS, JavaScript knowledge
 
 ### Duration
 

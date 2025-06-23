@@ -31,7 +31,31 @@ This workshop provides unprecedented depth and breadth:
 
 ## 🚀 Quick Start (5 Minutes!)
 
-### Fastest Way to Begin
+### ☁️ Option 1: GitHub Codespaces (RECOMMENDED - Zero Setup!)
+
+The fastest way to start is with GitHub Codespaces - a complete cloud development environment:
+
+```bash
+# 1. Fork this repository (required for Codespaces)
+# 2. Click the green "Code" button
+# 3. Select "Codespaces" tab
+# 4. Click "Create codespace on main"
+# 5. Wait 2-3 minutes for setup
+# 6. You're ready to code! 🎉
+```
+
+**Benefits:**
+- ✅ No local installation required
+- ✅ All tools pre-installed
+- ✅ Works on any device with a browser
+- ✅ 60 hours free per month
+- ✅ Consistent environment for everyone
+
+[📖 **Complete Codespaces Guide**](CODESPACES-GUIDE.md)
+
+### 💻 Option 2: Local Development
+
+If you prefer local development:
 
 ```bash
 # Clone the workshop
@@ -296,14 +320,23 @@ Each module contains 3 progressive exercises:
 
 ### 1. Environment Setup
 
-#### Option A: Quick Start (5 minutes)
+#### Option A: GitHub Codespaces (Recommended - Zero Install!)
+1. **Fork this repository** (click Fork button on GitHub)
+2. In your fork, click the green **Code** button
+3. Select **Codespaces** tab
+4. Click **Create codespace on main**
+5. Choose **4-core** machine for best performance
+6. Wait 2-3 minutes for automatic setup
+7. Everything is ready! Start with Module 1
+
+#### Option B: Local Quick Start (5 minutes)
 ```bash
 git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git
 cd Mastery-AI-Apps-Dev
 ./scripts/quick-start.sh
 ```
 
-#### Option B: Complete Setup
+#### Option C: Local Complete Setup
 ```bash
 # Clone repository
 git clone https://github.com/paulasilvatech/Mastery-AI-Apps-Dev.git

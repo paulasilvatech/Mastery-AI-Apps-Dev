@@ -1,266 +1,179 @@
 # Module 07 Prerequisites
 
-## 🔧 Required Software
+## 🚀 GitHub Codespaces (Recommended)
 
-### Development Environment
+The easiest way to get started is using GitHub Codespaces, which provides a complete development environment in your browser.
+
+### Option 1: Using GitHub Codespaces
+
+1. **Fork the Repository**
+   - Go to the main course repository
+   - Click the "Fork" button in the top-right corner
+   - This will create a copy of the entire repository in your account
+
+2. **Create a Codespace**
+   - In your forked repository, click the green "Code" button
+   - Select the "Codespaces" tab
+   - Click "Create codespace on main"
+   - Wait for the environment to be ready (2-3 minutes)
+
+3. **Navigate to Module 07**
+   ```bash
+   cd modules/module-07
+   ```
+
+4. **All tools are pre-installed!** 
+   - Node.js 18.x ✅
+   - Python 3.11 ✅
+   - Docker ✅
+   - VS Code Extensions ✅
+   - GitHub Copilot ✅
+
+### Option 2: Local Development
+
+If you prefer to work locally, you'll need to install the following:
+
+## 📋 System Requirements
+
+- **Operating System**: Windows 10+, macOS 10.15+, or Ubuntu 20.04+
+- **RAM**: Minimum 8GB (16GB recommended)
+- **Disk Space**: At least 10GB free space
+- **Internet**: Stable connection for package downloads
+
+## 🛠️ Required Software
+
+### 1. Node.js (18.x or later)
 ```bash
-# Check versions
-node --version          # >= 18.0.0
-python --version        # >= 3.11.0
-docker --version        # >= 24.0.0
-git --version          # >= 2.38.0
+# Verify installation
+node --version  # Should show v18.x.x or higher
 ```
 
-### VS Code Extensions
-Ensure these extensions are installed and configured:
-- ✅ GitHub Copilot
-- ✅ GitHub Copilot Chat
-- ✅ Python
-- ✅ Pylance
-- ✅ ES7+ React/Redux/React-Native snippets
-- ✅ Tailwind CSS IntelliSense
-- ✅ Thunder Client (API testing)
-
-## 📦 Package Installation
-
-### Backend Dependencies
+### 2. Python (3.9 or later)
 ```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows
-.\venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
-
-# Install required packages
-pip install fastapi==0.104.1
-pip install uvicorn[standard]==0.24.0
-pip install sqlalchemy==2.0.23
-pip install alembic==1.12.1
-pip install python-jose[cryptography]==3.3.0
-pip install passlib[bcrypt]==1.7.4
-pip install python-multipart==0.0.6
-pip install pydantic==2.5.0
-pip install pydantic-settings==2.1.0
-pip install aiofiles==23.2.1
+# Verify installation
+python --version  # Should show Python 3.9.x or higher
 ```
 
-### Frontend Dependencies
+### 3. Docker Desktop
+- Download from [Docker Official Site](https://www.docker.com/products/docker-desktop/)
+- Required for containerization exercises
+
+### 4. Git
 ```bash
-# Install Node.js packages globally
-npm install -g create-vite@latest
-npm install -g typescript@latest
+# Verify installation
+git --version
 ```
 
-## 🔑 Account Requirements
+### 5. Visual Studio Code
+- Download from [code.visualstudio.com](https://code.visualstudio.com/)
+- Install these extensions:
+  - GitHub Copilot
+  - Python
+  - Pylance
+  - ESLint
+  - Prettier
+  - Tailwind CSS IntelliSense
 
-### GitHub
-- Active GitHub account
-- GitHub Copilot subscription (Individual or Business)
-- Personal access token with repo scope
+### 6. GitHub Copilot
+- Active subscription required
+- Sign in through VS Code
 
-### Azure (for deployment - Exercise 3)
-- Azure account with active subscription
-- Azure CLI installed and configured
+## 🔧 Development Setup
+
+### For Codespaces Users
+
+The development environment is already configured! Just run:
+
 ```bash
-# Install Azure CLI
-# Windows
-winget install Microsoft.AzureCLI
-# macOS
-brew install azure-cli
-# Linux
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-# Login
-az login
+# Verify everything is working
+cd modules/module-07
+./scripts/validate-module-07.sh
 ```
 
-## 📚 Knowledge Prerequisites
+### For Local Development
 
-### Required Knowledge
-- ✅ Basic HTML/CSS understanding
-- ✅ JavaScript fundamentals (ES6+)
-- ✅ Python basics (functions, classes, async)
-- ✅ REST API concepts
-- ✅ Basic SQL knowledge
-- ✅ Git version control
+1. **Clone your fork**
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/REPOSITORY-NAME.git
+   cd REPOSITORY-NAME/modules/module-07
+   ```
 
-### Helpful but Not Required
-- React basics (will be guided)
-- TypeScript familiarity
-- Docker basics
-- Cloud deployment experience
+2. **Install dependencies**
+   ```bash
+   # Frontend dependencies
+   cd exercises/exercise1-todo-app/starter/frontend
+   npm install
+   
+   # Backend dependencies
+   cd ../backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-## 🛠️ Environment Setup
+## 💡 Tips for Codespaces
 
-### 1. Project Directory Structure
+### Resource Management
+- **Free tier**: 60 hours/month of Codespaces usage
+- **Stop your Codespace** when not in use to save hours
+- **Delete old Codespaces** to free up storage
+
+### Performance Tips
+- Use a **4-core machine type** for better performance
+- **Prebuild** option available for faster startup
+- Browser-based VS Code works great, but you can also connect from desktop VS Code
+
+### Working with the Repository
+Since you forked the entire repository:
+- Focus only on the `modules/module-07` directory
+- Create branches for each exercise:
+  ```bash
+  git checkout -b module07-exercise1
+  ```
+- Push changes to your fork:
+  ```bash
+  git add .
+  git commit -m "Complete exercise 1"
+  git push origin module07-exercise1
+  ```
+
+## ✅ Validation Checklist
+
+Run this script to ensure your environment is ready:
+
 ```bash
-# Create module workspace
-mkdir module-07-workspace
-cd module-07-workspace
-
-# Clone module materials (if not already done)
-git clone https://github.com/your-org/mastery-ai-workshop.git
-cd mastery-ai-workshop/modules/module-07-web-applications
+cd modules/module-07
+./scripts/validate-module-07.sh
 ```
 
-### 2. Database Setup
-```bash
-# Install SQLite (if not present)
-# Windows - comes pre-installed with Python
-# macOS
-brew install sqlite3
-# Linux
-sudo apt-get install sqlite3
+Expected output:
+```
+✅ Node.js 18.x installed
+✅ Python 3.9+ installed
+✅ Docker running
+✅ Git configured
+✅ VS Code extensions installed
+✅ GitHub Copilot authenticated
+✅ All prerequisites met!
 ```
 
-### 3. Verify Copilot Configuration
-```bash
-# In VS Code, open Command Palette (Ctrl/Cmd + Shift + P)
-# Run: "GitHub Copilot: Status"
-# Should show "GitHub Copilot: Ready"
-```
+## 🆘 Troubleshooting
 
-### 4. Test API Setup
-```python
-# test_setup.py
-from fastapi import FastAPI
-import uvicorn
+### Codespaces Issues
+- **Codespace won't start**: Check your usage limits
+- **Extensions missing**: Rebuild the container
+- **Performance slow**: Upgrade to a larger machine type
 
-app = FastAPI()
+### Local Development Issues
+- **Port conflicts**: Change ports in `.env` files
+- **Permission errors**: Check file ownership
+- **Module not found**: Verify you're in the correct directory
 
-@app.get("/")
-def read_root():
-    return {"status": "Module 07 Ready!"}
+## 📌 Important Notes
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-```
+1. **Fork vs Clone**: You must fork the repository to use Codespaces
+2. **Costs**: Codespaces is free for 60 hours/month on the free tier
+3. **Persistence**: Your work is saved in your fork
+4. **Collaboration**: You can share your Codespace with others
 
-Run test:
-```bash
-python test_setup.py
-# Visit http://localhost:8000
-# Should see: {"status": "Module 07 Ready!"}
-```
-
-## 🚨 Common Setup Issues
-
-### Issue 1: Copilot Not Suggesting
-**Solution:**
-```bash
-# Restart VS Code
-# Check Copilot status
-# Re-authenticate if needed
-```
-
-### Issue 2: Python Package Conflicts
-**Solution:**
-```bash
-# Use fresh virtual environment
-deactivate
-rm -rf venv
-python -m venv venv
-# Reinstall packages
-```
-
-### Issue 3: Port Already in Use
-**Solution:**
-```bash
-# Find process using port 8000
-# Windows
-netstat -ano | findstr :8000
-# macOS/Linux
-lsof -i :8000
-# Kill the process or use different port
-```
-
-## ✅ Pre-Module Checklist
-
-Before starting the exercises, ensure:
-
-- [ ] All software versions meet requirements
-- [ ] Python virtual environment is activated
-- [ ] All Python packages installed successfully
-- [ ] VS Code extensions are installed
-- [ ] GitHub Copilot is active and working
-- [ ] Test API runs successfully
-- [ ] You have 3 hours of uninterrupted time
-- [ ] You've reviewed Module 6 concepts
-
-## 🎯 Quick Validation Script
-
-Run this script to validate your setup:
-
-```python
-# validate_setup.py
-import sys
-import subprocess
-import importlib
-
-def check_python_version():
-    version = sys.version_info
-    if version.major >= 3 and version.minor >= 11:
-        print("✅ Python version OK")
-        return True
-    else:
-        print("❌ Python 3.11+ required")
-        return False
-
-def check_packages():
-    packages = ['fastapi', 'uvicorn', 'sqlalchemy', 'pydantic']
-    all_good = True
-    
-    for package in packages:
-        try:
-            importlib.import_module(package)
-            print(f"✅ {package} installed")
-        except ImportError:
-            print(f"❌ {package} not installed")
-            all_good = False
-    
-    return all_good
-
-def check_node():
-    try:
-        result = subprocess.run(['node', '--version'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0:
-            print(f"✅ Node.js installed: {result.stdout.strip()}")
-            return True
-    except FileNotFoundError:
-        pass
-    
-    print("❌ Node.js not found")
-    return False
-
-def main():
-    print("🔍 Validating Module 07 Setup...\n")
-    
-    checks = [
-        check_python_version(),
-        check_packages(),
-        check_node()
-    ]
-    
-    if all(checks):
-        print("\n✅ All checks passed! Ready for Module 07")
-    else:
-        print("\n❌ Some checks failed. Please fix issues above.")
-        sys.exit(1)
-
-if __name__ == "__main__":
-    main()
-```
-
-## 📞 Getting Help
-
-If you encounter setup issues:
-1. Check the [troubleshooting.md](./troubleshooting.md) guide
-2. Search existing GitHub Issues
-3. Post in Module 07 Discussions
-4. Tag instructors with @mention
-
-Ready? Let's build amazing web applications with AI! 🚀
+Ready to start? Proceed to [Exercise 1](exercises/exercise1-todo-app/README.md)!

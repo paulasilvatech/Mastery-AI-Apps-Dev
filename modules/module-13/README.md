@@ -18,13 +18,19 @@ By the end of this module, you will:
 
 ## 🔧 Prerequisites
 
-- Completed Module 12 (Cloud-Native Development)
-- Azure CLI installed and configured
-- GitHub account with repository access
-- Basic understanding of:
-  - Azure resources (App Service, Storage, etc.)
-  - YAML syntax
-  - Git version control
+✅ GitHub account (for repository fork)  
+✅ GitHub Codespaces (60 hours free/month) **[RECOMMENDED]**  
+OR  
+✅ Local setup with:  
+   - Azure CLI with Bicep  
+   - VS Code with extensions  
+   - Git 2.x+  
+✅ Azure free account (or subscription)  
+✅ Completed Module 12 (Cloud-Native Development)  
+✅ Basic understanding of:  
+   - Azure resources (App Service, Storage, etc.)  
+   - YAML syntax  
+   - Git version control
 
 ## 📂 Module Structure
 

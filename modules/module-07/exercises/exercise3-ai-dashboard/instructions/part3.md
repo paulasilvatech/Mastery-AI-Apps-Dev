@@ -1011,3 +1011,5 @@ Continue to Part 4 for:
 - Deployment interface
 
 The backend is now a production-ready monitoring system with real-time capabilities!
+
+Proceed to [Part 4](./part4.md)

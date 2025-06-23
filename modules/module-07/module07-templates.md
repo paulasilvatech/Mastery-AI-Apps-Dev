@@ -1,206 +1,214 @@
 # Module 07: Code Templates
 
-## 🚀 Quick Start Templates
+## 🎯 Reusable Code Templates for Web Applications
 
-Use these templates to accelerate your development. Copy, paste, and let Copilot fill in the details!
+This document contains reusable code templates and patterns that you can use across your web applications. These templates follow best practices and are optimized for use with GitHub Copilot.
 
-## Backend Templates (FastAPI)
+## 📁 Backend Templates (FastAPI)
 
-### 1. Complete FastAPI Application Template
+### Basic FastAPI Application Structure
 
 ```python
-# app/main.py
-from fastapi import FastAPI, Request
+# main.py
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
-import logging
+from typing import List, Optional
+from pydantic import BaseModel
+from datetime import datetime
 
-from .core.config import settings
-from .api.v1 import auth, items  # Add your routers here
-from .core.database import engine, Base
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Create database tables
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    logger.info("Starting up...")
-    Base.metadata.create_all(bind=engine)
-    yield
-    # Shutdown
-    logger.info("Shutting down...")
-
-# Create FastAPI app
 app = FastAPI(
-    title=settings.APP_NAME,
-    version=settings.VERSION,
-    lifespan=lifespan
+    title="My API",
+    description="API Description",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
-# Configure CORS
+# CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=["http://localhost:3000", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(auth.router, prefix="/api/v1")
-app.include_router(items.router, prefix="/api/v1")
-
-@app.get("/")
-async def root():
-    return {"message": f"{settings.APP_NAME} is running!"}
-
+# Health Check
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "version": settings.VERSION}
+    return {"status": "healthy", "timestamp": datetime.utcnow()}
 ```
 
-### 2. Database Models Template
+### Database Models Template (SQLAlchemy)
 
 ```python
-# app/models/base.py
-from sqlalchemy import Column, Integer, DateTime
-from sqlalchemy.sql import func
+# models.py
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy import create_engine
+from datetime import datetime
+import os
 
+# Database URL from environment or default
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+
+# Create engine
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-class BaseModel(Base):
-    """Base model with common fields"""
-    __abstract__ = True
+# Base Model Mixin
+class TimestampMixin:
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+# Example Model
+class User(Base, TimestampMixin):
+    __tablename__ = "users"
     
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    email = Column(String, unique=True, index=True, nullable=False)
+    username = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
+    is_superuser = Column(Boolean, default=False)
+    
+    # Relationships
+    posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 ```
 
-### 3. CRUD Service Template
+### Authentication Template (JWT)
 
 ```python
-# app/services/crud_base.py
-from typing import Generic, TypeVar, Type, Optional, List
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from sqlalchemy import select
-
-from ..models.base import Base
-
-ModelType = TypeVar("ModelType", bound=Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
-UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
-
-class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
-    def __init__(self, model: Type[ModelType]):
-        self.model = model
-    
-    def get(self, db: Session, id: int) -> Optional[ModelType]:
-        return db.query(self.model).filter(self.model.id == id).first()
-    
-    def get_all(
-        self, 
-        db: Session, 
-        *, 
-        skip: int = 0, 
-        limit: int = 100
-    ) -> List[ModelType]:
-        return db.query(self.model).offset(skip).limit(limit).all()
-    
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
-        db_obj = self.model(**obj_in.dict())
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
-    
-    def update(
-        self,
-        db: Session,
-        *,
-        db_obj: ModelType,
-        obj_in: UpdateSchemaType
-    ) -> ModelType:
-        update_data = obj_in.dict(exclude_unset=True)
-        for field, value in update_data.items():
-            setattr(db_obj, field, value)
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
-    
-    def delete(self, db: Session, *, id: int) -> ModelType:
-        obj = db.query(self.model).get(id)
-        db.delete(obj)
-        db.commit()
-        return obj
-```
-
-### 4. Authentication Template
-
-```python
-# app/core/auth.py
+# auth.py
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+import os
 
-from ..core.config import settings
+# Configuration
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+# Password utilities
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+# Token utilities
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-# Copilot: Complete the get_current_user dependency
+# Get current user
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    user = db.query(User).filter(User.username == username).first()
+    if user is None:
+        raise credentials_exception
+    return user
 ```
 
-## Frontend Templates (React + TypeScript)
+### Async Background Tasks Template
 
-### 1. API Client Template
+```python
+# background_tasks.py
+from fastapi import BackgroundTasks
+import asyncio
+from typing import Any
+import logging
+
+logger = logging.getLogger(__name__)
+
+async def send_email_async(email: str, subject: str, body: str):
+    """Async email sending task"""
+    try:
+        # Simulate email sending
+        await asyncio.sleep(2)
+        logger.info(f"Email sent to {email}")
+    except Exception as e:
+        logger.error(f"Failed to send email: {e}")
+
+def process_heavy_computation(data: Any):
+    """CPU-intensive task for background processing"""
+    try:
+        # Simulate heavy computation
+        import time
+        time.sleep(5)
+        logger.info("Heavy computation completed")
+    except Exception as e:
+        logger.error(f"Computation failed: {e}")
+
+# Usage in endpoint
+@app.post("/send-notification")
+async def send_notification(
+    email: str,
+    background_tasks: BackgroundTasks
+):
+    # Add task to background
+    background_tasks.add_task(send_email_async, email, "Welcome!", "Thank you for signing up")
+    return {"message": "Notification will be sent"}
+```
+
+## ⚛️ Frontend Templates (React + TypeScript)
+
+### API Client Template
 
 ```typescript
-// src/api/client.ts
-import axios, { AxiosError, AxiosInstance } from 'axios';
+// api/client.ts
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class ApiClient {
-  private client: AxiosInstance;
+  private instance: AxiosInstance;
 
   constructor(baseURL: string) {
-    this.client = axios.create({
+    this.instance = axios.create({
       baseURL,
+      timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    this.setupInterceptors();
-  }
-
-  private setupInterceptors() {
     // Request interceptor
-    this.client.interceptors.request.use(
+    this.instance.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('access_token');
         if (token) {
@@ -212,9 +220,9 @@ class ApiClient {
     );
 
     // Response interceptor
-    this.client.interceptors.response.use(
+    this.instance.interceptors.response.use(
       (response) => response,
-      async (error: AxiosError) => {
+      async (error) => {
         if (error.response?.status === 401) {
           // Handle token refresh or redirect to login
           localStorage.removeItem('access_token');
@@ -225,71 +233,106 @@ class ApiClient {
     );
   }
 
-  // Copilot: Add CRUD methods (get, post, put, delete)
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.instance.get<T>(url, config);
+    return response.data;
+  }
+
+  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.instance.post<T>(url, data, config);
+    return response.data;
+  }
+
+  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.instance.put<T>(url, data, config);
+    return response.data;
+  }
+
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.instance.delete<T>(url, config);
+    return response.data;
+  }
 }
 
-export default new ApiClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
+export const apiClient = new ApiClient(import.meta.env.VITE_API_URL || 'http://localhost:8000');
 ```
 
-### 2. React Hook Template
+### Custom Hooks Template
 
 ```typescript
-// src/hooks/useApi.ts
-import { useState, useEffect, useCallback } from 'react';
-import { AxiosError } from 'axios';
+// hooks/useAuth.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-interface UseApiState<T> {
-  data: T | null;
-  loading: boolean;
-  error: string | null;
+interface User {
+  id: number;
+  email: string;
+  username: string;
 }
 
-interface UseApiActions<T> {
-  refetch: () => Promise<void>;
-  setData: (data: T) => void;
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (token: string, user: User) => void;
+  logout: () => void;
 }
 
-export function useApi<T>(
-  apiCall: () => Promise<T>,
-  dependencies: any[] = []
-): UseApiState<T> & UseApiActions<T> {
-  const [state, setState] = useState<UseApiState<T>>({
-    data: null,
-    loading: true,
-    error: null,
-  });
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (token, user) => set({ token, user, isAuthenticated: true }),
+      logout: () => set({ token: null, user: null, isAuthenticated: false }),
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
 
-  // Copilot: Complete the implementation with fetch logic and error handling
-}
+// Hook for protected routes
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export const useRequireAuth = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
+  return isAuthenticated;
+};
 ```
 
-### 3. Form Component Template
+### Form Component Template
 
 ```typescript
-// src/components/Form/FormTemplate.tsx
+// components/FormTemplate.tsx
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Define your schema
+// Define schema
 const formSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100),
-  description: z.string().optional(),
-  // Copilot: Add more fields
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-interface FormTemplateProps {
-  onSubmit: (data: FormData) => Promise<void>;
-  initialData?: Partial<FormData>;
-}
-
-export const FormTemplate: React.FC<FormTemplateProps> = ({ 
-  onSubmit, 
-  initialData 
-}) => {
+export const FormTemplate: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -297,139 +340,223 @@ export const FormTemplate: React.FC<FormTemplateProps> = ({
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
   });
 
-  // Copilot: Complete the form UI with Tailwind styling
-};
-```
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      // Handle form submission
+      console.log(data);
+      reset();
+    } catch (error) {
+      console.error('Form submission error:', error);
+    }
+  };
 
-### 4. Protected Route Template
-
-```typescript
-// src/components/ProtectedRoute.tsx
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-
-export const ProtectedRoute: React.FC = () => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Email
+        </label>
+        <input
+          type="email"
+          {...register('email')}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+        )}
       </div>
-    );
-  }
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Password
+        </label>
+        <input
+          type="password"
+          {...register('password')}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+        {errors.password && (
+          <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+      >
+        {isSubmitting ? 'Submitting...' : 'Submit'}
+      </button>
+    </form>
+  );
 };
 ```
 
-## WebSocket Templates
-
-### 1. WebSocket Hook Template
+### Data Table Component Template
 
 ```typescript
-// src/hooks/useWebSocket.ts
-import { useEffect, useRef, useState, useCallback } from 'react';
+// components/DataTable.tsx
+import React, { useState } from 'react';
 
-interface UseWebSocketOptions {
-  onOpen?: (event: Event) => void;
-  onMessage?: (data: any) => void;
-  onError?: (event: Event) => void;
-  onClose?: (event: CloseEvent) => void;
-  reconnect?: boolean;
-  reconnectInterval?: number;
-  reconnectAttempts?: number;
+interface Column<T> {
+  key: keyof T;
+  header: string;
+  render?: (value: any, item: T) => React.ReactNode;
 }
 
-export function useWebSocket(
-  url: string, 
-  options: UseWebSocketOptions = {}
-) {
-  // Copilot: Implement complete WebSocket hook with reconnection logic
+interface DataTableProps<T> {
+  data: T[];
+  columns: Column<T>[];
+  onRowClick?: (item: T) => void;
+}
+
+export function DataTable<T extends { id: number }>({
+  data,
+  columns,
+  onRowClick,
+}: DataTableProps<T>) {
+  const [sortKey, setSortKey] = useState<keyof T | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const handleSort = (key: keyof T) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (!sortKey) return 0;
+    
+    const aVal = a[sortKey];
+    const bVal = b[sortKey];
+    
+    if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            {columns.map((column) => (
+              <th
+                key={String(column.key)}
+                onClick={() => handleSort(column.key)}
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+              >
+                {column.header}
+                {sortKey === column.key && (
+                  <span className="ml-1">
+                    {sortOrder === 'asc' ? '↑' : '↓'}
+                  </span>
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {sortedData.map((item) => (
+            <tr
+              key={item.id}
+              onClick={() => onRowClick?.(item)}
+              className={onRowClick ? 'cursor-pointer hover:bg-gray-50' : ''}
+            >
+              {columns.map((column) => (
+                <td
+                  key={String(column.key)}
+                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                >
+                  {column.render
+                    ? column.render(item[column.key], item)
+                    : String(item[column.key])}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 ```
 
-### 2. Real-time Chart Component
+## 🚀 Deployment Templates
 
-```typescript
-// src/components/RealtimeChart.tsx
-import React, { useState, useEffect } from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
-
-interface DataPoint {
-  timestamp: string;
-  value: number;
-}
-
-interface RealtimeChartProps {
-  dataStream: DataPoint[];
-  title: string;
-  color?: string;
-  maxPoints?: number;
-}
-
-// Copilot: Create a real-time updating chart component
-```
-
-## Docker Templates
-
-### 1. Multi-stage Dockerfile
+### Dockerfile Template
 
 ```dockerfile
-# Frontend build stage
-FROM node:18-alpine AS frontend-build
-WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm ci
-COPY frontend/ ./
-RUN npm run build
+# Multi-stage build for Python/React app
+# Backend stage
+FROM python:3.11-slim as backend
 
-# Backend build stage
-FROM python:3.11-slim AS backend-build
-WORKDIR /app
-COPY backend/requirements.txt ./
+WORKDIR /app/backend
+
+# Install dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Production stage
+# Copy backend code
+COPY backend/ .
+
+# Frontend stage
+FROM node:18-alpine as frontend
+
+WORKDIR /app/frontend
+
+# Install dependencies
+COPY frontend/package*.json ./
+RUN npm ci
+
+# Copy frontend code and build
+COPY frontend/ .
+RUN npm run build
+
+# Final stage
 FROM python:3.11-slim
+
 WORKDIR /app
 
-# Copy Python dependencies
-COPY --from=backend-build /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    nginx \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy frontend build
-COPY --from=frontend-build /app/frontend/dist ./static
+# Copy backend from backend stage
+COPY --from=backend /app/backend /app/backend
 
-# Copy backend code
-COPY backend/ ./
+# Copy frontend build from frontend stage
+COPY --from=frontend /app/frontend/dist /usr/share/nginx/html
 
-# Create non-root user
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
+# Copy configuration files
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Expose ports
+EXPOSE 80 8000
+
+# Start services
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 ```
 
-### 2. Docker Compose Template
+### Docker Compose Template
 
 ```yaml
+# docker-compose.yml
 version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -440,21 +567,23 @@ services:
       - redis
     volumes:
       - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:8000
-    command: npm run dev -- --host
+    command: npm run dev
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
@@ -468,86 +597,105 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
     volumes:
-      - redis_data:/data
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
 
 volumes:
   postgres_data:
-  redis_data:
 ```
 
-## Testing Templates
+### GitHub Actions CI/CD Template
 
-### 1. Backend Test Template
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy to Production
 
-```python
-# tests/test_api.py
-import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
-from app.main import app
-from app.core.database import Base, get_db
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      
+      - name: Run backend tests
+        run: |
+          cd backend
+          pytest tests/ --cov=app --cov-report=xml
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+      
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
 
-# Test database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base.metadata.create_all(bind=engine)
-
-def override_get_db():
-    try:
-        db = TestingSessionLocal()
-        yield db
-    finally:
-        db.close()
-
-app.dependency_overrides[get_db] = override_get_db
-client = TestClient(app)
-
-# Copilot: Add test cases for CRUD operations
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: docker build -t myapp:${{ github.sha }} .
+      
+      - name: Push to registry
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+      
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d --name myapp -p 80:80 ${{ secrets.DOCKER_USERNAME }}/myapp:latest
 ```
 
-### 2. Frontend Test Template
+## 📝 Usage Tips
 
-```typescript
-// src/components/__tests__/Component.test.tsx
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
+1. **With GitHub Copilot**: Copy these templates into your project and let Copilot help customize them for your specific needs.
 
-// Component to test
-import { YourComponent } from '../YourComponent';
+2. **Customization**: These templates are starting points - modify them based on your requirements.
 
-// Test wrapper
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-    },
-  });
+3. **Best Practices**: These templates follow industry best practices but always review and adapt to your team's standards.
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </QueryClientProvider>
-  );
-};
+4. **Security**: Always review security implications and update default secrets/keys before production use.
 
-describe('YourComponent', () => {
-  // Copilot: Add comprehensive test cases
-});
-```
-
-## Usage Tips
-
-1. **Copy the template** that matches your needs
-2. **Paste into your file**
-3. **Add a comment** describing what you want
-4. **Let Copilot complete** the implementation
-5. **Review and refine** the generated code
-
-Remember: These templates are starting points. Customize them based on your specific requirements and let Copilot help fill in the details!
+Remember: Templates are guides, not rigid rules. Adapt them to fit your project's unique requirements!

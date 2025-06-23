@@ -1,0 +1,18 @@
+# Bicep build outputs
+*.json
+!parameters*.json
+
+# Local environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Deployment outputs
+deployment-outputs.txt
+
+# Temporary files
+*.tmp
+*.temp

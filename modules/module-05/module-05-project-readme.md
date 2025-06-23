@@ -295,7 +295,7 @@ class CodeReviewAnalyzer:
 - Post questions in #module-05-projects
 - Share progress for feedback
 - Pair program with classmates
-- Use office hours for guidance
+
 
 ## 🏆 Showcase
 

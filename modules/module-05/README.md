@@ -259,7 +259,6 @@ To complete this module successfully:
 
 - **Module Support**: See [troubleshooting.md](troubleshooting.md)
 - **Discussion Forum**: GitHub Discussions for Module 05
-- **Office Hours**: Tuesdays 3-4 PM PT
 - **Slack Channel**: #module-05-documentation
 
 ## ⏭️ What's Next?

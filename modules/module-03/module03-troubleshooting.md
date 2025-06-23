@@ -409,7 +409,7 @@ code --log-level=debug
 1. **Module Support**
    - GitHub Discussions: Module 03 section
    - Slack: #module-03-prompting
-   - Office Hours: Tuesdays 2-3 PM PT
+   
 
 2. **Official Resources**
    - [GitHub Copilot Troubleshooting](https://docs.github.com/copilot/troubleshooting)

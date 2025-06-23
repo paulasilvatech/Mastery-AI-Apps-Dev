@@ -323,11 +323,6 @@ Remember: The goal is not just to complete the exercises, but to understand how 
   - [React Community](https://react.dev/community)
   - [FastAPI Gitter](https://gitter.im/tiangolo/fastapi)
 
-- 🤝 **Study Groups**
-  - Weekly office hours (Thursdays 3 PM UTC)
-  - Peer programming sessions
-  - Code review exchanges
-
 ### Best Practices References
 - 🏗️ **Architecture Patterns**
   - [React Architecture Best Practices](https://blog.logrocket.com/react-architecture-patterns-2024/)

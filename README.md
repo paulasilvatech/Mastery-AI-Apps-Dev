@@ -399,11 +399,10 @@ code .
 - Week 10: Final Challenge
 
 ### For Teams (Custom)
-- Cohort-based learning
-- Weekly sync sessions
+- Flexible learning schedule
 - Pair programming
 - Team challenges
-- Custom scheduling
+- Custom pacing
 
 ---
 

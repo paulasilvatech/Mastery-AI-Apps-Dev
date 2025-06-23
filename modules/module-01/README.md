@@ -219,7 +219,6 @@ To complete this module successfully:
 
 - **Module Support**: See [troubleshooting.md](troubleshooting.md)
 - **Discussion Forum**: GitHub Discussions for Module 01
-- **Office Hours**: Mondays 3-4 PM PT
 - **Slack Channel**: #module-01-introduction
 
 ## ⏭️ What's Next?

@@ -197,7 +197,7 @@ Before starting the exercises:
 - Module discussion forum
 - GitHub Actions community
 - Workshop Discord channel
-- Office hours (Thursdays 2-3 PM UTC)
+
 
 ## 🚀 Ready to Start?
 

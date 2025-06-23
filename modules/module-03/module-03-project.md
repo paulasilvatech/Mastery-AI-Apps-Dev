@@ -264,7 +264,7 @@ def detect_pattern_type(prompt: str) -> str:
 ## 🆘 Getting Help
 
 - Post questions in Module 03 Discussions
-- Attend office hours
+
 - Review exercise solutions for patterns
 - Ask in #module-03-project Slack channel
 

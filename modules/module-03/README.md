@@ -206,7 +206,6 @@ You'll know you've mastered this module when you can:
 
 - **Module Issues**: See [troubleshooting.md](troubleshooting.md)
 - **Questions**: Post in GitHub Discussions
-- **Live Support**: Office hours Tuesday/Thursday 2-3 PM PT
 - **Emergency**: Tag @module-03-support in Slack
 
 ## 📚 Additional Resources

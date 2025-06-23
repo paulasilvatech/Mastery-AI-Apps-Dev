@@ -183,11 +183,6 @@ You've mastered this module when you can:
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [GitHub Copilot for Web Development](https://docs.github.com/copilot)
 
-### Recommended Reading
-- "Full-Stack React, TypeScript, and Node" - David Choi
-- "Building Production-Ready Web Apps" - Microsoft Learn
-- "Modern Web Development with AI" - GitHub Blog
-
 ### Community Resources
 - Module 7 Discussion Thread
 - Web Development Best Practices Wiki

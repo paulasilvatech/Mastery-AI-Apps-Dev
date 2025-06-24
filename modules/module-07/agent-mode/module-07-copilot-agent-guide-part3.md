@@ -86,7 +86,7 @@ cp .env.example .env
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a production-ready project structure for the AI recipe assistant that includes:
+Create a production-ready project structure for the AI recipe assistant that includes:
 
 1. Microservices-ready backend architecture
 2. Frontend with advanced performance features
@@ -185,7 +185,7 @@ ai-recipe-assistant/
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Implement the AI-powered backend for the recipe assistant with these requirements:
+Implement the AI-powered backend for the recipe assistant with these requirements:
 
 1. OpenAI integration with prompt engineering
 2. Cost tracking per request with budget alerts
@@ -509,7 +509,7 @@ ai_service = OpenAIService()
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a modern React frontend for the AI recipe assistant with:
+Create a modern React frontend for the AI recipe assistant with:
 
 1. Beautiful recipe generation interface
 2. Ingredient input with autocomplete
@@ -878,7 +878,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a complete production deployment setup for the AI recipe assistant:
+Create a complete production deployment setup for the AI recipe assistant:
 
 1. Docker configuration for all services
 2. Kubernetes manifests for cloud deployment
@@ -902,7 +902,7 @@ Explain each component and why it's necessary for production AI applications.
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a comprehensive GitOps setup that manages all three applications from Module 07:
+Create a comprehensive GitOps setup that manages all three applications from Module 07:
 
 1. Monorepo structure with all three apps
 2. Shared infrastructure components

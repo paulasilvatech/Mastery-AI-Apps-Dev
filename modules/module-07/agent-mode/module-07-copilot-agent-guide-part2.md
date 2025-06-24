@@ -67,7 +67,7 @@ cd smart-notes-app
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a sophisticated project structure for the smart notes app that supports:
+Create a sophisticated project structure for the smart notes app that supports:
 
 1. Feature-based organization (not just components/pages)
 2. Shared state management with Context API and useReducer
@@ -142,7 +142,7 @@ smart-notes-app/
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Set up the smart notes application with all necessary dependencies and configurations:
+Set up the smart notes application with all necessary dependencies and configurations:
 
 1. Package.json with all required dependencies for:
    - React 18 with TypeScript
@@ -265,7 +265,7 @@ Explain why each dependency is chosen and what problems it solves.
 
 #### Copilot Agent Prompt for Storage Layer:
 ```markdown
-@workspace Create a robust storage layer for the notes application using IndexedDB with Dexie:
+Create a robust storage layer for the notes application using IndexedDB with Dexie:
 
 1. Database schema for notes with: id, title, content, tags, createdAt, updatedAt, isPinned, isFavorite
 2. Service layer with CRUD operations and error handling
@@ -471,7 +471,7 @@ export const notesService = {
 
 #### Copilot Agent Prompt for React Components:
 ```markdown
-@workspace Create the main React components for the smart notes application:
+Create the main React components for the smart notes application:
 
 1. NotesList component with virtualization for performance
 2. NoteEditor with markdown support and live preview
@@ -489,7 +489,7 @@ Include accessibility features (ARIA labels, keyboard navigation) and performanc
 
 #### Copilot Agent Prompt for Auto-Tagging:
 ```markdown
-@workspace Implement an intelligent auto-tagging system for the notes:
+Implement an intelligent auto-tagging system for the notes:
 
 1. Extract hashtags from content (#example)
 2. Detect mentions (@person)
@@ -762,7 +762,7 @@ export const autoTagger = new AutoTagger();
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Configure the smart notes app as a Progressive Web App (PWA):
+Configure the smart notes app as a Progressive Web App (PWA):
 
 1. Web app manifest with all required properties
 2. Service worker for offline functionality
@@ -905,7 +905,7 @@ Explain PWA concepts and why they matter for user experience.
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create comprehensive testing and running instructions for the smart notes app:
+Create comprehensive testing and running instructions for the smart notes app:
 
 1. Development environment setup for all platforms
 2. Running the app with hot reload
@@ -929,7 +929,7 @@ Include specific commands and tools for each testing aspect.
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Add these advanced features to make the notes app stand out:
+Add these advanced features to make the notes app stand out:
 
 1. Voice notes with speech-to-text
 2. Collaborative editing with WebRTC

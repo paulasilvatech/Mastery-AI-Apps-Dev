@@ -106,7 +106,7 @@ Good commit messages:
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create the complete project structure for a full-stack todo application. I need:
+Create the complete project structure for a full-stack todo application. I need:
 
 1. A monorepo structure with separate frontend (React with Vite) and backend (FastAPI) directories
 2. Configuration files for both environments
@@ -178,7 +178,7 @@ todo-app-fullstack/
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create all the initial configuration files for our todo-app-fullstack project:
+Create all the initial configuration files for our todo-app-fullstack project:
 
 1. VS Code workspace file (todo-app.code-workspace) with multi-root setup
 2. VS Code settings.json with formatting, linting, and Copilot configurations
@@ -348,7 +348,7 @@ volumes:
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Set up the complete FastAPI backend structure for our todo application. Create:
+Set up the complete FastAPI backend structure for our todo application. Create:
 
 1. FastAPI project initialization with proper project structure
 2. SQLAlchemy models for todos with proper relationships
@@ -481,7 +481,7 @@ async def root():
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create the complete React frontend setup for our todo application using Vite. Include:
+Create the complete React frontend setup for our todo application using Vite. Include:
 
 1. Vite project initialization with React and TypeScript
 2. Tailwind CSS configuration for styling
@@ -584,7 +584,7 @@ export default defineConfig({
 
 #### Copilot Agent Prompt for Backend API:
 ```markdown
-@workspace Implement the complete Todo API with the following features:
+Implement the complete Todo API with the following features:
 
 1. Todo model with: id, title, description, completed, priority, due_date, created_at, updated_at
 2. CRUD endpoints: GET /todos (with pagination), POST /todos, PUT /todos/{id}, DELETE /todos/{id}
@@ -666,7 +666,7 @@ class Todo(Base):
 
 #### Copilot Agent Prompt for Frontend Components:
 ```markdown
-@workspace Create the React component structure for our Todo application:
+Create the React component structure for our Todo application:
 
 1. TodoList component with virtualization for performance
 2. TodoItem with inline editing capabilities  
@@ -686,7 +686,7 @@ Explain React best practices, performance optimizations, and accessibility consi
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create comprehensive setup and run instructions for our todo application covering:
+Create comprehensive setup and run instructions for our todo application covering:
 
 1. Environment setup for Windows (CMD/PowerShell), macOS/Linux (bash), and GitHub Codespaces
 2. Installing dependencies for both frontend and backend
@@ -798,7 +798,7 @@ docker-compose down
 
 #### Copilot Agent Prompt:
 ```markdown
-@workspace Create a complete GitOps setup for deploying our todo application to Azure:
+Create a complete GitOps setup for deploying our todo application to Azure:
 
 1. GitHub Actions workflow for CI/CD
 2. Infrastructure as Code using Bicep or Terraform

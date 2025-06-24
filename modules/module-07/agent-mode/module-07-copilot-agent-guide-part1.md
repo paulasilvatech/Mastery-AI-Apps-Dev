@@ -98,7 +98,6 @@ Good commit messages:
 - Be specific about what changed
 - Keep under 72 characters
 - Use present tense
-```
 
 ### Step 2: Project Structure Setup
 

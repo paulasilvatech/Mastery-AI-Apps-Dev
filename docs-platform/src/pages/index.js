@@ -3,6 +3,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import Translate, {translate} from '@docusaurus/Translate';
 
 import styles from './index.module.css';
 
@@ -12,10 +13,10 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          Master AI Apps Development
+          <Translate id="homepage.hero.title">Master AI Apps Development</Translate>
         </Heading>
         <p className="hero__subtitle">
-          🚀 The Most Complete AI Development Workshop - 30 Modules, 90 Hands-on Exercises
+          <Translate id="homepage.hero.subtitle">🚀 The Most Complete AI Development Workshop - 30 Modules, 90 Hands-on Exercises</Translate>
         </p>
         <div className={styles.buttons}>
           <Link

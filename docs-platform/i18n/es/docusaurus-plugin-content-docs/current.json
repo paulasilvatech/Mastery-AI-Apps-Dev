@@ -1,0 +1,170 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.🟢 Fundamentals Track": {
+    "message": "🟢 Fundamentals Track",
+    "description": "The label for category 🟢 Fundamentals Track in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 01: AI Development Fundamentals": {
+    "message": "Module 01: AI Development Fundamentals",
+    "description": "The label for category Module 01: AI Development Fundamentals in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Exercise 1": {
+    "message": "Exercise 1",
+    "description": "The label for category Exercise 1 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Exercise 2": {
+    "message": "Exercise 2",
+    "description": "The label for category Exercise 2 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Exercise 3": {
+    "message": "Exercise 3",
+    "description": "The label for category Exercise 3 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 02: GitHub Copilot Mastery": {
+    "message": "Module 02: GitHub Copilot Mastery",
+    "description": "The label for category Module 02: GitHub Copilot Mastery in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 03: Advanced Prompt Engineering": {
+    "message": "Module 03: Advanced Prompt Engineering",
+    "description": "The label for category Module 03: Advanced Prompt Engineering in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 04: Testing and Debugging with AI": {
+    "message": "Module 04: Testing and Debugging with AI",
+    "description": "The label for category Module 04: Testing and Debugging with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 05: AI-Powered Documentation": {
+    "message": "Module 05: AI-Powered Documentation",
+    "description": "The label for category Module 05: AI-Powered Documentation in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🔵 Intermediate Development": {
+    "message": "🔵 Intermediate Development",
+    "description": "The label for category 🔵 Intermediate Development in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 06: AI Pair Programming Patterns": {
+    "message": "Module 06: AI Pair Programming Patterns",
+    "description": "The label for category Module 06: AI Pair Programming Patterns in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 07: Copilot Workspace Deep Dive": {
+    "message": "Module 07: Copilot Workspace Deep Dive",
+    "description": "The label for category Module 07: Copilot Workspace Deep Dive in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 08: API Development with AI": {
+    "message": "Module 08: API Development with AI",
+    "description": "The label for category Module 08: API Development with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 09: Database Design with AI": {
+    "message": "Module 09: Database Design with AI",
+    "description": "The label for category Module 09: Database Design with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 10: Real-time Systems with AI": {
+    "message": "Module 10: Real-time Systems with AI",
+    "description": "The label for category Module 10: Real-time Systems with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🟠 Advanced Patterns": {
+    "message": "🟠 Advanced Patterns",
+    "description": "The label for category 🟠 Advanced Patterns in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 11: Microservices Architecture": {
+    "message": "Module 11: Microservices Architecture",
+    "description": "The label for category Module 11: Microservices Architecture in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 12: Cloud-Native with AI": {
+    "message": "Module 12: Cloud-Native with AI",
+    "description": "The label for category Module 12: Cloud-Native with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 13: DevOps Automation": {
+    "message": "Module 13: DevOps Automation",
+    "description": "The label for category Module 13: DevOps Automation in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 14: Performance Optimization": {
+    "message": "Module 14: Performance Optimization",
+    "description": "The label for category Module 14: Performance Optimization in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 15: Security with AI": {
+    "message": "Module 15: Security with AI",
+    "description": "The label for category Module 15: Security with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🔴 Enterprise Solutions": {
+    "message": "🔴 Enterprise Solutions",
+    "description": "The label for category 🔴 Enterprise Solutions in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 16: Enterprise Patterns": {
+    "message": "Module 16: Enterprise Patterns",
+    "description": "The label for category Module 16: Enterprise Patterns in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 17: System Integration": {
+    "message": "Module 17: System Integration",
+    "description": "The label for category Module 17: System Integration in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 18: Event-Driven Architecture": {
+    "message": "Module 18: Event-Driven Architecture",
+    "description": "The label for category Module 18: Event-Driven Architecture in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 19: Monitoring and Observability": {
+    "message": "Module 19: Monitoring and Observability",
+    "description": "The label for category Module 19: Monitoring and Observability in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 20: Production Deployment": {
+    "message": "Module 20: Production Deployment",
+    "description": "The label for category Module 20: Production Deployment in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🟣 AI Agents & MCP": {
+    "message": "🟣 AI Agents & MCP",
+    "description": "The label for category 🟣 AI Agents & MCP in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 21: AI Agents Fundamentals": {
+    "message": "Module 21: AI Agents Fundamentals",
+    "description": "The label for category Module 21: AI Agents Fundamentals in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 22: Building Custom Agents": {
+    "message": "Module 22: Building Custom Agents",
+    "description": "The label for category Module 22: Building Custom Agents in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 23: Model Context Protocol (MCP)": {
+    "message": "Module 23: Model Context Protocol (MCP)",
+    "description": "The label for category Module 23: Model Context Protocol (MCP) in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 24: Multi-Agent Orchestration": {
+    "message": "Module 24: Multi-Agent Orchestration",
+    "description": "The label for category Module 24: Multi-Agent Orchestration in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 25: Production AI Agents": {
+    "message": "Module 25: Production AI Agents",
+    "description": "The label for category Module 25: Production AI Agents in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.⭐ Enterprise Mastery": {
+    "message": "⭐ Enterprise Mastery",
+    "description": "The label for category ⭐ Enterprise Mastery in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 26: Advanced Architecture Patterns": {
+    "message": "Module 26: Advanced Architecture Patterns",
+    "description": "The label for category Module 26: Advanced Architecture Patterns in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 27: Legacy Modernization with AI": {
+    "message": "Module 27: Legacy Modernization with AI",
+    "description": "The label for category Module 27: Legacy Modernization with AI in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 28: Innovation Lab": {
+    "message": "Module 28: Innovation Lab",
+    "description": "The label for category Module 28: Innovation Lab in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 29: Capstone Project": {
+    "message": "Module 29: Capstone Project",
+    "description": "The label for category Module 29: Capstone Project in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Module 30: Final Assessment & Certification": {
+    "message": "Module 30: Final Assessment & Certification",
+    "description": "The label for category Module 30: Final Assessment & Certification in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.📚 Additional Resources": {
+    "message": "📚 Additional Resources",
+    "description": "The label for category 📚 Additional Resources in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.doc.🚀 Welcome to AI Mastery": {
+    "message": "🚀 Welcome to AI Mastery",
+    "description": "The label for the doc item 🚀 Welcome to AI Mastery in sidebar tutorialSidebar, linking to the doc intro"
+  }
+}

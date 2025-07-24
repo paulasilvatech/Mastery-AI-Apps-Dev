@@ -24,7 +24,9 @@ jobs:
         run: |
           cd docs-platform
           npm install
-          npm run build
+          npm run build -- --locale en
+          npm run build -- --locale pt-BR  
+          npm run build -- --locale es
           
       - uses: actions/configure-pages@v4
       

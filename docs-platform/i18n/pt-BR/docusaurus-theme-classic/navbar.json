@@ -1,0 +1,18 @@
+{
+  "title": {
+    "message": "Workshop IA Maestria",
+    "description": "The title in the navbar"
+  },
+  "item.label.Documentation": {
+    "message": "Documentação",
+    "description": "Navbar item with label Documentation"
+  },
+  "item.label.Start Learning": {
+    "message": "Começar a Aprender",
+    "description": "Navbar item with label Start Learning"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

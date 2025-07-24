@@ -266,7 +266,7 @@ function CTASection() {
             <Link
               className="button button--primary button--lg"
               to="/docs/intro">
-              Start Free Now
+              Start Now
             </Link>
             <Link
               className="button button--outline button--secondary button--lg"

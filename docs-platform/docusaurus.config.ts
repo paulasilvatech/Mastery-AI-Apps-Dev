@@ -48,10 +48,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/tree/main/docs-platform/',
+          // Edit this page link removed
         },
         blog: false, // Disable blog
         theme: {

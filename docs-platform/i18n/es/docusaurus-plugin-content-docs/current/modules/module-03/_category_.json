@@ -1,0 +1,12 @@
+{
+  "label": "Module 03",
+  "position": 3,
+  "link": {
+    "type": "doc",
+    "id": "modules/module-03/index"
+  },
+  "customProps": {
+    "track": "🟢 Fundamentals",
+    "duration": "3 hours"
+  }
+}

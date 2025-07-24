@@ -1,0 +1,12 @@
+{
+  "label": "Module 10",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "modules/module-10/index"
+  },
+  "customProps": {
+    "track": "🔵 Intermediate",
+    "duration": "3 hours"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "label": "Module 15",
+  "position": 15,
+  "link": {
+    "type": "doc",
+    "id": "modules/module-15/index"
+  },
+  "customProps": {
+    "track": "🟠 Advanced",
+    "duration": "3 hours"
+  }
+}

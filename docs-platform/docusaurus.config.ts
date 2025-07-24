@@ -98,6 +98,20 @@ const config: Config = {
           label: 'Start Learning',
         },
         {
+          type: 'localeDropdown',
+          position: 'right',
+          dropdownItemsAfter: [
+            {
+              type: 'html',
+              value: '<hr style="margin: 0.3rem 0;">',
+            },
+            {
+              href: 'https://github.com/paulasilvatech/Mastery-AI-Apps-Dev/issues',
+              label: 'Help translate',
+            },
+          ],
+        },
+        {
           href: 'https://github.com/paulasilvatech/Mastery-AI-Apps-Dev',
           label: 'GitHub',
           position: 'right',

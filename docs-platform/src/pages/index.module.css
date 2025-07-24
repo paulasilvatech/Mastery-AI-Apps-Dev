@@ -1,0 +1,402 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 8rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+}
+
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 4rem 0;
+  }
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  width: 100%;
+  background-color: var(--ifm-background-surface-color);
+}
+
+.featureIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+/* Stats Section */
+.stats {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.statCard {
+  text-align: center;
+  padding: 2rem;
+  background: var(--ifm-card-background-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+}
+
+.statNumber {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Tracks Section */
+.tracks {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-surface-color);
+}
+
+.sectionSubtitle {
+  font-size: 1.25rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 3rem;
+}
+
+.trackGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.trackCard {
+  background: var(--ifm-card-background-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.trackCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--ifm-color-primary);
+}
+
+.trackHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.trackEmoji {
+  font-size: 2.5rem;
+}
+
+.trackHeader h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.moduleCount {
+  margin: 0;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}
+
+.trackDescription {
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 1.5rem;
+}
+
+.trackTopics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.topicTag {
+  background: var(--ifm-color-emphasis-100);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.trackLink {
+  display: inline-block;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.trackLink:hover {
+  text-decoration: underline;
+  transform: translateX(5px);
+}
+
+/* Agentic DevOps Section */
+.agenticDevOps {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color);
+}
+
+.conceptGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.conceptCard {
+  background: var(--ifm-card-background-color);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  transition: all 0.3s ease;
+}
+
+.conceptCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  border-color: var(--ifm-color-primary);
+}
+
+.conceptIcon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.conceptCard h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-heading-color);
+}
+
+.conceptDescription {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureList li {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.featureList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+}
+
+.agenticCallout {
+  font-size: 1.25rem;
+  padding: 2rem;
+  background: var(--ifm-color-primary-lightest);
+  border-radius: 12px;
+  color: var(--ifm-color-primary-darkest);
+}
+
+/* CTA Section */
+.cta {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, var(--ifm-color-primary-darker) 0%, var(--ifm-color-primary) 100%);
+  color: white;
+  text-align: center;
+}
+
+.ctaContent h2 {
+  color: white !important;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.ctaSubtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+  color: white !important;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .statCard,
+[data-theme='dark'] .trackCard,
+[data-theme='dark'] .conceptCard {
+  background: var(--ifm-background-surface-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .topicTag {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-900);
+}
+
+[data-theme='dark'] .statNumber {
+  color: var(--ifm-color-primary-light);
+}
+
+[data-theme='dark'] .statLabel {
+  color: var(--ifm-color-emphasis-800);
+}
+
+[data-theme='dark'] .trackDescription {
+  color: var(--ifm-color-emphasis-800);
+}
+
+[data-theme='dark'] .quote {
+  color: var(--ifm-color-emphasis-900);
+}
+
+[data-theme='dark'] .authorName {
+  color: var(--ifm-color-emphasis-900);
+}
+
+[data-theme='dark'] .conceptDescription {
+  color: var(--ifm-color-emphasis-800);
+}
+
+[data-theme='dark'] .featureList li {
+  color: var(--ifm-color-emphasis-700);
+}
+
+[data-theme='dark'] .agenticCallout {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-900);
+}
+
+/* Light mode improvements */
+[data-theme='light'] .statCard {
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+[data-theme='light'] .trackCard {
+  background: #ffffff;
+}
+
+[data-theme='light'] .testimonialCard {
+  background: #ffffff;
+}
+
+/* Fix hero button contrast */
+.hero--primary .button--outline {
+  background-color: transparent;
+  color: white !important;
+  border: 2px solid white;
+}
+
+.hero--primary .button--outline:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white !important;
+  border-color: white;
+}
+
+/* Ensure features section has good contrast */
+.features h3 {
+  color: var(--ifm-heading-color);
+}
+
+.features p {
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Track card hover state improvements */
+.trackCard:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .trackCard:hover {
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-primary-light);
+}
+
+/* Fix track emoji visibility */
+.trackEmoji {
+  filter: none;
+}
+
+/* Module count visibility */
+.moduleCount {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .trackGrid,
+  .testimonialGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ctaContent h2 {
+    font-size: 2rem;
+  }
+  
+  .statNumber {
+    font-size: 2.5rem;
+  }
+}

@@ -1,0 +1,36 @@
+<svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="aiGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4d94e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#66a3e8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- AI Brain Icon -->
+  <g transform="translate(5, 5)">
+    <!-- Brain outline -->
+    <path d="M20 5 C10 5, 5 12, 5 20 C5 28, 10 35, 20 35 C30 35, 35 28, 35 20 C35 12, 30 5, 20 5 Z" 
+          fill="none" stroke="url(#aiGradientDark)" stroke-width="2"/>
+    
+    <!-- Neural connections -->
+    <circle cx="15" cy="15" r="3" fill="url(#aiGradientDark)"/>
+    <circle cx="25" cy="15" r="3" fill="url(#aiGradientDark)"/>
+    <circle cx="20" cy="25" r="3" fill="url(#aiGradientDark)"/>
+    <line x1="15" y1="15" x2="25" y2="15" stroke="url(#aiGradientDark)" stroke-width="1"/>
+    <line x1="15" y1="15" x2="20" y2="25" stroke="url(#aiGradientDark)" stroke-width="1"/>
+    <line x1="25" y1="15" x2="20" y2="25" stroke="url(#aiGradientDark)" stroke-width="1"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="50" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#e0e0e0">
+    AI Mastery
+  </text>
+  
+  <!-- Subtitle line -->
+  <line x1="50" y1="35" x2="160" y2="35" stroke="#66a3e8" stroke-width="1"/>
+  
+  <!-- Small tagline -->
+  <text x="50" y="42" font-family="Arial, sans-serif" font-size="10" fill="#a0a0a0">
+    Master AI Apps Development
+  </text>
+</svg>
